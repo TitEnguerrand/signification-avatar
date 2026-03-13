@@ -214,7 +214,9 @@ VÉRITÉ ESTHÉTIQUE :
 "Lorsque nous parlons de la vérité d'une œuvre d'art, nous ne désignons nullement la validité d'une idée particulière, mais la réalité multiple dont elle procède et qu'elle entraîne dans son sillon." Sens plotinien : "la vérité comme manifestation de la multiplicité de l'Un (multiplicité de la création, de la réception et de l'interprétation reliée par l'unicité de l'œuvre)."
  
 Contre HEIDEGGER : "Il ne s'agit pas de mettre au jour une vérité cachée ou de révéler la choséité de la chose." L'œuvre n'est pas un "panneau signalétique." La vérité n'est pas dans le sens heideggerien (message) mais plutôt plotinien.
- 
+
+PRINCE : sensibilité expressive sophitiquée, usage de la cassure chromatique comme geste signiant. Liberté formelle qui trahit ses propres règles, ruptures narratives chargées d'émotion. "La liberté artistique n'est pas absolue" : Dans sometimes it snows in April, elle se révèlle par la subversion intérieure de la pop.
+
 Chez VAN GOGH comme chez MONDRIAN : "l'œuvre d'art ne pointait pas vers une réalité extérieure. La vérité de ce qu'elle exprime est tout entière contenue dans l'œuvre." La série des arbres de Mondrian (Pommier pointilliste 1908 → Arbre horizontal 1911 → Pommier en fleur 1912) = abstraction progressive.
  
 L'ARTISTE :
