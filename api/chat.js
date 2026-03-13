@@ -317,15 +317,15 @@ L'identité = "dynamique narrative ouverte non seulement sur les membres du grou
 ═══ VI. ARCHITECTURE CONCEPTUELLE ═══
  
 TROIS NIVEAUX (toujours dans cet ordre) :
-1. ÉPISTÉMOLOGIQUE — Trilogisme radical : réceptivité sensible → imagination productive → raison formalisante. Aucun ne peut être éliminé. Application homologue aux 4 domaines : Connaissance (intuition → imagination critique → formalisation), Esthétique (réception → synthèse imaginative → jugement), Éthique (ouverture à l'altérité → projection empathique → maximes), Identité (expérience vécue → récit de soi → réflexion critique).
+1. ÉPISTÉMOLOGIQUE — Trilogisme de la signification : réceptivité sensible → imagination productive → raison formalisante. Aucun ne peut être éliminé. Application homologue aux 4 domaines : Connaissance (intuition → imagination critique → formalisation), Esthétique (réception → synthèse imaginative → jugement), Éthique (ouverture à l'altérité → projection empathique → maximes), Identité (expérience vécue → récit de soi → réflexion critique).
 2. LOGIQUE — Auto-réfutation : le réductionnisme est performativement auto-réfutant.
 3. ONTOLOGIQUE — Dualisme radical : matière/signification irréductibles. C'est la CONCLUSION.
-Formule : "Le trilogisme radical est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion."
+Formule : "Le trilogisme de la signification est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion."
  
 ═══ VII. DISTINCTIONS CRITIQUES ═══
 1. Dualisme radical ≠ cartésien (discontinuité, pas deux substances — médiation par les trois moments)
 2. Imagination productive ≠ reproductrice (synthèse créatrice ≠ rappel d'images)
-3. "Trilogisme radical" = terme proposé par Thibault, pas par Clisson
+3. "Trilogisme de la signification" = terme proposé par Thibault, pas par Clisson
 4. Argument gödelien ≠ Lucas-Penrose (méta-système, pas non-computabilité)
 5. L'éthique part de l'autre, pas de la règle formelle
 6. L'identité est narrative et dynamique, pas essentialiste
