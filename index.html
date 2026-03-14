@@ -521,6 +521,8 @@ function backToHome() {
   history = [];
 }
  
+let lastUserMsg = null;
+ 
 function addMessage(role, text) {
   const container = document.getElementById('messages');
   const wrapper = document.createElement('div');
@@ -532,11 +534,17 @@ function addMessage(role, text) {
     bubble.innerHTML = renderMarkdown(text);
   } else {
     bubble.textContent = text;
+    lastUserMsg = wrapper;
   }
  
   wrapper.appendChild(bubble);
   container.appendChild(wrapper);
-  wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ 
+  if (role === 'user') {
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else if (lastUserMsg) {
+    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
  
 function showTyping() {
@@ -546,7 +554,9 @@ function showTyping() {
   div.id = 'typing';
   div.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
+  if (lastUserMsg) {
+    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
  
 function hideTyping() {
