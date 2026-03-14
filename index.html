@@ -316,8 +316,8 @@
 <div id="welcome">
   <div style="text-align:center; max-width:640px">
     <div class="author">Geoffroy de Clisson</div>
-    <h1>La Philosophie</h1>
-    <h1 class="italic">de la Signification</h1>
+    <h1 id="title1">La Philosophie</h1>
+    <h1 class="italic" id="title2">de la Signification</h1>
     <div class="divider"></div>
     <div class="lang-toggle">
       <button id="langFr" class="active" onclick="setLang('fr')">FR</button>
@@ -390,12 +390,16 @@ const QUESTIONS_EN = [
  
 const TEXTS = {
   fr: {
+    title1: "La Philosophie",
+    title2: "de la Signification",
     subtitle: "Explorez le dualisme radical, le trilogisme et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.",
     placeholder: "Posez votre question…",
     footer: "Prototype · Alimenté par Claude",
     note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
   },
   en: {
+    title1: "The Philosophy",
+    title2: "of Meaning",
     subtitle: "Explore radical dualism, trilogism and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
     placeholder: "Ask your question…",
     footer: "Prototype · Powered by Claude",
@@ -411,6 +415,8 @@ function setLang(lang) {
   currentLang = lang;
   document.getElementById('langFr').className = lang === 'fr' ? 'active' : '';
   document.getElementById('langEn').className = lang === 'en' ? 'active' : '';
+  document.getElementById('title1').textContent = TEXTS[lang].title1;
+  document.getElementById('title2').textContent = TEXTS[lang].title2;
   document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
   document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
   document.getElementById('footerNote').textContent = TEXTS[lang].footer;
@@ -555,4 +561,3 @@ async function send(text) {
 </script>
 </body>
 </html>
- 
