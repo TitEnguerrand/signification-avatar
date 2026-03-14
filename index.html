@@ -1,3 +1,6 @@
+ HTML
+Copier
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -286,7 +289,7 @@
     border: 1px solid rgba(139, 115, 85, 0.3);
     border-radius: 20px;
     overflow: hidden;
-    width: 140px;
+    width: 240px;
   }
  
   .lang-toggle button {
@@ -300,7 +303,7 @@
     color: #8b7355;
     letter-spacing: 0.1em;
     font-weight: 400;
-    width: 50%;
+    width: 25%;
     text-align: center;
   }
  
@@ -322,6 +325,8 @@
     <div class="lang-toggle">
       <button id="langFr" class="active" onclick="setLang('fr')">FR</button>
       <button id="langEn" onclick="setLang('en')">EN</button>
+      <button id="langEs" onclick="setLang('es')">ES</button>
+      <button id="langDe" onclick="setLang('de')">DE</button>
     </div>
     <p class="subtitle" id="subtitle">
       Explorez le dualisme radical, le trilogisme de la signification et l'architecture
@@ -374,7 +379,7 @@ const QUESTIONS_FR = [
 ];
  
 const QUESTIONS_EN = [
-  "What is radical dualism?",
+  "What is Radical Dualism?",
   "Materialism as a logical dead end?",
   "The three irreducible moments",
   "Putnam and the brain in a vat",
@@ -386,6 +391,36 @@ const QUESTIONS_EN = [
   "Ethics starts from the other",
   "Identity as meaningful gathering",
   "Nationalism, an essentialist fiction?",
+];
+ 
+const QUESTIONS_ES = [
+  "¿Qué es el dualismo radical?",
+  "El materialismo, ¿callejón sin salida?",
+  "Los tres momentos irreductibles",
+  "Putnam y el cerebro en una cubeta",
+  "¿Diferencia con Descartes?",
+  "Geoffroy de Clisson y Kant",
+  "¿Puede la IA realmente pensar?",
+  "La música como paradigma",
+  "La verdad de una obra de arte",
+  "La ética parte del otro",
+  "La identidad como reunión significante",
+  "¿El nacionalismo, ficción esencialista?",
+];
+ 
+const QUESTIONS_DE = [
+  "Was ist der radikale Dualismus?",
+  "Materialismus als logische Sackgasse?",
+  "Die drei irreduziblen Momente",
+  "Putnam und das Gehirn im Tank",
+  "Unterschied zu Descartes?",
+  "Geoffroy de Clisson und Kant",
+  "Kann KI wirklich denken?",
+  "Musik als Paradigma der Bedeutung",
+  "Die Wahrheit eines Kunstwerks",
+  "Ethik beginnt beim Anderen",
+  "Identität als sinnhafte Versammlung",
+  "Nationalismus, essentialistische Fiktion?",
 ];
  
 const TEXTS = {
@@ -400,10 +435,26 @@ const TEXTS = {
   en: {
     title1: "Philosophy",
     title2: "of Meaning",
-    subtitle: "Explore radical dualism, Signification Trilogism and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
+    subtitle: "Explore Radical Dualism, Signification Trilogism and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
     placeholder: "Ask your question…",
     footer: "Prototype · Powered by Claude",
     note: "Responses may contain errors · Verify with the original text",
+  },
+  es: {
+    title1: "Filosofía",
+    title2: "de la Significación",
+    subtitle: "Explore el dualismo radical, el trilogismo de la significación y la arquitectura conceptual de una filosofía que interroga la irreductibilidad de la significación a la materia.",
+    placeholder: "Haga su pregunta…",
+    footer: "Prototipo · Impulsado por Claude",
+    note: "Las respuestas pueden contener errores · Verifique con el texto original",
+  },
+  de: {
+    title1: "Philosophie",
+    title2: "der Bedeutung",
+    subtitle: "Erkunden Sie den radikalen Dualismus, den Trilogismus der Bedeutung und die konzeptuelle Architektur einer Philosophie, die die Irreduzibilität der Bedeutung auf die Materie hinterfragt.",
+    placeholder: "Stellen Sie Ihre Frage…",
+    footer: "Prototyp · Betrieben von Claude",
+    note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
   }
 };
  
@@ -415,6 +466,8 @@ function setLang(lang) {
   currentLang = lang;
   document.getElementById('langFr').className = lang === 'fr' ? 'active' : '';
   document.getElementById('langEn').className = lang === 'en' ? 'active' : '';
+  document.getElementById('langEs').className = lang === 'es' ? 'active' : '';
+  document.getElementById('langDe').className = lang === 'de' ? 'active' : '';
   document.getElementById('title1').textContent = TEXTS[lang].title1;
   document.getElementById('title2').textContent = TEXTS[lang].title2;
   document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
@@ -426,7 +479,7 @@ function setLang(lang) {
 function buildSuggestions() {
   const sugDiv = document.getElementById('suggestions');
   sugDiv.innerHTML = '';
-  const questions = currentLang === 'fr' ? QUESTIONS_FR : QUESTIONS_EN;
+  const questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
   questions.forEach(q => {
     const btn = document.createElement('button');
     btn.textContent = q;
