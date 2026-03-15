@@ -4,17 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Philosophie de la Signification — Geoffroy de Clisson</title>
+
+<!-- Open Graph / Twitter Card -->
+<meta property="og:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
+<meta property="og:description" content="Explorez le dualisme radical, le trilogisme de la signification et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.">
+<meta property="og:image" content="https://signification-avatar.vercel.app/api/og">
+<meta property="og:url" content="https://signification-avatar.vercel.app">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
+<meta name="twitter:description" content="Avatar philosophique interactif — Dualisme radical, Trilogisme de la signification, Irréductibilité de la signification à la matière.">
+<meta name="twitter:image" content="https://signification-avatar.vercel.app/api/og">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   body {
     font-family: 'Source Serif 4', Georgia, serif;
     background: linear-gradient(165deg, #f7f3ee 0%, #ece5da 40%, #e2d9cc 100%);
     color: #2c1e10;
     min-height: 100vh;
   }
- 
+
   /* ── Welcome Screen ── */
   #welcome {
     min-height: 100vh;
@@ -25,7 +36,7 @@
     padding: 2rem;
     animation: fadeIn 1s ease-out;
   }
- 
+
   #welcome .author {
     font-size: 0.75rem;
     letter-spacing: 0.35em;
@@ -34,7 +45,7 @@
     margin-bottom: 1.5rem;
     font-weight: 500;
   }
- 
+
   #welcome h1 {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2rem, 5vw, 3.2rem);
@@ -43,16 +54,16 @@
     line-height: 1.15;
     letter-spacing: -0.01em;
   }
- 
+
   #welcome h1.italic { font-style: italic; margin-bottom: 1rem; }
- 
+
   .divider {
     width: 50px;
     height: 1px;
     background: #8b7355;
     margin: 1.5rem auto;
   }
- 
+
   #welcome .subtitle {
     font-size: 1rem;
     line-height: 1.7;
@@ -62,7 +73,7 @@
     margin-bottom: 2.5rem;
     font-weight: 300;
   }
- 
+
   .suggestions {
     display: flex;
     flex-direction: column;
@@ -72,7 +83,7 @@
     width: 100%;
     margin: 0 auto 2rem;
   }
- 
+
   .suggestions button {
     background: rgba(139, 115, 85, 0.08);
     border: 1px solid rgba(139, 115, 85, 0.25);
@@ -87,12 +98,12 @@
     text-align: center;
     width: 100%;
   }
- 
+
   .suggestions button:hover {
     background: rgba(139, 115, 85, 0.18);
     border-color: rgba(139, 115, 85, 0.45);
   }
- 
+
   .input-row {
     display: flex;
     align-items: center;
@@ -100,7 +111,7 @@
     max-width: 500px;
     width: 100%;
   }
- 
+
   .input-row input {
     flex: 1;
     padding: 0.85rem 1.2rem;
@@ -113,10 +124,10 @@
     outline: none;
     transition: border-color 0.3s;
   }
- 
+
   .input-row input:focus { border-color: #8b7355; }
   .input-row input::placeholder { color: #a0937f; }
- 
+
   .send-btn {
     width: 44px;
     height: 44px;
@@ -131,9 +142,9 @@
     transition: all 0.25s;
     flex-shrink: 0;
   }
- 
+
   .send-btn:disabled { background: rgba(139, 115, 85, 0.2); cursor: default; }
- 
+
   .footer-note {
     position: fixed;
     bottom: 20px;
@@ -142,17 +153,17 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
- 
+
   /* ── Chat Screen ── */
   #chat {
     display: none;
     flex-direction: column;
     height: 100vh;
   }
- 
+
   #chat.active { display: flex; }
   #welcome.hidden { display: none; }
- 
+
   .chat-header {
     padding: 0.8rem 1.5rem;
     border-bottom: 1px solid rgba(139, 115, 85, 0.15);
@@ -163,21 +174,21 @@
     align-items: center;
     gap: 0.8rem;
   }
- 
+
   .chat-header .title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem;
     font-weight: 600;
     color: #2c1e10;
   }
- 
+
   .chat-header .sub {
     font-size: 0.7rem;
     color: #8b7355;
     letter-spacing: 0.2em;
     text-transform: uppercase;
   }
- 
+
   .messages {
     flex: 1;
     overflow-y: auto;
@@ -186,24 +197,24 @@
     flex-direction: column;
     gap: 1.2rem;
   }
- 
+
   .msg { display: flex; animation: msgIn 0.3s ease-out; }
   .msg.user { justify-content: flex-end; }
   .msg.assistant { justify-content: flex-start; }
- 
+
   .msg .bubble {
     max-width: 80%;
     font-size: 0.9rem;
     line-height: 1.65;
   }
- 
+
   .msg.user .bubble {
     padding: 0.7rem 1.1rem;
     border-radius: 18px 18px 4px 18px;
     background: linear-gradient(135deg, #5a4a3a, #4a3a2a);
     color: #f7f3ee;
   }
- 
+
   .msg.assistant .bubble {
     padding: 1rem 1.3rem;
     border-radius: 18px 18px 18px 4px;
@@ -212,7 +223,7 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(139, 115, 85, 0.1);
   }
- 
+
   .msg.assistant .bubble h3 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -220,7 +231,7 @@
     margin: 1em 0 0.3em;
     color: #3d2e1f;
   }
- 
+
   .msg.assistant .bubble h4 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
@@ -228,12 +239,12 @@
     margin: 0.8em 0 0.3em;
     color: #3d2e1f;
   }
- 
+
   .msg.assistant .bubble p { margin: 0 0 0.4em; }
   .msg.assistant .bubble ul { padding-left: 1.2em; margin: 0.3em 0; }
   .msg.assistant .bubble li { margin-bottom: 0.2em; }
   .msg.assistant .bubble li::marker { color: #8b7355; }
- 
+
   .typing {
     display: flex;
     gap: 6px;
@@ -243,7 +254,7 @@
     border: 1px solid rgba(139, 115, 85, 0.1);
     width: fit-content;
   }
- 
+
   .typing .dot {
     width: 6px;
     height: 6px;
@@ -251,10 +262,10 @@
     background: #8b7355;
     animation: pulse 1.2s ease-in-out infinite;
   }
- 
+
   .typing .dot:nth-child(2) { animation-delay: 0.2s; }
   .typing .dot:nth-child(3) { animation-delay: 0.4s; }
- 
+
   .chat-input {
     padding: 0.8rem 1.5rem 1.2rem;
     border-top: 1px solid rgba(139, 115, 85, 0.1);
@@ -262,10 +273,10 @@
     backdrop-filter: blur(10px);
     flex-shrink: 0;
   }
- 
+
   .chat-input .input-row { max-width: 700px; margin: 0 auto; }
   .chat-input .send-btn { width: 42px; height: 42px; }
- 
+
   .chat-input .note {
     text-align: center;
     margin-top: 0.5rem;
@@ -273,15 +284,15 @@
     color: #a0937f;
     letter-spacing: 0.1em;
   }
- 
+
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(139, 115, 85, 0.2); border-radius: 3px; }
- 
+
   @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes pulse { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
- 
+
   .lang-toggle {
     display: flex;
     gap: 0;
@@ -291,7 +302,7 @@
     overflow: hidden;
     width: 240px;
   }
- 
+
   .lang-toggle button {
     padding: 0.35rem 1.2rem;
     font-family: 'Source Serif 4', serif;
@@ -306,7 +317,7 @@
     width: 25%;
     text-align: center;
   }
- 
+
   .lang-toggle button.active {
     background: #5a4a3a;
     color: #f7f3ee;
@@ -314,7 +325,7 @@
 </style>
 </head>
 <body>
- 
+
 <!-- Welcome Screen -->
 <div id="welcome">
   <div style="text-align:center; max-width:640px">
@@ -343,7 +354,7 @@
   </div>
   <div class="footer-note" id="footerNote">Prototype · Alimenté par Claude</div>
 </div>
- 
+
 <!-- Chat Screen -->
 <div id="chat">
   <div class="chat-header">
@@ -364,7 +375,7 @@
     <div class="note">Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original</div>
   </div>
 </div>
- 
+
 <script>
 const QUESTIONS_FR = [
   "Le dualisme radical, c'est quoi ?",
@@ -380,7 +391,7 @@ const QUESTIONS_FR = [
   "L'identité, rassemblement signifiant",
   "Le nationalisme, fiction essentialiste ?",
 ];
- 
+
 const QUESTIONS_EN = [
   "What is Radical Dualism?",
   "Materialism as a logical dead end?",
@@ -395,7 +406,7 @@ const QUESTIONS_EN = [
   "Identity as meaningful gathering",
   "Nationalism, an essentialist fiction?",
 ];
- 
+
 const QUESTIONS_ES = [
   "¿Qué es el dualismo radical?",
   "El materialismo, ¿callejón sin salida?",
@@ -410,7 +421,7 @@ const QUESTIONS_ES = [
   "La identidad como reunión significante",
   "¿El nacionalismo, ficción esencialista?",
 ];
- 
+
 const QUESTIONS_DE = [
   "Was ist der radikale Dualismus?",
   "Materialismus als logische Sackgasse?",
@@ -425,7 +436,7 @@ const QUESTIONS_DE = [
   "Identität als sinnhafte Versammlung",
   "Nationalismus, essentialistische Fiktion?",
 ];
- 
+
 const TEXTS = {
   fr: {
     title1: "La Philosophie",
@@ -460,11 +471,11 @@ const TEXTS = {
     note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
   }
 };
- 
+
 let currentLang = 'fr';
 let history = [];
 let busy = false;
- 
+
 function setLang(lang) {
   currentLang = lang;
   document.getElementById('langFr').className = lang === 'fr' ? 'active' : '';
@@ -478,7 +489,7 @@ function setLang(lang) {
   document.getElementById('footerNote').textContent = TEXTS[lang].footer;
   buildSuggestions();
 }
- 
+
 function buildSuggestions() {
   const sugDiv = document.getElementById('suggestions');
   sugDiv.innerHTML = '';
@@ -490,63 +501,63 @@ function buildSuggestions() {
     sugDiv.appendChild(btn);
   });
 }
- 
+
 // Initial build
 buildSuggestions();
- 
+
 // Input handling
 const wInput = document.getElementById('welcomeInput');
 const wBtn = document.getElementById('welcomeBtn');
 const cInput = document.getElementById('chatInput');
 const cBtn = document.getElementById('chatBtn');
- 
+
 wInput.addEventListener('input', () => { wBtn.disabled = !wInput.value.trim(); });
 wInput.addEventListener('keydown', e => { if (e.key === 'Enter' && wInput.value.trim()) send(wInput.value); });
 wBtn.addEventListener('click', () => { if (wInput.value.trim()) send(wInput.value); });
- 
+
 cInput.addEventListener('input', () => { cBtn.disabled = !cInput.value.trim(); });
 cInput.addEventListener('keydown', e => { if (e.key === 'Enter' && cInput.value.trim()) send(cInput.value); });
 cBtn.addEventListener('click', () => { if (cInput.value.trim()) send(cInput.value); });
- 
+
 function switchToChat() {
   document.getElementById('welcome').classList.add('hidden');
   document.getElementById('chat').classList.add('active');
   cInput.focus();
 }
- 
+
 function backToHome() {
   document.getElementById('chat').classList.remove('active');
   document.getElementById('welcome').classList.remove('hidden');
   document.getElementById('messages').innerHTML = '';
   history = [];
 }
- 
+
 let lastUserMsg = null;
- 
+
 function addMessage(role, text) {
   const container = document.getElementById('messages');
   const wrapper = document.createElement('div');
   wrapper.className = 'msg ' + role;
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
- 
+
   if (role === 'assistant') {
     bubble.innerHTML = renderMarkdown(text);
   } else {
     bubble.textContent = text;
     lastUserMsg = wrapper;
   }
- 
+
   wrapper.appendChild(bubble);
   container.appendChild(wrapper);
- 
+
   if (role === 'user') {
     wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else if (lastUserMsg) {
     lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
- 
+
 function showTyping() {
   const container = document.getElementById('messages');
   const div = document.createElement('div');
@@ -558,12 +569,12 @@ function showTyping() {
     lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
- 
+
 function hideTyping() {
   const el = document.getElementById('typing');
   if (el) el.remove();
 }
- 
+
 function renderMarkdown(text) {
   return text
     .split('\n')
@@ -587,36 +598,36 @@ function renderMarkdown(text) {
     // Wrap consecutive <li> in <ul>
     .replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
 }
- 
+
 async function send(text) {
   const msg = text.trim();
   if (!msg || busy) return;
   busy = true;
- 
+
   if (!document.getElementById('chat').classList.contains('active')) {
     switchToChat();
   }
- 
+
   addMessage('user', msg);
   wInput.value = '';
   cInput.value = '';
   cBtn.disabled = true;
- 
+
   history.push({ role: 'user', content: msg });
- 
+
   showTyping();
- 
+
   try {
     const r = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: history }),
     });
- 
+
     const data = await r.json();
- 
+
     hideTyping();
- 
+
     if (data.error) {
       addMessage('assistant', '⚠️ ' + data.error);
     } else {
@@ -627,7 +638,7 @@ async function send(text) {
     hideTyping();
     addMessage('assistant', '⚠️ Erreur de connexion : ' + e.message);
   }
- 
+
   busy = false;
   cInput.focus();
 }
