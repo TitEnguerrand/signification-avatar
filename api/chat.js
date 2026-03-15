@@ -1,18 +1,22 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 let chunksCache = null;
 function getChunks() {
   if (!chunksCache) {
-    chunksCache = require('./chunks.json');
+    const raw = readFileSync(join(__dirname, 'chunks.json'), 'utf-8');
+    chunksCache = JSON.parse(raw);
   }
   return chunksCache;
 }
 
-// Simple BM25-like search
 function tokenize(text) {
   return text.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
     .filter(w => w.length > 2)
@@ -28,85 +32,60 @@ const STOP_WORDS = new Set([
   'but','its','his','her','our','they','been','have','will','more',
 ]);
 
-function search(query, topK = 8) {
-  const chunks = getChunks();
-  const queryTerms = tokenize(query);
+function search(query, topK) {
+  topK = topK || 8;
+  var chunks = getChunks();
+  var queryTerms = tokenize(query);
   if (queryTerms.length === 0) return chunks.slice(0, topK);
 
-  const N = chunks.length;
-  let totalWords = 0;
+  var N = chunks.length;
+  var totalWords = 0;
 
-  // Pre-tokenize chunks on first call (lazy)
   if (!chunks[0]._tokens) {
-    for (const chunk of chunks) {
-      chunk._tokens = tokenize(chunk.text);
-      chunk._dl = chunk._tokens.length;
-      totalWords += chunk._dl;
+    for (var i = 0; i < chunks.length; i++) {
+      chunks[i]._tokens = tokenize(chunks[i].text);
+      chunks[i]._dl = chunks[i]._tokens.length;
+      totalWords += chunks[i]._dl;
     }
   }
 
-  const avgDl = totalWords / N;
+  var avgDl = totalWords / N || 1;
 
-  // Document frequency for query terms
-  const df = {};
-  for (const term of queryTerms) {
+  var df = {};
+  for (var q = 0; q < queryTerms.length; q++) {
+    var term = queryTerms[q];
     df[term] = 0;
-    for (const chunk of chunks) {
-      if (chunk._tokens.includes(term)) df[term]++;
+    for (var i = 0; i < chunks.length; i++) {
+      if (chunks[i]._tokens.indexOf(term) >= 0) df[term]++;
     }
   }
 
-  // Score chunks
-  const k1 = 1.5;
-  const b = 0.75;
+  var k1 = 1.5;
+  var b = 0.75;
 
-  const scored = chunks.map(chunk => {
-    let score = 0;
-    for (const term of queryTerms) {
-      const tf = chunk._tokens.filter(t => t === term).length;
+  var scored = [];
+  for (var i = 0; i < chunks.length; i++) {
+    var score = 0;
+    for (var q = 0; q < queryTerms.length; q++) {
+      var term = queryTerms[q];
+      var tf = 0;
+      for (var t = 0; t < chunks[i]._tokens.length; t++) {
+        if (chunks[i]._tokens[t] === term) tf++;
+      }
       if (tf === 0) continue;
-      const idf = Math.log((N - df[term] + 0.5) / (df[term] + 0.5) + 1);
-      score += idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * chunk._dl / avgDl));
+      var idf = Math.log((N - df[term] + 0.5) / (df[term] + 0.5) + 1);
+      score += idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * chunks[i]._dl / avgDl));
     }
-    return { source: chunk.source, text: chunk.text, score };
-  });
+    if (score > 0) {
+      scored.push({ source: chunks[i].source, text: chunks[i].text, score: score });
+    }
+  }
 
-  return scored
-    .filter(c => c.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, topK);
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.slice(0, topK);
 }
 
-const BASE_PROMPT = `Tu es un assistant philosophique spécialisé dans l'œuvre de Geoffroy de Clisson, "La Philosophie de la Signification". Tu réponds dans la langue de la question. Si français, réponds en français. Si anglais, en anglais. Si espagnol, en espagnol. Si allemand, en allemand. Avec rigueur et clarté.
-
-ARCHITECTURE CONCEPTUELLE — Trois niveaux (toujours dans cet ordre) :
-1. ÉPISTÉMOLOGIQUE — Trilogisme radical : réceptivité sensible → imagination productive → raison formalisante. Aucun moment ne peut être éliminé. Application homologue : Connaissance, Esthétique, Éthique, Identité.
-2. LOGIQUE — Auto-réfutation du réductionnisme : l'énoncé "tout est matière" présuppose la signification qu'il prétend nier.
-3. ONTOLOGIQUE — Dualisme radical : matière et signification = deux ordres irréductibles. C'est la CONCLUSION, pas le point de départ.
-Formule : "Le trilogisme radical est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion."
-
-DISTINCTIONS CRITIQUES :
-- Dualisme radical ≠ dualisme cartésien (discontinuité, pas deux substances)
-- Imagination productive ≠ reproductrice
-- "Trilogisme radical" = terme proposé, pas de Geoffroy de Clisson lui-même
-- Argument gödelien ≠ Lucas-Penrose
-- L'éthique part de l'autre, pas de la règle formelle
-- L'identité est narrative et dynamique, pas essentialiste
-
-VOISINAGES (rapprochements contrastifs, pas équivalences) :
-Kant (source architecturale), Chalmers (convergence profonde), Cassirer (prégnance symbolique), Levinas (visage), Ricœur (identité narrative), Nagel, Searle, Nietzsche (interlocuteur constant), Popper (Monde 3), Husserl, Gödel, Putnam, Chomsky, Poincaré.
-
-COGITATE (Nature, 2025) : GNWT vs IIT, 256 sujets. Les deux théories "sérieusement en difficulté." Contenu conscient distribué (V1/V2, ventro-temporal, frontal inférieur) = compatible avec les trois moments.
-
-RÈGLES :
-1. Ne JAMAIS inventer de citations — utilise uniquement les passages fournis ci-dessous
-2. Cite le livre et la section quand possible
-3. Ordre : épistémologique → logique → ontologique
-4. Signale quand la question dépasse le corpus
-5. Ton de spécialiste passionné mais honnête
-
-PASSAGES PERTINENTS DU CORPUS :
-`;
+var BASE_PROMPT = "Tu es un assistant philosophique specialise dans l'oeuvre de Geoffroy de Clisson, \"La Philosophie de la Signification\". Tu reponds dans la langue de la question. Si francais, reponds en francais. Si anglais, en anglais. Si espagnol, en espagnol. Si allemand, en allemand. Avec rigueur et clarte.\n\nARCHITECTURE CONCEPTUELLE — Trois niveaux (toujours dans cet ordre) :\n1. EPISTEMOLOGIQUE — Trilogisme radical : receptivite sensible, imagination productive, raison formalisante. Aucun moment ne peut etre elimine. Application homologue : Connaissance, Esthetique, Ethique, Identite.\n2. LOGIQUE — Auto-refutation du reductionnisme : l'enonce \"tout est matiere\" presuppose la signification qu'il pretend nier.\n3. ONTOLOGIQUE — Dualisme radical : matiere et signification = deux ordres irreductibles. C'est la CONCLUSION, pas le point de depart.\nFormule : \"Le trilogisme radical est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion.\"\n\nDISTINCTIONS CRITIQUES :\n- Dualisme radical different du dualisme cartesien (discontinuite, pas deux substances)\n- Imagination productive different de reproductrice\n- \"Trilogisme radical\" = terme propose, pas de Geoffroy de Clisson lui-meme\n- Argument godelien different de Lucas-Penrose\n- L'ethique part de l'autre, pas de la regle formelle\n- L'identite est narrative et dynamique, pas essentialiste\n\nVOISINAGES (rapprochements contrastifs, pas equivalences) :\nKant (source architecturale), Chalmers (convergence profonde), Cassirer (pregnance symbolique), Levinas (visage), Ricoeur (identite narrative), Nagel, Searle, Nietzsche (interlocuteur constant), Popper (Monde 3), Husserl, Godel, Putnam, Chomsky, Poincare.\n\nCOGITATE (Nature, 2025) : GNWT vs IIT, 256 sujets. Les deux theories \"serieusement en difficulte.\" Contenu conscient distribue (V1/V2, ventro-temporal, frontal inferieur) = compatible avec les trois moments.\n\nREGLES :\n1. Ne JAMAIS inventer de citations — utilise uniquement les passages fournis ci-dessous\n2. Cite le livre et la section quand possible\n3. Ordre : epistemologique, logique, ontologique\n4. Signale quand la question depasse le corpus\n5. Ton de specialiste passionne mais honnete\n\nPASSAGES PERTINENTS DU CORPUS :\n";
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -115,26 +94,26 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+  var ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
   if (!ANTHROPIC_API_KEY) return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
 
   try {
-    const { messages } = req.body;
+    var body = req.body;
+    var messages = body.messages;
+    var lastUserMsg = null;
+    for (var i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === 'user') { lastUserMsg = messages[i]; break; }
+    }
+    var query = lastUserMsg ? lastUserMsg.content : '';
 
-    // Get the last user message for search
-    const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
-    const query = lastUserMsg ? lastUserMsg.content : '';
+    var results = search(query, 8);
 
-    // Search relevant passages
-    const results = search(query, 8);
-
-    // Build dynamic system prompt with relevant passages
-    let systemPrompt = BASE_PROMPT;
-    for (const r of results) {
-      systemPrompt += `\n[${r.source}]\n${r.text}\n`;
+    var systemPrompt = BASE_PROMPT;
+    for (var i = 0; i < results.length; i++) {
+      systemPrompt += "\n[" + results[i].source + "]\n" + results[i].text + "\n";
     }
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    var response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,11 +128,16 @@ export default async function handler(req, res) {
       }),
     });
 
-    const data = await response.json();
+    var data = await response.json();
     if (data.error) return res.status(400).json({ error: data.error.message });
 
-    const text = data.content?.filter(b => b.type === "text").map(b => b.text).join("\n");
-    return res.status(200).json({ text: text || "" });
+    var text = "";
+    if (data.content) {
+      for (var i = 0; i < data.content.length; i++) {
+        if (data.content[i].type === "text") text += data.content[i].text;
+      }
+    }
+    return res.status(200).json({ text: text });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
