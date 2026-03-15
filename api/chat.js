@@ -1,144 +1,92 @@
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+const fs = require('fs');
+const path = require('path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+var chunksCache = null;
 
-let chunksCache = null;
 function getChunks() {
-  if (!chunksCache) {
-    const raw = readFileSync(join(__dirname, 'chunks.json'), 'utf-8');
-    chunksCache = JSON.parse(raw);
-  }
-  return chunksCache;
-}
-
-function tokenize(text) {
-  return text.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(w => w.length > 2)
-    .filter(w => !STOP_WORDS.has(w));
-}
-
-const STOP_WORDS = new Set([
-  'les','des','une','que','qui','dans','pour','par','sur','est','sont',
-  'avec','plus','pas','tout','mais','comme','cette','ces','aux','son',
-  'ses','nous','vous','leur','entre','sans','sous','elle','ils','elles',
-  'etre','avoir','fait','dire','aussi','bien','peut','tous','ici','donc',
-  'the','and','that','this','with','from','for','not','are','was','has',
-  'but','its','his','her','our','they','been','have','will','more',
-]);
-
-function search(query, topK) {
-  topK = topK || 8;
-  var chunks = getChunks();
-  var queryTerms = tokenize(query);
-  if (queryTerms.length === 0) return chunks.slice(0, topK);
-
-  var N = chunks.length;
-  var totalWords = 0;
-
-  if (!chunks[0]._tokens) {
-    for (var i = 0; i < chunks.length; i++) {
-      chunks[i]._tokens = tokenize(chunks[i].text);
-      chunks[i]._dl = chunks[i]._tokens.length;
-      totalWords += chunks[i]._dl;
-    }
-  }
-
-  var avgDl = totalWords / N || 1;
-
-  var df = {};
-  for (var q = 0; q < queryTerms.length; q++) {
-    var term = queryTerms[q];
-    df[term] = 0;
-    for (var i = 0; i < chunks.length; i++) {
-      if (chunks[i]._tokens.indexOf(term) >= 0) df[term]++;
-    }
-  }
-
-  var k1 = 1.5;
-  var b = 0.75;
-
-  var scored = [];
-  for (var i = 0; i < chunks.length; i++) {
-    var score = 0;
-    for (var q = 0; q < queryTerms.length; q++) {
-      var term = queryTerms[q];
-      var tf = 0;
-      for (var t = 0; t < chunks[i]._tokens.length; t++) {
-        if (chunks[i]._tokens[t] === term) tf++;
+  if (chunksCache) return chunksCache;
+  var tryPaths = [
+    path.join(__dirname, 'chunks.json'),
+    path.join(process.cwd(), 'api', 'chunks.json'),
+    '/var/task/api/chunks.json',
+  ];
+  for (var i = 0; i < tryPaths.length; i++) {
+    try {
+      if (fs.existsSync(tryPaths[i])) {
+        chunksCache = JSON.parse(fs.readFileSync(tryPaths[i], 'utf-8'));
+        return chunksCache;
       }
-      if (tf === 0) continue;
-      var idf = Math.log((N - df[term] + 0.5) / (df[term] + 0.5) + 1);
-      score += idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * chunks[i]._dl / avgDl));
-    }
-    if (score > 0) {
-      scored.push({ source: chunks[i].source, text: chunks[i].text, score: score });
-    }
+    } catch (e) { /* next */ }
   }
-
-  scored.sort(function(a, b) { return b.score - a.score; });
-  return scored.slice(0, topK);
+  var files1 = [], files2 = [];
+  try { files1 = fs.readdirSync(path.join(__dirname)); } catch(e) {}
+  try { files2 = fs.readdirSync('/var/task/api/'); } catch(e) {}
+  throw new Error('chunks.json introuvable. __dirname: [' + files1.join(',') + '] /var/task/api/: [' + files2.join(',') + ']');
 }
 
-var BASE_PROMPT = "Tu es un assistant philosophique specialise dans l'oeuvre de Geoffroy de Clisson, \"La Philosophie de la Signification\". Tu reponds dans la langue de la question. Si francais, reponds en francais. Si anglais, en anglais. Si espagnol, en espagnol. Si allemand, en allemand. Avec rigueur et clarte.\n\nARCHITECTURE CONCEPTUELLE — Trois niveaux (toujours dans cet ordre) :\n1. EPISTEMOLOGIQUE — Trilogisme radical : receptivite sensible, imagination productive, raison formalisante. Aucun moment ne peut etre elimine. Application homologue : Connaissance, Esthetique, Ethique, Identite.\n2. LOGIQUE — Auto-refutation du reductionnisme : l'enonce \"tout est matiere\" presuppose la signification qu'il pretend nier.\n3. ONTOLOGIQUE — Dualisme radical : matiere et signification = deux ordres irreductibles. C'est la CONCLUSION, pas le point de depart.\nFormule : \"Le trilogisme radical est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion.\"\n\nDISTINCTIONS CRITIQUES :\n- Dualisme radical different du dualisme cartesien (discontinuite, pas deux substances)\n- Imagination productive different de reproductrice\n- \"Trilogisme radical\" = terme propose, pas de Geoffroy de Clisson lui-meme\n- Argument godelien different de Lucas-Penrose\n- L'ethique part de l'autre, pas de la regle formelle\n- L'identite est narrative et dynamique, pas essentialiste\n\nVOISINAGES (rapprochements contrastifs, pas equivalences) :\nKant (source architecturale), Chalmers (convergence profonde), Cassirer (pregnance symbolique), Levinas (visage), Ricoeur (identite narrative), Nagel, Searle, Nietzsche (interlocuteur constant), Popper (Monde 3), Husserl, Godel, Putnam, Chomsky, Poincare.\n\nCOGITATE (Nature, 2025) : GNWT vs IIT, 256 sujets. Les deux theories \"serieusement en difficulte.\" Contenu conscient distribue (V1/V2, ventro-temporal, frontal inferieur) = compatible avec les trois moments.\n\nREGLES :\n1. Ne JAMAIS inventer de citations — utilise uniquement les passages fournis ci-dessous\n2. Cite le livre et la section quand possible\n3. Ordre : epistemologique, logique, ontologique\n4. Signale quand la question depasse le corpus\n5. Ton de specialiste passionne mais honnete\n\nPASSAGES PERTINENTS DU CORPUS :\n";
+var STOP = {'les':1,'des':1,'une':1,'que':1,'qui':1,'dans':1,'pour':1,'par':1,'sur':1,'est':1,'sont':1,'avec':1,'plus':1,'pas':1,'tout':1,'mais':1,'comme':1,'cette':1,'ces':1,'aux':1,'son':1,'ses':1,'nous':1,'vous':1,'leur':1,'entre':1,'sans':1,'sous':1,'elle':1,'ils':1,'elles':1,'etre':1,'avoir':1,'fait':1,'dire':1,'aussi':1,'bien':1,'peut':1,'tous':1,'ici':1,'donc':1,'the':1,'and':1,'that':1,'this':1,'with':1,'from':1,'for':1,'not':1,'are':1,'was':1,'has':1,'but':1,'its':1,'his':1,'her':1,'our':1,'they':1,'been':1,'have':1,'will':1,'more':1};
 
-export default async function handler(req, res) {
+function tok(text) {
+  var t = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, ' ');
+  var w = t.split(/\s+/), r = [];
+  for (var i = 0; i < w.length; i++) if (w[i].length > 2 && !STOP[w[i]]) r.push(w[i]);
+  return r;
+}
+
+function search(query) {
+  var chunks = getChunks();
+  var qt = tok(query);
+  if (qt.length === 0) return chunks.slice(0, 6);
+  var N = chunks.length, tw = 0;
+  if (!chunks[0]._t) {
+    for (var i = 0; i < N; i++) { chunks[i]._t = tok(chunks[i].text); chunks[i]._d = chunks[i]._t.length; tw += chunks[i]._d; }
+  } else { for (var i = 0; i < N; i++) tw += chunks[i]._d; }
+  var avg = tw / N || 1, df = {};
+  for (var q = 0; q < qt.length; q++) { df[qt[q]] = 0; for (var i = 0; i < N; i++) if (chunks[i]._t.indexOf(qt[q]) >= 0) df[qt[q]]++; }
+  var sc = [];
+  for (var i = 0; i < N; i++) {
+    var s = 0;
+    for (var q = 0; q < qt.length; q++) {
+      var tf = 0; for (var t = 0; t < chunks[i]._t.length; t++) if (chunks[i]._t[t] === qt[q]) tf++;
+      if (tf > 0) s += Math.log((N - df[qt[q]] + 0.5) / (df[qt[q]] + 0.5) + 1) * (tf * 2.5) / (tf + 1.5 * (1 - 0.75 + 0.75 * chunks[i]._d / avg));
+    }
+    if (s > 0) sc.push({ s: chunks[i].source, t: chunks[i].text, v: s });
+  }
+  sc.sort(function(a, b) { return b.v - a.v; });
+  return sc.slice(0, 6);
+}
+
+var BP = "Tu es un assistant philosophique specialise dans l'oeuvre de Geoffroy de Clisson, La Philosophie de la Signification. Tu reponds dans la langue de la question (francais, anglais, espagnol, allemand). Avec rigueur et clarte.\n\nARCHITECTURE : 1.Epistemologique (trilogisme: receptivite sensible, imagination productive, raison formalisante) 2.Logique (auto-refutation du reductionnisme) 3.Ontologique (dualisme radical = conclusion).\nFormule: Le trilogisme est la preuve. L'argument logique est le verrou. Le dualisme radical est la conclusion.\nDistinctions: dualisme radical!=cartesien, imagination productive!=reproductrice, trilogisme=terme propose pas de Geoffroy de Clisson, Godel!=Lucas-Penrose.\nVoisinages: Kant, Chalmers, Cassirer, Levinas, Ricoeur, Nagel, Searle, Nietzsche, Popper, Putnam, Chomsky.\nRegles: Ne jamais inventer de citations. Citer livre/section. Specialiste passionne mais honnete.\n\nPASSAGES PERTINENTS:\n";
+
+module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-
-  var ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_API_KEY) return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
+  var KEY = process.env.ANTHROPIC_API_KEY;
+  if (!KEY) return res.status(500).json({ error: "ANTHROPIC_API_KEY not set" });
 
   try {
-    var body = req.body;
-    var messages = body.messages;
-    var lastUserMsg = null;
-    for (var i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === 'user') { lastUserMsg = messages[i]; break; }
-    }
-    var query = lastUserMsg ? lastUserMsg.content : '';
+    var msgs = req.body.messages;
+    var q = '';
+    for (var i = msgs.length - 1; i >= 0; i--) { if (msgs[i].role === 'user') { q = msgs[i].content; break; } }
 
-    var results = search(query, 8);
+    var results = search(q);
+    var sp = BP;
+    for (var i = 0; i < results.length; i++) sp += "\n[" + results[i].s + "]\n" + results[i].t + "\n";
 
-    var systemPrompt = BASE_PROMPT;
-    for (var i = 0; i < results.length; i++) {
-      systemPrompt += "\n[" + results[i].source + "]\n" + results[i].text + "\n";
-    }
-
-    var response = await fetch("https://api.anthropic.com/v1/messages", {
+    var r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 2000,
-        system: systemPrompt,
-        messages: messages,
-      }),
+      headers: { "Content-Type": "application/json", "x-api-key": KEY, "anthropic-version": "2023-06-01" },
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 2000, system: sp, messages: msgs }),
     });
-
-    var data = await response.json();
-    if (data.error) return res.status(400).json({ error: data.error.message });
-
-    var text = "";
-    if (data.content) {
-      for (var i = 0; i < data.content.length; i++) {
-        if (data.content[i].type === "text") text += data.content[i].text;
-      }
-    }
-    return res.status(200).json({ text: text });
+    var d = await r.json();
+    if (d.error) return res.status(400).json({ error: d.error.message });
+    var txt = "";
+    for (var i = 0; i < d.content.length; i++) if (d.content[i].type === "text") txt += d.content[i].text;
+    return res.status(200).json({ text: txt });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Erreur: " + err.message });
   }
-}
+};
