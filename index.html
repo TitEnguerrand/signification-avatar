@@ -145,15 +145,6 @@
 
   .send-btn:disabled { background: rgba(139, 115, 85, 0.2); cursor: default; }
 
-  .footer-note {
-    position: fixed;
-    bottom: 20px;
-    font-size: 0.7rem;
-    color: #a0937f;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
   /* ── Chat Screen ── */
   #chat {
     display: none;
@@ -352,7 +343,6 @@
       </button>
     </div>
   </div>
-  <div class="footer-note" id="footerNote">Prototype · Alimenté par Claude</div>
 </div>
 
 <!-- Chat Screen -->
@@ -443,7 +433,6 @@ const TEXTS = {
     title2: "de la Signification",
     subtitle: "Explorez le dualisme radical, le trilogisme de la signification et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.",
     placeholder: "Posez votre question…",
-    footer: "Prototype · Alimenté par Claude",
     note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
   },
   en: {
@@ -451,7 +440,6 @@ const TEXTS = {
     title2: "of Meaning",
     subtitle: "Explore Radical Dualism, Signification Trilogism and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
     placeholder: "Ask your question…",
-    footer: "Prototype · Powered by Claude",
     note: "Responses may contain errors · Verify with the original text",
   },
   es: {
@@ -459,7 +447,6 @@ const TEXTS = {
     title2: "de la Significación",
     subtitle: "Explore el dualismo radical, el trilogismo de la significación y la arquitectura conceptual de una filosofía que interroga la irreductibilidad de la significación a la materia.",
     placeholder: "Haga su pregunta…",
-    footer: "Prototipo · Impulsado por Claude",
     note: "Las respuestas pueden contener errores · Verifique con el texto original",
   },
   de: {
@@ -467,7 +454,6 @@ const TEXTS = {
     title2: "der Bedeutung",
     subtitle: "Erkunden Sie den radikalen Dualismus, den Trilogismus der Bedeutung und die konzeptuelle Architektur einer Philosophie, die die Irreduzibilität der Bedeutung auf die Materie hinterfragt.",
     placeholder: "Stellen Sie Ihre Frage…",
-    footer: "Prototyp · Betrieben von Claude",
     note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
   }
 };
@@ -486,7 +472,6 @@ function setLang(lang) {
   document.getElementById('title2').textContent = TEXTS[lang].title2;
   document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
   document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
-  document.getElementById('footerNote').textContent = TEXTS[lang].footer;
   buildSuggestions();
 }
 
