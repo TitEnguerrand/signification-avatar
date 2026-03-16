@@ -604,6 +604,11 @@ async function send(text) {
   if (!msg || busy) return;
   busy = true;
 
+  // Close keyboard on mobile
+  wInput.blur();
+  cInput.blur();
+  document.activeElement.blur();
+
   if (!document.getElementById('chat').classList.contains('active')) {
     switchToChat();
   }
@@ -615,7 +620,8 @@ async function send(text) {
 
   history.push({ role: 'user', content: msg });
 
-  showTyping();
+  // Small delay to let keyboard close before scrolling
+  setTimeout(function() { showTyping(); }, 150);
 
   try {
     const r = await fetch('/api/chat', {
