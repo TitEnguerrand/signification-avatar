@@ -4,8 +4,8 @@
   ],
   "functions": {
     "api/chat.js": {
-      "includeFiles": "api/chunks.json"
+      "includeFiles": "api/chunks.json",
+      "maxDuration": 60
     }
   }
 }
-
