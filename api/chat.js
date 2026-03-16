@@ -94,6 +94,7 @@ module.exports = async function handler(req, res) {
       if (messages[i].role === 'user') { lastUserMsg = messages[i]; break; }
     }
     var query = lastUserMsg ? lastUserMsg.content : '';
+    console.log('Question:',query);
 
     var results = search(query, 10);
 
