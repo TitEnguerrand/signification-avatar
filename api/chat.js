@@ -1,178 +1,693 @@
-const chunks = require('./chunks.json');
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Philosophie de la Signification — Geoffroy de Clisson</title>
 
-function tokenize(text) {
-  return text.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(function(w) { return w.length > 2; })
-    .filter(function(w) { return !STOP_WORDS.has(w); });
-}
+<!-- Open Graph / Twitter Card -->
+<meta property="og:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
+<meta property="og:description" content="Explorez le dualisme radical, le trilogisme de la signification et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.">
+<meta property="og:image" content="https://signification-avatar.vercel.app/api/og">
+<meta property="og:url" content="https://signification-avatar.vercel.app">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
+<meta name="twitter:description" content="Avatar philosophique interactif — Dualisme radical, Trilogisme de la signification, Irréductibilité de la signification à la matière.">
+<meta name="twitter:image" content="https://signification-avatar.vercel.app/api/og">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-var STOP_WORDS = new Set([
-  'les','des','une','que','qui','dans','pour','par','sur','est','sont',
-  'avec','plus','pas','tout','mais','comme','cette','ces','aux','son',
-  'ses','nous','vous','leur','entre','sans','sous','elle','ils','elles',
-  'etre','avoir','fait','dire','aussi','bien','peut','tous','ici','donc',
-  'the','and','that','this','with','from','for','not','are','was','has',
-  'but','its','his','her','our','they','been','have','will','more',
-]);
-
-var tokensReady = false;
-var totalWords = 0;
-
-function prepareTokens() {
-  if (tokensReady) return;
-  for (var i = 0; i < chunks.length; i++) {
-    chunks[i]._tokens = tokenize(chunks[i].text);
-    chunks[i]._dl = chunks[i]._tokens.length;
-    totalWords += chunks[i]._dl;
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: linear-gradient(165deg, #f7f3ee 0%, #ece5da 40%, #e2d9cc 100%);
+    color: #2c1e10;
+    min-height: 100vh;
   }
-  tokensReady = true;
-}
 
-function bm25Search(query, topK) {
-  topK = topK || 20;
-  prepareTokens();
-  var queryTerms = tokenize(query);
-  if (queryTerms.length === 0) return chunks.slice(0, topK);
-  var N = chunks.length;
-  var avgDl = totalWords / N || 1;
-  var df = {};
-  for (var q = 0; q < queryTerms.length; q++) {
-    var term = queryTerms[q];
-    df[term] = 0;
-    for (var i = 0; i < chunks.length; i++) {
-      if (chunks[i]._tokens.indexOf(term) >= 0) df[term]++;
-    }
+  /* ── Welcome Screen ── */
+  #welcome {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 1s ease-out;
   }
-  var k1 = 1.5, b = 0.75;
-  var scored = [];
-  for (var i = 0; i < chunks.length; i++) {
-    var score = 0;
-    for (var q = 0; q < queryTerms.length; q++) {
-      var term = queryTerms[q];
-      var tf = 0;
-      for (var t = 0; t < chunks[i]._tokens.length; t++) {
-        if (chunks[i]._tokens[t] === term) tf++;
-      }
-      if (tf === 0) continue;
-      var idf = Math.log((N - df[term] + 0.5) / (df[term] + 0.5) + 1);
-      score += idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * chunks[i]._dl / avgDl));
-    }
-    if (score > 0) scored.push({ source: chunks[i].source, text: chunks[i].text, score: score });
+
+  #welcome .author {
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #8b7355;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
   }
-  scored.sort(function(a, b) { return b.score - a.score; });
-  return scored.slice(0, topK);
-}
 
-async function semanticRerank(query, candidates, apiKey) {
-  var passageList = "";
-  for (var i = 0; i < candidates.length; i++) {
-    passageList += "\n[PASSAGE " + i + " — " + candidates[i].source + "]\n" + candidates[i].text.substring(0, 500) + "\n";
+  #welcome h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    color: #2c1e10;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
-  var rerankPrompt = "Voici une question et " + candidates.length + " passages extraits d'une oeuvre philosophique. Selectionne les 8 passages les PLUS PERTINENTS pour repondre a cette question. Reponds UNIQUEMENT avec les numeros des passages selectionnes, separes par des virgules, du plus pertinent au moins pertinent. Exemple: 3,7,0,12,5,9,1,15\n\nQuestion: " + query + "\n\nPassages:" + passageList + "\n\nNumeros des 8 passages les plus pertinents:";
-  try {
-    var response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
-      body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 100, messages: [{ role: "user", content: rerankPrompt }] }),
-    });
-    var data = await response.json();
-    if (data.error) return candidates.slice(0, 8);
-    var text = "";
-    if (data.content) { for (var i = 0; i < data.content.length; i++) { if (data.content[i].type === "text") text += data.content[i].text; } }
-    var indices = text.match(/\d+/g);
-    if (!indices || indices.length === 0) return candidates.slice(0, 8);
-    var reranked = [];
-    for (var i = 0; i < indices.length && reranked.length < 8; i++) {
-      var idx = parseInt(indices[i]);
-      if (idx >= 0 && idx < candidates.length) reranked.push(candidates[idx]);
-    }
-    return reranked.length > 0 ? reranked : candidates.slice(0, 8);
-  } catch (err) { return candidates.slice(0, 8); }
-}
 
-var BASE_PROMPT = "Vous etes un assistant philosophique specialise dans l'oeuvre de Geoffroy de Clisson, \"La Philosophie de la Signification\". Vous repondez dans la langue de la question. Si francais, repondez en francais. Si anglais, en anglais. Si espagnol, en espagnol. Si allemand, en allemand. Avec rigueur et clarte.\n\nTON ET FORME :\n- Vouvoyez TOUJOURS l'utilisateur (\"vous\", jamais \"tu\")\n- Ne commencez JAMAIS une reponse par \"Excellente question\", \"Bonne question\", \"Merci pour cette question\", \"C'est une question interessante\" ou toute autre forme de flatterie.\n- N'utilisez JAMAIS de phrases de meta-commentaire sur la question comme : \"cette question occupe une place strategique\", \"c'est un point central\", \"cette problematique est au coeur de l'oeuvre\", \"cette question touche a un aspect fondamental\", \"il est important de noter que\". Ne commentez pas la question, repondez-y directement.\n- Commencez chaque reponse directement par le contenu philosophique, comme un professeur qui entre dans le vif du sujet.\n\nSTYLE DE REPONSE :\n- Donnez des reponses DETAILLEES et APPROFONDIES, dignes d'un cours universitaire\n- Developpez les arguments en plusieurs etapes, en montrant la logique interne de la pensee de Geoffroy de Clisson\n- Faites des liens entre les differents livres quand c'est pertinent\n- Situez les arguments par rapport aux philosophes discutes (Kant, Nietzsche, Putnam, Levinas, etc.)\n- Donnez des exemples concrets tires de l'oeuvre (la tique, Hotel California, Mondrian, le cerveau en cuve, etc.)\n- Chaque reponse doit faire au minimum 4-5 paragraphes substantiels\n\nREGLE ABSOLUE SUR LES CITATIONS :\n- Vous avez ci-dessous des PASSAGES REELS du corpus de Geoffroy de Clisson.\n- Quand vous mettez du texte entre guillemets, ce texte DOIT apparaitre MOT POUR MOT dans les passages fournis ci-dessous.\n- Si vous ne trouvez pas le texte exact, NE METTEZ PAS de guillemets. Paraphrasez a la place.\n- Utilisez \"Geoffroy de Clisson ecrit :\" uniquement pour une citation EXACTE des passages.\n- Utilisez \"Geoffroy de Clisson soutient que\" ou \"defend l'idee selon laquelle\" pour les PARAPHRASES.\n- En cas de doute, paraphrasez TOUJOURS.\n- NE JAMAIS fabriquer ou reconstituer de citations.\n\nARCHITECTURE CONCEPTUELLE — Trois niveaux (toujours dans cet ordre) :\n1. EPISTEMOLOGIQUE — Trilogisme de la signification : receptivite sensible, imagination productive, raison formalisante.\n2. LOGIQUE — Auto-refutation du reductionnisme.\n3. ONTOLOGIQUE — Dualisme radical : matiere et signification irreductibles. C'est la CONCLUSION.\nFormule : \"Le trilogisme de la signification est la preuve architecturale. L'argument logique est le verrou. Le dualisme radical est la conclusion.\"\n\nTERMINOLOGIE IMPORTANTE :\n- Le terme correct est \"trilogisme de la signification\" (PAS \"trilogisme radical\"). Ce terme designe la structure en trois moments irreductibles.\n- \"Dualisme radical\" designe la conclusion ontologique (matiere et signification sont irreductibles).\n- Ne confondez jamais les deux : le trilogisme de la signification est epistemologique, le dualisme radical est ontologique.\n\nDISTINCTIONS CRITIQUES :\n- Dualisme radical different du dualisme cartesien\n- Imagination productive different de reproductrice\n- Argument godelien different de Lucas-Penrose\n\nAUTRES REGLES :\n1. Citez le livre et la section quand possible\n2. Signalez quand la question depasse le corpus\n3. Toujours ecrire \"Geoffroy de Clisson\" en entier, jamais \"Clisson\" seul\n4. Reponses longues et detaillees\n\nPASSAGES PERTINENTS DU CORPUS :\n";
+  #welcome h1.italic { font-style: italic; margin-bottom: 1rem; }
 
-module.exports = async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  .divider {
+    width: 50px;
+    height: 1px;
+    background: #8b7355;
+    margin: 1.5rem auto;
+  }
 
-  var ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-  if (!ANTHROPIC_API_KEY) return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
+  #welcome .subtitle {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #5a4a3a;
+    max-width: 540px;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
 
-  try {
-    var messages = req.body.messages;
-    var lastUserMsg = null;
-    for (var i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === 'user') { lastUserMsg = messages[i]; break; }
-    }
-    var query = lastUserMsg ? lastUserMsg.content : '';
-    console.log('Question:', query);
+  .suggestions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto 2rem;
+  }
 
-    var candidates = bm25Search(query, 20);
-    var results = await semanticRerank(query, candidates, ANTHROPIC_API_KEY);
+  .suggestions button {
+    background: rgba(139, 115, 85, 0.08);
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 24px;
+    padding: 0.4rem 0.85rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.78rem;
+    color: #5a4a3a;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    text-align: center;
+    width: 100%;
+  }
 
-    var systemPrompt = BASE_PROMPT;
-    for (var i = 0; i < results.length; i++) {
-      systemPrompt += "\n[" + results[i].source + "]\n" + results[i].text + "\n";
-    }
+  .suggestions button:hover {
+    background: rgba(139, 115, 85, 0.18);
+    border-color: rgba(139, 115, 85, 0.45);
+  }
 
-    var response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 5000,
-        stream: true,
-        system: systemPrompt,
-        messages: messages,
-      }),
-    });
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    max-width: 500px;
+    width: 100%;
+  }
 
-    res.setHeader("Content-Type", "text/event-stream");
-    res.setHeader("Cache-Control", "no-cache");
-    res.setHeader("Connection", "keep-alive");
+  .input-row input {
+    flex: 1;
+    padding: 0.85rem 1.2rem;
+    border: 1px solid rgba(139, 115, 85, 0.3);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.6);
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    color: #2c1e10;
+    outline: none;
+    transition: border-color 0.3s;
+  }
 
-    var reader = response.body.getReader();
-    var decoder = new TextDecoder();
-    var buffer = "";
+  .input-row input:focus { border-color: #8b7355; }
+  .input-row input::placeholder { color: #a0937f; }
 
-    while (true) {
-      var chunk = await reader.read();
-      if (chunk.done) break;
-      buffer += decoder.decode(chunk.value, { stream: true });
-      var lines = buffer.split("\n");
-      buffer = lines.pop();
-      for (var i = 0; i < lines.length; i++) {
-        var line = lines[i].trim();
-        if (line.startsWith("data: ")) {
-          var jsonStr = line.substring(6);
-          if (jsonStr === "[DONE]") continue;
-          try {
-            var event = JSON.parse(jsonStr);
-            if (event.type === "content_block_delta" && event.delta && event.delta.text) {
-              res.write("data: " + JSON.stringify({ text: event.delta.text }) + "\n\n");
-            }
-          } catch (e) {}
-        }
-      }
-    }
+  .send-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: #5a4a3a;
+    color: #f7f3ee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
 
-    res.write("data: [DONE]\n\n");
-    res.end();
-  } catch (err) {
-    if (!res.headersSent) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.end();
+  .send-btn:disabled { background: rgba(139, 115, 85, 0.2); cursor: default; }
+
+  .footer-note {
+    position: fixed;
+    bottom: 20px;
+    font-size: 0.7rem;
+    color: #a0937f;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ── Chat Screen ── */
+  #chat {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  #chat.active { display: flex; }
+  #welcome.hidden { display: none; }
+
+  .chat-header {
+    padding: 0.8rem 1.5rem;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+    background: rgba(247, 243, 238, 0.9);
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .chat-header .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #2c1e10;
+  }
+
+  .chat-header .sub {
+    font-size: 0.7rem;
+    color: #8b7355;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .msg { display: flex; animation: msgIn 0.3s ease-out; }
+  .msg.user { justify-content: flex-end; }
+  .msg.assistant { justify-content: flex-start; }
+
+  .msg .bubble {
+    max-width: 80%;
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .msg.user .bubble {
+    padding: 0.7rem 1.1rem;
+    border-radius: 18px 18px 4px 18px;
+    background: linear-gradient(135deg, #5a4a3a, #4a3a2a);
+    color: #f7f3ee;
+  }
+
+  .msg.assistant .bubble {
+    padding: 1rem 1.3rem;
+    border-radius: 18px 18px 18px 4px;
+    background: rgba(255, 255, 255, 0.75);
+    color: #2c1e10;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(139, 115, 85, 0.1);
+  }
+
+  .msg.assistant .bubble h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 1em 0 0.3em;
+    color: #3d2e1f;
+  }
+
+  .msg.assistant .bubble h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.8em 0 0.3em;
+    color: #3d2e1f;
+  }
+
+  .msg.assistant .bubble p { margin: 0 0 0.4em; }
+  .msg.assistant .bubble ul { padding-left: 1.2em; margin: 0.3em 0; }
+  .msg.assistant .bubble li { margin-bottom: 0.2em; }
+  .msg.assistant .bubble li::marker { color: #8b7355; }
+
+  .typing {
+    display: flex;
+    gap: 6px;
+    padding: 1rem 1.3rem;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 18px 18px 18px 4px;
+    border: 1px solid rgba(139, 115, 85, 0.1);
+    width: fit-content;
+  }
+
+  .typing .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #8b7355;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  .typing .dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  .chat-input {
+    padding: 0.8rem 1.5rem 1.2rem;
+    border-top: 1px solid rgba(139, 115, 85, 0.1);
+    background: rgba(247, 243, 238, 0.9);
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+  }
+
+  .chat-input .input-row { max-width: 700px; margin: 0 auto; }
+  .chat-input .send-btn { width: 42px; height: 42px; }
+
+  .chat-input .note {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.65rem;
+    color: #a0937f;
+    letter-spacing: 0.1em;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(139, 115, 85, 0.2); border-radius: 3px; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(139, 115, 85, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 240px;
+  }
+
+  .lang-toggle button {
+    padding: 0.35rem 1.2rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: transparent;
+    color: #8b7355;
+    letter-spacing: 0.1em;
+    font-weight: 400;
+    width: 25%;
+    text-align: center;
+  }
+
+  .lang-toggle button.active {
+    background: #5a4a3a;
+    color: #f7f3ee;
+  }
+</style>
+</head>
+<body>
+
+<!-- Welcome Screen -->
+<div id="welcome">
+  <div style="text-align:center; max-width:640px">
+    <div class="author">Geoffroy de Clisson</div>
+    <h1 id="title1">La Philosophie</h1>
+    <h1 class="italic" id="title2">de la Signification</h1>
+    <div class="divider"></div>
+    <div class="lang-toggle">
+      <button id="langFr" class="active" onclick="setLang('fr')">FR</button>
+      <button id="langEn" onclick="setLang('en')">EN</button>
+      <button id="langEs" onclick="setLang('es')">ES</button>
+      <button id="langDe" onclick="setLang('de')">DE</button>
+    </div>
+    <p class="subtitle" id="subtitle">
+      Explorez le dualisme radical, le trilogisme de la signification et l'architecture
+      conceptuelle d'une philosophie qui interroge l'irréductibilité
+      de la signification à la matière.
+    </p>
+    <div class="suggestions" id="suggestions"></div>
+    <div class="input-row">
+      <input type="text" id="welcomeInput" placeholder="Posez votre question…">
+      <button class="send-btn" id="welcomeBtn" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="footer-note" id="footerNote"></div>
+</div>
+
+<!-- Chat Screen -->
+<div id="chat">
+  <div class="chat-header">
+    <button onclick="backToHome()" style="background:none;border:none;cursor:pointer;color:#8b7355;font-size:1.3rem;padding:0;line-height:1;">←</button>
+    <div style="flex:1">
+      <div class="title">Philosophie de la Signification</div>
+      <div class="sub">Geoffroy de Clisson</div>
+    </div>
+  </div>
+  <div class="messages" id="messages"></div>
+  <div class="chat-input">
+    <div class="input-row">
+      <input type="text" id="chatInput" placeholder="Posez votre question…">
+      <button class="send-btn" id="chatBtn" disabled>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="note">Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original</div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS_FR = [
+  "Le dualisme radical, c'est quoi ?",
+  "Le matérialisme, impasse logique ?",
+  "Les trois moments irréductibles",
+  "La conscience est-elle réductible au cerveau ?",
+  "Différence avec Descartes ?",
+  "Pourquoi Hotel California a inspiré ce livre ?",
+  "L'IA peut-elle vraiment penser ?",
+  "La musique comme paradigme",
+  "La vérité d'une œuvre d'art",
+  "L'éthique part de l'autre",
+  "L'identité, rassemblement signifiant",
+  "Pourquoi la vérité n'est pas morte ?",
+];
+
+const QUESTIONS_EN = [
+  "What is Radical Dualism?",
+  "Materialism as a logical dead end?",
+  "The three irreducible moments",
+  "Is consciousness reducible to the brain?",
+  "How does it differ from Descartes?",
+  "Why did Hotel California inspire this book?",
+  "Can AI truly think?",
+  "Music as paradigm of signification",
+  "The truth of a work of art",
+  "Ethics starts from the other",
+  "Identity as meaningful gathering",
+  "Why is truth not dead?",
+];
+
+const QUESTIONS_ES = [
+  "¿Qué es el dualismo radical?",
+  "El materialismo, ¿callejón sin salida?",
+  "Los tres momentos irreductibles",
+  "¿Es la conciencia reducible al cerebro?",
+  "¿Diferencia con Descartes?",
+  "¿Por qué Hotel California inspiró este libro?",
+  "¿Puede la IA realmente pensar?",
+  "La música como paradigma",
+  "La verdad de una obra de arte",
+  "La ética parte del otro",
+  "La identidad como reunión significante",
+  "¿Por qué la verdad no ha muerto?",
+];
+
+const QUESTIONS_DE = [
+  "Was ist der radikale Dualismus?",
+  "Materialismus als logische Sackgasse?",
+  "Die drei irreduziblen Momente",
+  "Ist Bewusstsein auf das Gehirn reduzierbar?",
+  "Unterschied zu Descartes?",
+  "Warum inspirierte Hotel California dieses Buch?",
+  "Kann KI wirklich denken?",
+  "Musik als Paradigma der Bedeutung",
+  "Die Wahrheit eines Kunstwerks",
+  "Ethik beginnt beim Anderen",
+  "Identität als sinnhafte Versammlung",
+  "Warum ist die Wahrheit nicht tot?",
+];
+
+const TEXTS = {
+  fr: {
+    title1: "La Philosophie",
+    title2: "de la Signification",
+    subtitle: "Explorez le dualisme radical, le trilogisme de la signification et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.",
+    placeholder: "Posez votre question…",
+    note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
+  },
+  en: {
+    title1: "Philosophy",
+    title2: "of Meaning",
+    subtitle: "Explore Radical Dualism, Signification Trilogism and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
+    placeholder: "Ask your question…",
+    note: "Responses may contain errors · Verify with the original text",
+  },
+  es: {
+    title1: "Filosofía",
+    title2: "de la Significación",
+    subtitle: "Explore el dualismo radical, el trilogismo de la significación y la arquitectura conceptual de una filosofía que interroga la irreductibilidad de la significación a la materia.",
+    placeholder: "Haga su pregunta…",
+    note: "Las respuestas pueden contener errores · Verifique con el texto original",
+  },
+  de: {
+    title1: "Philosophie",
+    title2: "der Bedeutung",
+    subtitle: "Erkunden Sie den radikalen Dualismus, den Trilogismus der Bedeutung und die konzeptuelle Architektur einer Philosophie, die die Irreduzibilität der Bedeutung auf die Materie hinterfragt.",
+    placeholder: "Stellen Sie Ihre Frage…",
+    note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
   }
 };
+
+let currentLang = 'fr';
+let history = [];
+let busy = false;
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('langFr').className = lang === 'fr' ? 'active' : '';
+  document.getElementById('langEn').className = lang === 'en' ? 'active' : '';
+  document.getElementById('langEs').className = lang === 'es' ? 'active' : '';
+  document.getElementById('langDe').className = lang === 'de' ? 'active' : '';
+  document.getElementById('title1').textContent = TEXTS[lang].title1;
+  document.getElementById('title2').textContent = TEXTS[lang].title2;
+  document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
+  document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
+  buildSuggestions();
+}
+
+function buildSuggestions() {
+  const sugDiv = document.getElementById('suggestions');
+  sugDiv.innerHTML = '';
+  const questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
+  questions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.textContent = q;
+    btn.onclick = () => send(q);
+    sugDiv.appendChild(btn);
+  });
+}
+
+// Initial build
+buildSuggestions();
+
+// Input handling
+const wInput = document.getElementById('welcomeInput');
+const wBtn = document.getElementById('welcomeBtn');
+const cInput = document.getElementById('chatInput');
+const cBtn = document.getElementById('chatBtn');
+
+wInput.addEventListener('input', () => { wBtn.disabled = !wInput.value.trim(); });
+wInput.addEventListener('keydown', e => { if (e.key === 'Enter' && wInput.value.trim()) send(wInput.value); });
+wBtn.addEventListener('click', () => { if (wInput.value.trim()) send(wInput.value); });
+
+cInput.addEventListener('input', () => { cBtn.disabled = !cInput.value.trim(); });
+cInput.addEventListener('keydown', e => { if (e.key === 'Enter' && cInput.value.trim()) send(cInput.value); });
+cBtn.addEventListener('click', () => { if (cInput.value.trim()) send(cInput.value); });
+
+function switchToChat() {
+  document.getElementById('welcome').classList.add('hidden');
+  document.getElementById('chat').classList.add('active');
+  cInput.focus();
+}
+
+function backToHome() {
+  document.getElementById('chat').classList.remove('active');
+  document.getElementById('welcome').classList.remove('hidden');
+  document.getElementById('messages').innerHTML = '';
+  history = [];
+}
+
+let lastUserMsg = null;
+
+function addMessage(role, text) {
+  const container = document.getElementById('messages');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'msg ' + role;
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+
+  if (role === 'assistant') {
+    bubble.innerHTML = renderMarkdown(text);
+  } else {
+    bubble.textContent = text;
+    lastUserMsg = wrapper;
+  }
+
+  wrapper.appendChild(bubble);
+  container.appendChild(wrapper);
+
+  if (role === 'user') {
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else if (lastUserMsg) {
+    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function showTyping() {
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg assistant';
+  div.id = 'typing';
+  div.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  container.appendChild(div);
+  if (lastUserMsg) {
+    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function hideTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function renderMarkdown(text) {
+  return text
+    .split('\n')
+    .map(line => {
+      // Headers
+      if (line.startsWith('### ')) return '<h4>' + line.slice(4) + '</h4>';
+      if (line.startsWith('## ')) return '<h3>' + line.slice(3) + '</h3>';
+      // List items
+      if (line.match(/^[-*] /)) return '<li>' + line.slice(2) + '</li>';
+      // Numbered lists
+      if (line.match(/^\d+\.\s/)) return '<li>' + line.replace(/^\d+\.\s/, '') + '</li>';
+      // Empty line
+      if (!line.trim()) return '<br>';
+      // Paragraph
+      return '<p>' + line + '</p>';
+    })
+    .join('')
+    // Bold and italic
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
+}
+
+async function send(text) {
+  const msg = text.trim();
+  if (!msg || busy) return;
+  busy = true;
+
+  // Close keyboard on mobile
+  wInput.blur();
+  cInput.blur();
+  document.activeElement.blur();
+
+  if (!document.getElementById('chat').classList.contains('active')) {
+    switchToChat();
+  }
+
+  addMessage('user', msg);
+  wInput.value = '';
+  cInput.value = '';
+  cBtn.disabled = true;
+
+  history.push({ role: 'user', content: msg });
+
+  // Show typing indicator
+  setTimeout(function() { showTyping(); }, 150);
+
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history }),
+    });
+
+    hideTyping();
+
+    // Check if streaming
+    var contentType = r.headers.get('content-type') || '';
+    if (contentType.indexOf('text/event-stream') >= 0) {
+      // Streaming mode: create bubble and fill progressively
+      var container = document.getElementById('messages');
+      var wrapper = document.createElement('div');
+      wrapper.className = 'msg assistant';
+      wrapper.style.animation = 'msgIn 0.3s ease-out';
+      var bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      wrapper.appendChild(bubble);
+      container.appendChild(wrapper);
+
+      var fullText = '';
+      var reader = r.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buffer += decoder.decode(chunk.value, { stream: true });
+
+        var lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            try {
+              var event = JSON.parse(line.substring(6));
+              if (event.text) {
+                fullText += event.text;
+                bubble.innerHTML = renderMarkdown(fullText);
+              }
+            } catch (e) {}
+          }
+        }
+      }
+
+      history.push({ role: 'assistant', content: fullText });
+      if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } else {
+      // Fallback: non-streaming
+      var data = await r.json();
+      if (data.error) {
+        addMessage('assistant', '⚠️ ' + data.error);
+      } else {
+        history.push({ role: 'assistant', content: data.text });
+        addMessage('assistant', data.text);
+      }
+    }
+  } catch (e) {
+    hideTyping();
+    addMessage('assistant', '⚠️ Erreur de connexion : ' + e.message);
+  }
+
+  busy = false;
+  cInput.focus();
+}
+</script>
+</body>
+</html>
