@@ -71,7 +71,7 @@ async function semanticRerank(query, candidates, apiKey) {
   for (var i = 0; i < candidates.length; i++) {
     passageList += "\n[PASSAGE " + i + " — " + candidates[i].source + "]\n" + candidates[i].text.substring(0, 500) + "\n";
   }
-  var rerankPrompt = "Voici une question et " + candidates.length + " passages extraits d'une oeuvre philosophique. Selectionne les 10 passages les PLUS PERTINENTS pour repondre a cette question. Reponds UNIQUEMENT avec les numeros des passages selectionnes, separes par des virgules, du plus pertinent au moins pertinent. Exemple: 3,7,0,12,5,9,1,15\n\nQuestion: " + query + "\n\nPassages:" + passageList + "\n\nNumeros des 10 passages les plus pertinents:";
+  var rerankPrompt = "Voici une question et " + candidates.length + " passages extraits d'une oeuvre philosophique. Selectionne les 20 passages les PLUS PERTINENTS pour repondre a cette question. Reponds UNIQUEMENT avec les numeros des passages selectionnes, separes par des virgules, du plus pertinent au moins pertinent. Exemple: 3,7,0,12,5,9,1,15\n\nQuestion: " + query + "\n\nPassages:" + passageList + "\n\nNumeros des 10 passages les plus pertinents:";
   try {
     var response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
