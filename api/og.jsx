@@ -31,7 +31,7 @@ export default function handler() {
         </div>
         <div style={{ width: '60px', height: '2px', background: '#8b7355', margin: '30px 0' }}></div>
         <div style={{ fontSize: '22px', color: '#5a4a3a', textAlign: 'center', maxWidth: '800px', lineHeight: 1.6 }}>
-          Dualisme radical · Trilogisme de la signification · Irréductibilité de la signification à la matière
+          Dualisme de la signification · Tripartition des structures signifiantes · Irréductibilité de la signification à la matière
         </div>
         <div style={{ marginTop: '36px', fontSize: '15px', color: '#8b7355', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
           Avatar philosophique interactif
