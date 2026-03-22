@@ -608,98 +608,96 @@ async function send(text) {
 
   history.push({ role: 'user', content: msg });
 
-  // Show typing indicator
   setTimeout(function() { showTyping(); }, 150);
 
-  try {
-    const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history }),
-    });
+  var container = document.getElementById('messages');
+  var wrapper = document.createElement('div');
+  wrapper.className = 'msg assistant';
+  wrapper.style.animation = 'msgIn 0.3s ease-out';
+  wrapper.style.display = 'none';
+  var bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  wrapper.appendChild(bubble);
+  container.appendChild(wrapper);
 
-    hideTyping();
+  var fullText = '';
+  var lastIndex = 0;
 
-    // Check if streaming
-    var contentType = r.headers.get('content-type') || '';
-    if (contentType.indexOf('text/event-stream') >= 0) {
-      // Streaming mode: create bubble and fill progressively
-      var container = document.getElementById('messages');
-      var wrapper = document.createElement('div');
-      wrapper.className = 'msg assistant';
-      wrapper.style.animation = 'msgIn 0.3s ease-out';
-      var bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      wrapper.appendChild(bubble);
-      container.appendChild(wrapper);
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/chat');
+  xhr.setRequestHeader('Content-Type', 'application/json');
 
-      var fullText = '';
+  xhr.onprogress = function() {
+    var newData = xhr.responseText.substring(lastIndex);
+    lastIndex = xhr.responseText.length;
 
-      try {
-        // Try streaming with getReader (Chrome, Firefox, desktop Safari)
-        var reader = r.body.getReader();
-        var decoder = new TextDecoder();
-        var buffer = '';
-
-        while (true) {
-          var chunk = await reader.read();
-          if (chunk.done) break;
-          buffer += decoder.decode(chunk.value, { stream: true });
-
-          var lines = buffer.split('\n');
-          buffer = lines.pop();
-
-          for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim();
-            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
-              try {
-                var event = JSON.parse(line.substring(6));
-                if (event.text) {
-                  fullText += event.text;
-                  bubble.innerHTML = renderMarkdown(fullText);
-                }
-              } catch (e) {}
+    var lines = newData.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+        try {
+          var event = JSON.parse(line.substring(6));
+          if (event.text) {
+            if (fullText === '') {
+              hideTyping();
+              wrapper.style.display = '';
             }
+            fullText += event.text;
+            bubble.innerHTML = renderMarkdown(fullText);
           }
+        } catch (e) {}
+      }
+    }
+  };
+
+  xhr.onload = function() {
+    hideTyping();
+    if (fullText === '') {
+      // Non-streaming response or error
+      try {
+        var data = JSON.parse(xhr.responseText);
+        if (data.error) {
+          wrapper.style.display = '';
+          bubble.textContent = '⚠️ ' + data.error;
+          fullText = data.error;
+        } else if (data.text) {
+          wrapper.style.display = '';
+          fullText = data.text;
+          bubble.innerHTML = renderMarkdown(fullText);
         }
-      } catch (streamErr) {
-        // Fallback for iOS Safari: read full response as text
-        var rawText = await r.text();
-        var lines = rawText.split('\n');
+      } catch (e) {
+        // Try parsing remaining SSE data
+        var lines = xhr.responseText.split('\n');
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].trim();
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
               var event = JSON.parse(line.substring(6));
-              if (event.text) {
-                fullText += event.text;
-              }
-            } catch (e) {}
+              if (event.text) fullText += event.text;
+            } catch (e2) {}
           }
         }
-        bubble.innerHTML = renderMarkdown(fullText);
-      }
-
-      history.push({ role: 'assistant', content: fullText });
-      if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    } else {
-      // Fallback: non-streaming
-      var data = await r.json();
-      if (data.error) {
-        addMessage('assistant', '⚠️ ' + data.error);
-      } else {
-        history.push({ role: 'assistant', content: data.text });
-        addMessage('assistant', data.text);
+        if (fullText) {
+          wrapper.style.display = '';
+          bubble.innerHTML = renderMarkdown(fullText);
+        }
       }
     }
-  } catch (e) {
-    hideTyping();
-    addMessage('assistant', '⚠️ Erreur de connexion : ' + e.message);
-  }
+    if (fullText) history.push({ role: 'assistant', content: fullText });
+    if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    busy = false;
+    cInput.focus();
+  };
 
-  busy = false;
-  cInput.focus();
+  xhr.onerror = function() {
+    hideTyping();
+    wrapper.style.display = '';
+    bubble.textContent = '⚠️ Erreur de connexion.';
+    busy = false;
+    cInput.focus();
+  };
+
+  xhr.send(JSON.stringify({ messages: history }));
 }
 </script>
 </body>
