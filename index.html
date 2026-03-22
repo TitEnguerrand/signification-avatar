@@ -7,13 +7,13 @@
 
 <!-- Open Graph / Twitter Card -->
 <meta property="og:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
-<meta property="og:description" content="Explorez le dualisme d'articulation, la tripartition des structures signifiantes et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.">
+<meta property="og:description" content="Explorez le dualisme de la signification, le tripartition des structures signifiantes et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.">
 <meta property="og:image" content="https://philosophy-of-meaning.vercel.app/api/og">
 <meta property="og:url" content="https://philosophy-of-meaning.vercel.app">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
-<meta name="twitter:description" content="Avatar philosophique interactif — Dualisme d'articulation, tripartition des structures signifiantes, Irréductibilité de la signification à la matière.">
+<meta name="twitter:description" content="Avatar philosophique interactif — Dualisme radical, Trilogisme de la signification, Irréductibilité de la signification à la matière.">
 <meta name="twitter:image" content="https://philosophy-of-meaning.vercel.app/api/og">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
 <style>
@@ -332,13 +332,13 @@
       <button id="langDe" onclick="setLang('de')">DE</button>
     </div>
     <p class="subtitle" id="subtitle">
-     Approchez l'œuvre par un parcours de lecture interactif : choisissez une question
-      ou saisissez librement, appronfondissez si nécessaire; vingt extraits sélectionnés sont synthétisés
-      en quelques chapitres. 
+      Explorez le dualisme de la signification, le tripartition des structures signifiantes et l'architecture
+      conceptuelle d'une philosophie qui interroge l'irréductibilité
+      de la signification à la matière.
     </p>
     <div class="suggestions" id="suggestions"></div>
     <div class="input-row">
-      <input type="text" id="welcomeInput" placeholder="Posez votre question, approfondissez…">
+      <input type="text" id="welcomeInput" placeholder="Posez votre question…">
       <button class="send-btn" id="welcomeBtn" disabled>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
@@ -363,7 +363,7 @@
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       </button>
     </div>
-    <div class="note">Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original</div>
+    <div class="note" id="chatNote">Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original</div>
   </div>
 </div>
 
@@ -432,30 +432,28 @@ const TEXTS = {
   fr: {
     title1: "La Philosophie",
     title2: "de la Signification",
-    subtitle: "Approchez l'œuvre par un parcours de lecture interactif : choisissez une question ou saisissez librement, appronfondissez si nécessaire; vingt extraits sélectionnés sont synthétisés en quelques chapitres.",
-      
-    
+    subtitle: "Explorez le dualisme de la signification, le tripartition des structures signifiantes et l'architecture conceptuelle d'une philosophie qui interroge l'irréductibilité de la signification à la matière.",
     placeholder: "Posez votre question…",
     note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
   },
   en: {
     title1: "Philosophy",
     title2: "of Meaning",
-    subtitle: "Explore the work through an interactive reading guide: choose a question or enter your own, delve deeper if needed; twenty selected excerpts are summarized in a few chapters.",
+    subtitle: "Explore Signification Dualism, Tripartition of Signifying Structures and the conceptual architecture of a philosophy that questions the irreducibility of signification to matter.",
     placeholder: "Ask your question…",
     note: "Responses may contain errors · Verify with the original text",
   },
   es: {
     title1: "Filosofía",
     title2: "de la Significación",
-    subtitle: "Acérquese a la obra a través de un recorrido de lectura interactivo: elija una pregunta o escriba lo que desee, profundice en el tema si es necesario; veinte extractos seleccionados se resumen en varios capítulos.",
+    subtitle: "Explore el dualismo de la significación, el tripartición de las estructuras significantes y la arquitectura conceptual de una filosofía que interroga la irreductibilidad de la significación a la materia.",
     placeholder: "Haga su pregunta…",
     note: "Las respuestas pueden contener errores · Verifique con el texto original",
   },
   de: {
     title1: "Philosophie",
     title2: "der Bedeutung",
-    subtitle: "Entdecken Sie dieses Werk mithilfe eines interaktiven Leseführers: Wählen Sie eine Frage aus oder geben Sie einen Begriff Ihrer Wahl ein, vertiefen Sie das Thema bei Bedarf – zwanzig ausgewählte Auszüge sind in mehreren Kapiteln zusammengefasst.",
+    subtitle: "Erkunden Sie den Dualismus der Bedeutung, den Dreiteilung der bedeutungstragenden Strukturen und die konzeptuelle Architektur einer Philosophie, die die Irreduzibilität der Bedeutung auf die Materie hinterfragt.",
     placeholder: "Stellen Sie Ihre Frage…",
     note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
   }
@@ -475,6 +473,8 @@ function setLang(lang) {
   document.getElementById('title2').textContent = TEXTS[lang].title2;
   document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
   document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
+  document.getElementById('chatInput').placeholder = TEXTS[lang].placeholder;
+  document.getElementById('chatNote').textContent = TEXTS[lang].note;
   buildSuggestions();
 }
 
