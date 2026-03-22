@@ -592,7 +592,18 @@ async function send(text) {
   if (!msg || busy) return;
   busy = true;
 
-  // Close keyboard on mobile
+  // Force close keyboard on iOS - create temporary readonly input
+  var tempInput = document.createElement('input');
+  tempInput.setAttribute('type', 'text');
+  tempInput.setAttribute('readonly', 'readonly');
+  tempInput.style.position = 'absolute';
+  tempInput.style.opacity = '0';
+  tempInput.style.height = '0';
+  document.body.appendChild(tempInput);
+  tempInput.focus();
+  tempInput.blur();
+  document.body.removeChild(tempInput);
+
   wInput.blur();
   cInput.blur();
   document.activeElement.blur();
@@ -608,7 +619,11 @@ async function send(text) {
 
   history.push({ role: 'user', content: msg });
 
-  setTimeout(function() { showTyping(); }, 150);
+  // Wait for keyboard to fully close before showing typing and scrolling
+  setTimeout(function() {
+    showTyping();
+    if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 350);
 
   var container = document.getElementById('messages');
   var wrapper = document.createElement('div');
@@ -641,6 +656,7 @@ async function send(text) {
             if (fullText === '') {
               hideTyping();
               wrapper.style.display = '';
+              if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             fullText += event.text;
             bubble.innerHTML = renderMarkdown(fullText);
