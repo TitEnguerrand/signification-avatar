@@ -634,18 +634,38 @@ async function send(text) {
       container.appendChild(wrapper);
 
       var fullText = '';
-      var reader = r.body.getReader();
-      var decoder = new TextDecoder();
-      var buffer = '';
 
-      while (true) {
-        var chunk = await reader.read();
-        if (chunk.done) break;
-        buffer += decoder.decode(chunk.value, { stream: true });
+      try {
+        // Try streaming with getReader (Chrome, Firefox, desktop Safari)
+        var reader = r.body.getReader();
+        var decoder = new TextDecoder();
+        var buffer = '';
 
-        var lines = buffer.split('\n');
-        buffer = lines.pop();
+        while (true) {
+          var chunk = await reader.read();
+          if (chunk.done) break;
+          buffer += decoder.decode(chunk.value, { stream: true });
 
+          var lines = buffer.split('\n');
+          buffer = lines.pop();
+
+          for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim();
+            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+              try {
+                var event = JSON.parse(line.substring(6));
+                if (event.text) {
+                  fullText += event.text;
+                  bubble.innerHTML = renderMarkdown(fullText);
+                }
+              } catch (e) {}
+            }
+          }
+        }
+      } catch (streamErr) {
+        // Fallback for iOS Safari: read full response as text
+        var rawText = await r.text();
+        var lines = rawText.split('\n');
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].trim();
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
@@ -653,11 +673,11 @@ async function send(text) {
               var event = JSON.parse(line.substring(6));
               if (event.text) {
                 fullText += event.text;
-                bubble.innerHTML = renderMarkdown(fullText);
               }
             } catch (e) {}
           }
         }
+        bubble.innerHTML = renderMarkdown(fullText);
       }
 
       history.push({ role: 'assistant', content: fullText });
