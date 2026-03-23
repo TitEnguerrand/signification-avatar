@@ -493,6 +493,13 @@ function buildSuggestions() {
 // Initial build
 buildSuggestions();
 
+// Detect language from URL parameter
+var urlParams = new URLSearchParams(window.location.search);
+var langParam = urlParams.get('lang');
+if (langParam && ['fr','en','es','de'].indexOf(langParam) >= 0) {
+  setLang(langParam);
+}
+
 // Input handling
 const wInput = document.getElementById('welcomeInput');
 const wBtn = document.getElementById('welcomeBtn');
