@@ -26,6 +26,7 @@
     min-height: 100vh;
   }
 
+  /* ── Welcome Screen ── */
   #welcome {
     min-height: 100vh;
     display: flex;
@@ -145,6 +146,7 @@
 
   .send-btn:disabled { background: rgba(139, 115, 85, 0.2); cursor: default; }
 
+  /* ── Chat Screen ── */
   #chat {
     display: none;
     flex-direction: column;
@@ -316,6 +318,7 @@
 </head>
 <body>
 
+<!-- Welcome Screen -->
 <div id="welcome">
   <div style="text-align:center; max-width:640px">
     <div class="author">Geoffroy de Clisson</div>
@@ -341,9 +344,10 @@
   </div>
 </div>
 
+<!-- Chat Screen -->
 <div id="chat">
   <div class="chat-header">
-    <button onclick="backToHome()" style="background:none;border:none;cursor:pointer;color:#8b7355;font-size:1.3rem;padding:0;line-height:1;">&#8592;</button>
+    <button onclick="backToHome()" style="background:none;border:none;cursor:pointer;color:#8b7355;font-size:1.3rem;padding:0;line-height:1;">←</button>
     <div style="flex:1">
       <div class="title">Philosophie de la Signification</div>
       <div class="sub">Geoffroy de Clisson</div>
@@ -362,7 +366,7 @@
 </div>
 
 <script>
-var QUESTIONS_FR = [
+const QUESTIONS_FR = [
   "Le matérialisme, une impasse logique ?",
   "Comment la matière peut-elle penser ?",
   "L'IA peut-elle véritablement comprendre ?",
@@ -377,12 +381,12 @@ var QUESTIONS_FR = [
   "Pourquoi le nationalisme est-il une fiction ?",
 ];
 
-var QUESTIONS_EN = [
+const QUESTIONS_EN = [
   "Materialism, a logical dead end?",
   "How can matter think?",
   "Can AI truly understand?",
   "What does it mean to think?",
-  "Prince, Keith Richard, Bowie and the meaning?",
+  "Prince, Keith Richard, Bowie and the meaning ?",
   "What is the truth of a work of art?",
   "Music, a grammar without words?",
   "What is the dismissal of the self?",
@@ -392,7 +396,7 @@ var QUESTIONS_EN = [
   "Why is nationalism a fiction?",
 ];
 
-var QUESTIONS_ES = [
+const QUESTIONS_ES = [
   "¿El materialismo, un callejón sin salida?",
   "¿Cómo puede la materia pensar?",
   "¿Puede la IA realmente comprender?",
@@ -407,7 +411,7 @@ var QUESTIONS_ES = [
   "¿Por qué el nacionalismo es una ficción?",
 ];
 
-var QUESTIONS_DE = [
+const QUESTIONS_DE = [
   "Materialismus, eine logische Sackgasse?",
   "Wie kann Materie denken?",
   "Kann KI wirklich verstehen?",
@@ -422,7 +426,7 @@ var QUESTIONS_DE = [
   "Warum ist Nationalismus eine Fiktion?",
 ];
 
-var TEXTS = {
+const TEXTS = {
   fr: {
     title1: "La Philosophie",
     title2: "de la Signification",
@@ -453,9 +457,9 @@ var TEXTS = {
   }
 };
 
-var currentLang = 'fr';
-var history = [];
-var busy = false;
+let currentLang = 'fr';
+let history = [];
+let busy = false;
 
 function setLang(lang) {
   currentLang = lang;
@@ -473,38 +477,40 @@ function setLang(lang) {
 }
 
 function buildSuggestions() {
-  var sugDiv = document.getElementById('suggestions');
+  const sugDiv = document.getElementById('suggestions');
   sugDiv.innerHTML = '';
-  var questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
-  for (var i = 0; i < questions.length; i++) {
-    var btn = document.createElement('button');
-    btn.textContent = questions[i];
-    btn.setAttribute('data-q', questions[i]);
-    btn.onclick = function() { send(this.getAttribute('data-q')); };
+  const questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
+  questions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.textContent = q;
+    btn.onclick = () => send(q);
     sugDiv.appendChild(btn);
-  }
+  });
 }
 
+// Initial build
 buildSuggestions();
 
+// Detect language from URL parameter
 var urlParams = new URLSearchParams(window.location.search);
 var langParam = urlParams.get('lang');
 if (langParam && ['fr','en','es','de'].indexOf(langParam) >= 0) {
   setLang(langParam);
 }
 
-var wInput = document.getElementById('welcomeInput');
-var wBtn = document.getElementById('welcomeBtn');
-var cInput = document.getElementById('chatInput');
-var cBtn = document.getElementById('chatBtn');
+// Input handling
+const wInput = document.getElementById('welcomeInput');
+const wBtn = document.getElementById('welcomeBtn');
+const cInput = document.getElementById('chatInput');
+const cBtn = document.getElementById('chatBtn');
 
-wInput.addEventListener('input', function() { wBtn.disabled = !wInput.value.trim(); });
-wInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && wInput.value.trim()) send(wInput.value); });
-wBtn.addEventListener('click', function() { if (wInput.value.trim()) send(wInput.value); });
+wInput.addEventListener('input', () => { wBtn.disabled = !wInput.value.trim(); });
+wInput.addEventListener('keydown', e => { if (e.key === 'Enter' && wInput.value.trim()) send(wInput.value); });
+wBtn.addEventListener('click', () => { if (wInput.value.trim()) send(wInput.value); });
 
-cInput.addEventListener('input', function() { cBtn.disabled = !cInput.value.trim(); });
-cInput.addEventListener('keydown', function(e) { if (e.key === 'Enter' && cInput.value.trim()) send(cInput.value); });
-cBtn.addEventListener('click', function() { if (cInput.value.trim()) send(cInput.value); });
+cInput.addEventListener('input', () => { cBtn.disabled = !cInput.value.trim(); });
+cInput.addEventListener('keydown', e => { if (e.key === 'Enter' && cInput.value.trim()) send(cInput.value); });
+cBtn.addEventListener('click', () => { if (cInput.value.trim()) send(cInput.value); });
 
 function switchToChat() {
   document.getElementById('welcome').classList.add('hidden');
@@ -517,16 +523,15 @@ function backToHome() {
   document.getElementById('welcome').classList.remove('hidden');
   document.getElementById('messages').innerHTML = '';
   history = [];
-  busy = false;
 }
 
-var lastUserMsg = null;
+let lastUserMsg = null;
 
 function addMessage(role, text) {
-  var container = document.getElementById('messages');
-  var wrapper = document.createElement('div');
+  const container = document.getElementById('messages');
+  const wrapper = document.createElement('div');
   wrapper.className = 'msg ' + role;
-  var bubble = document.createElement('div');
+  const bubble = document.createElement('div');
   bubble.className = 'bubble';
 
   if (role === 'assistant') {
@@ -547,8 +552,8 @@ function addMessage(role, text) {
 }
 
 function showTyping() {
-  var container = document.getElementById('messages');
-  var div = document.createElement('div');
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
   div.className = 'msg assistant';
   div.id = 'typing';
   div.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
@@ -559,40 +564,40 @@ function showTyping() {
 }
 
 function hideTyping() {
-  var el = document.getElementById('typing');
+  const el = document.getElementById('typing');
   if (el) el.remove();
 }
 
 function renderMarkdown(text) {
   return text
     .split('\n')
-    .map(function(line) {
+    .map(line => {
+      // Headers
       if (line.startsWith('### ')) return '<h4>' + line.slice(4) + '</h4>';
       if (line.startsWith('## ')) return '<h3>' + line.slice(3) + '</h3>';
+      // List items
       if (line.match(/^[-*] /)) return '<li>' + line.slice(2) + '</li>';
+      // Numbered lists
       if (line.match(/^\d+\.\s/)) return '<li>' + line.replace(/^\d+\.\s/, '') + '</li>';
+      // Empty line
       if (!line.trim()) return '<br>';
+      // Paragraph
       return '<p>' + line + '</p>';
     })
     .join('')
+    // Bold and italic
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Wrap consecutive <li> in <ul>
     .replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
 }
 
-function finishRequest(fullText) {
-  hideTyping();
-  if (fullText) history.push({ role: 'assistant', content: fullText });
-  if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  busy = false;
-  cInput.focus();
-}
-
-function send(text) {
-  var msg = text.trim();
+async function send(text) {
+  const msg = text.trim();
   if (!msg || busy) return;
   busy = true;
 
+  // Force close keyboard on iOS - create temporary readonly input
   var tempInput = document.createElement('input');
   tempInput.setAttribute('type', 'text');
   tempInput.setAttribute('readonly', 'readonly');
@@ -606,6 +611,7 @@ function send(text) {
 
   wInput.blur();
   cInput.blur();
+  document.activeElement.blur();
 
   if (!document.getElementById('chat').classList.contains('active')) {
     switchToChat();
@@ -618,6 +624,7 @@ function send(text) {
 
   history.push({ role: 'user', content: msg });
 
+  // Wait for keyboard to fully close before showing typing and scrolling
   setTimeout(function() {
     showTyping();
     if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -635,18 +642,6 @@ function send(text) {
 
   var fullText = '';
   var lastIndex = 0;
-
-  // Safety timeout: if nothing happens after 120 seconds, unblock
-  var safetyTimer = setTimeout(function() {
-    if (busy) {
-      hideTyping();
-      if (fullText === '') {
-        wrapper.style.display = '';
-        bubble.textContent = '⚠️ Délai dépassé. Veuillez réessayer.';
-      }
-      busy = false;
-    }
-  }, 120000);
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/api/chat');
@@ -677,8 +672,9 @@ function send(text) {
   };
 
   xhr.onload = function() {
-    clearTimeout(safetyTimer);
+    hideTyping();
     if (fullText === '') {
+      // Non-streaming response or error
       try {
         var data = JSON.parse(xhr.responseText);
         if (data.error) {
@@ -691,13 +687,14 @@ function send(text) {
           bubble.innerHTML = renderMarkdown(fullText);
         }
       } catch (e) {
-        var remaining = xhr.responseText.split('\n');
-        for (var i = 0; i < remaining.length; i++) {
-          var line = remaining[i].trim();
+        // Try parsing remaining SSE data
+        var lines = xhr.responseText.split('\n');
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
           if (line.startsWith('data: ') && line !== 'data: [DONE]') {
             try {
-              var ev = JSON.parse(line.substring(6));
-              if (ev.text) fullText += ev.text;
+              var event = JSON.parse(line.substring(6));
+              if (event.text) fullText += event.text;
             } catch (e2) {}
           }
         }
@@ -707,11 +704,13 @@ function send(text) {
         }
       }
     }
-    finishRequest(fullText);
+    if (fullText) history.push({ role: 'assistant', content: fullText });
+    if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    busy = false;
+    cInput.focus();
   };
 
   xhr.onerror = function() {
-    clearTimeout(safetyTimer);
     hideTyping();
     wrapper.style.display = '';
     bubble.textContent = '⚠️ Erreur de connexion.';
