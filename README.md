@@ -72,3 +72,4 @@ C'est le "cerveau" de l'avatar — il définit ce que l'IA sait et comment elle 
 
 ### Modifier l'interface
 Tout le design est dans `index.html` — HTML/CSS/JS standard.
+
