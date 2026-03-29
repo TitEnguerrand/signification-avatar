@@ -1,5 +1,4 @@
 // Vector search via Supabase + OpenAI embeddings
-// No more chunks.json needed
 
 async function getEmbedding(text, apiKey) {
   var response = await fetch('https://api.openai.com/v1/embeddings', {
@@ -99,7 +98,7 @@ module.exports = async function handler(req, res) {
       }),
     });
 
-    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
 
@@ -121,14 +120,15 @@ module.exports = async function handler(req, res) {
           try {
             var event = JSON.parse(jsonStr);
             if (event.type === "content_block_delta" && event.delta && event.delta.text) {
-              res.write("data: " + JSON.stringify({ text: event.delta.text }) + "\n\n");
+              var encoded = Buffer.from("data: " + JSON.stringify({ text: event.delta.text }) + "\n\n", "utf-8");
+              res.write(encoded);
             }
           } catch (e) {}
         }
       }
     }
 
-    res.write("data: [DONE]\n\n");
+    res.write(Buffer.from("data: [DONE]\n\n", "utf-8"));
     res.end();
   } catch (err) {
     console.log('Error:', err.message);
