@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/chat.js": {
+      "includeFiles": "api/chunks.json",
+      "maxDuration": 60
+    }
+  }
+}
