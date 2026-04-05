@@ -371,7 +371,7 @@ const QUESTIONS_FR = [
   "Comment la matière peut-elle penser ?",
   "L'IA peut-elle véritablement comprendre ?",
   "Que signifie penser ?",
-  "Physicalisme réductionniste et non réductionniste ",
+  "Pourquoi Hotel California a inspiré ce livre ?",
   "Qu'est-ce que la vérité d'une œuvre d'art ?",
   "La musique, une grammaire sans mots ?",
   "Qu'est-ce que le congédiement du moi ?",
@@ -386,7 +386,7 @@ const QUESTIONS_EN = [
   "How can matter think?",
   "Can AI truly understand?",
   "What does it mean to think?",
-  "Prince, Keith Richard, Bowie and the meaning ?",
+  "Why did Hotel California inspire this book?",
   "What is the truth of a work of art?",
   "Music, a grammar without words?",
   "What is the dismissal of the self?",
@@ -401,7 +401,7 @@ const QUESTIONS_ES = [
   "¿Cómo puede la materia pensar?",
   "¿Puede la IA realmente comprender?",
   "¿Qué significa pensar?",
-  "¿Prince, Keith Richard, Bowie y el significado?",
+  "¿Por qué Hotel California inspiró este libro?",
   "¿Qué es la verdad de una obra de arte?",
   "¿La música, una gramática sin palabras?",
   "¿Qué es el despido del yo?",
@@ -416,7 +416,7 @@ const QUESTIONS_DE = [
   "Wie kann Materie denken?",
   "Kann KI wirklich verstehen?",
   "Was bedeutet es zu denken?",
-  "Prince, Keith Richard, Bowie und die Bedeutung?",
+  "Warum inspirierte Hotel California dieses Buch?",
   "Was ist die Wahrheit eines Kunstwerks?",
   "Musik, eine Grammatik ohne Worte?",
   "Was ist die Verabschiedung des Ichs?",
@@ -621,7 +621,7 @@ async function send(text) {
   wInput.value = '';
   cInput.value = '';
   cBtn.disabled = true;
-if (fullText) { var linkLang = { fr: 'Acces aux articles et aux livres', en: 'Access articles and books', es: 'Acceso a articulos y libros', de: 'Zugang zu Artikeln und Buechern' }; var linkText = linkLang[currentLang] || linkLang.fr; bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#8b7355;">' + linkText + ' &rarr;</a></p>'
+
   history.push({ role: 'user', content: msg });
 
   // Wait for keyboard to fully close before showing typing and scrolling
@@ -704,6 +704,7 @@ if (fullText) { var linkLang = { fr: 'Acces aux articles et aux livres', en: 'Ac
         }
       }
     }
+    if (fullText) { var linkLang = { fr: 'Acces aux articles et aux livres', en: 'Access articles and books', es: 'Acceso a articulos y libros', de: 'Zugang zu Artikeln und Buechern' }; var linkText = linkLang[currentLang] || linkLang.fr; bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#8b7355;">' + linkText + ' &rarr;</a></p>'; }
     if (fullText) history.push({ role: 'assistant', content: fullText });
     if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
     busy = false;
