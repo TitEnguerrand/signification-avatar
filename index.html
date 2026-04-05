@@ -621,7 +621,11 @@ async function send(text) {
   wInput.value = '';
   cInput.value = '';
   cBtn.disabled = true;
-
+if (fullText) {
+  var linkLang = { fr: 'Accès aux articles et aux livres', en: 'Access articles and books', es: 'Acceso a articulos y libros', de: 'Zugang zu Artikeln und Büchern' };
+  var linkText = linkLang[currentLang] || linkLang.fr;
+  bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#8b7355;">' + linkText + ' →</a></p>';
+}
   history.push({ role: 'user', content: msg });
 
   // Wait for keyboard to fully close before showing typing and scrolling
