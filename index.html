@@ -111,6 +111,7 @@
     gap: 0.8rem;
     max-width: 500px;
     width: 100%;
+    margin: 0 auto;
   }
 
   .input-row input {
@@ -315,38 +316,46 @@
     color: #f7f3ee;
   }
 
-  /* ── Conteneur d'accueil (remplace le style inline) ── */
+  /* ── Conteneur d'accueil (remplace l'ancien style inline) ── */
   .welcome-inner {
     text-align: center;
     max-width: 640px;
     width: 100%;
   }
 
-  /* ── Responsive : tablette et desktop (>= 768 px) ── */
-  /* Choix : 1 colonne maintenue, conteneur sobre, dégradé inchangé.
-     On élargit uniquement le sous-titre et la barre de saisie. */
+  /* ── Responsive : tablette et desktop modeste (>= 768 px) ── */
+  /* Le conteneur s'élargit à 900 px, le sous-titre reste en lecture confortable.
+     Boutons-questions plus larges, en 1 colonne. */
   @media (min-width: 768px) {
-    .welcome-inner { max-width: 720px; }
-    #welcome .subtitle { max-width: 560px; font-size: 1.05rem; }
-    .suggestions { max-width: 480px; }
-    .suggestions button { font-size: 0.82rem; padding: 0.5rem 1rem; }
-    .input-row { max-width: 580px; }
-    .chat-input .input-row { max-width: 760px; }
+    .welcome-inner { max-width: 900px; }
+    #welcome .subtitle { max-width: 580px; font-size: 1.05rem; }
+    .suggestions { max-width: 600px; }
+    .suggestions button { font-size: 0.85rem; padding: 0.55rem 1.1rem; }
+    .input-row { max-width: 700px; }
+    .chat-input .input-row { max-width: 820px; }
   }
 
   /* ── Responsive : grand écran (>= 1100 px) ── */
-  /* Conteneur plafonné à 720 px : la page reste centrée et lisible. */
+  /* Pleine largeur encadrée : conteneur à 1200 px max, sous-titre lisible à 600 px,
+     titres légèrement plus présents, boutons-questions et input élargis. */
   @media (min-width: 1100px) {
-    .welcome-inner { max-width: 720px; }
-    #welcome h1 { font-size: clamp(2.4rem, 4vw, 3.6rem); }
-    #welcome .subtitle { max-width: 600px; font-size: 1.1rem; }
-    .suggestions { max-width: 520px; }
-    .suggestions button { font-size: 0.86rem; padding: 0.55rem 1.1rem; }
-    .input-row { max-width: 620px; }
+    .welcome-inner { max-width: 1200px; }
+    #welcome h1 { font-size: clamp(2.6rem, 4.5vw, 4rem); }
+    #welcome .subtitle { max-width: 600px; font-size: 1.1rem; line-height: 1.75; }
+    .suggestions { max-width: 700px; }
+    .suggestions button { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+    .input-row { max-width: 800px; }
     .input-row input { font-size: 1rem; padding: 1rem 1.4rem; }
-    .send-btn { width: 48px; height: 48px; }
-    .msg .bubble { font-size: 0.95rem; }
-    .chat-input .input-row { max-width: 800px; }
+    .send-btn { width: 50px; height: 50px; }
+    .msg .bubble { font-size: 0.95rem; max-width: 70%; }
+    .chat-input .input-row { max-width: 900px; }
+  }
+
+  /* ── Responsive : très grand écran (>= 1500 px) ── */
+  /* Titre encore un peu plus grand pour ne pas paraître perdu dans l'espace. */
+  @media (min-width: 1500px) {
+    #welcome h1 { font-size: clamp(3rem, 4.5vw, 4.4rem); }
+    #welcome .subtitle { font-size: 1.15rem; }
   }
 </style>
 </head>
