@@ -167,15 +167,44 @@
   #chat.active { display: flex; }
   #welcome.hidden { display: none; }
 
+  /* ── Header sticky : reste visible en permanence pendant le scroll ── */
   .chat-header {
     padding: 0.8rem 1.5rem;
     border-bottom: 1px solid rgba(139, 115, 85, 0.15);
-    background: rgba(247, 243, 238, 0.9);
+    background: rgba(247, 243, 238, 0.92);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* ── Chevron de retour : élégant, en cohérence avec le titre Cormorant ── */
+  .back-chevron {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #8b7355;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    padding: 0 0.3rem 0 0;
+    line-height: 0.8;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .back-chevron:hover {
+    color: #5a4a3a;
+    transform: translateX(-2px);
+  }
+
+  .header-title-block {
+    flex: 1;
+    cursor: pointer;
   }
 
   .chat-header .title {
@@ -199,6 +228,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+    scroll-padding-top: 80px;
   }
 
   .msg { display: flex; animation: msgIn 0.3s ease-out; }
@@ -393,8 +423,8 @@
 <!-- Chat Screen -->
 <div id="chat">
   <div class="chat-header">
-    <button onclick="backToHome()" style="background:none;border:none;cursor:pointer;color:#8b7355;font-size:1.3rem;padding:0;line-height:1;">←</button>
-    <div style="flex:1">
+    <button id="backBtn" class="back-chevron" onclick="backToHome()" aria-label="Retour à l'accueil" title="Retour à l'accueil">‹</button>
+    <div class="header-title-block" onclick="backToHome()" title="Retour à l'accueil">
       <div class="title">Philosophie de la Signification</div>
       <div class="sub">Geoffroy de Clisson</div>
     </div>
@@ -479,6 +509,7 @@ const TEXTS = {
     subtitle: `Ce dispositif a été conçu comme une porte d’entrée vers Philosophie de la signification. La création d’un tel outil peut sembler paradoxale, dans la mesure où l’auteur soutient que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l’esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.`,
     placeholder: "Posez votre question, approfondissez…",
     note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
+    backTooltip: "Retour à l'accueil",
   },
   en: {
     title1: "Philosophy",
@@ -486,6 +517,7 @@ const TEXTS = {
     subtitle: "Avatar powered by semantic search across the full text of all four books — Knowledge, Aesthetics, Ethics and Identity. Ask your questions, go deeper.",
     placeholder: "Ask your question, go deeper…",
     note: "Responses may contain errors · Verify with the original text",
+    backTooltip: "Back to home",
   },
   es: {
     title1: "Filosofía",
@@ -493,6 +525,7 @@ const TEXTS = {
     subtitle: "Avatar basado en una búsqueda semántica en el texto íntegro de los cuatro libros — Conocimiento, Estética, Ética e Identidad. Haga sus preguntas, profundice.",
     placeholder: "Haga su pregunta, profundice…",
     note: "Las respuestas pueden contener errores · Verifique con el texto original",
+    backTooltip: "Volver al inicio",
   },
   de: {
     title1: "Philosophie",
@@ -500,6 +533,7 @@ const TEXTS = {
     subtitle: "Avatar gestützt auf eine semantische Suche im Gesamttext der vier Bücher — Erkenntnis, Ästhetik, Ethik und Identität. Stellen Sie Ihre Fragen, vertiefen Sie.",
     placeholder: "Stellen Sie Ihre Frage, vertiefen Sie…",
     note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
+    backTooltip: "Zurück zur Startseite",
   }
 };
 
@@ -519,6 +553,16 @@ function setLang(lang) {
   document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
   document.getElementById('chatInput').placeholder = TEXTS[lang].placeholder;
   document.getElementById('chatNote').textContent = TEXTS[lang].note;
+  // Mise à jour du tooltip multilingue du bouton retour
+  var backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.setAttribute('title', TEXTS[lang].backTooltip);
+    backBtn.setAttribute('aria-label', TEXTS[lang].backTooltip);
+  }
+  var titleBlock = document.querySelector('.header-title-block');
+  if (titleBlock) {
+    titleBlock.setAttribute('title', TEXTS[lang].backTooltip);
+  }
   buildSuggestions();
 }
 
@@ -569,6 +613,7 @@ function backToHome() {
   document.getElementById('welcome').classList.remove('hidden');
   document.getElementById('messages').innerHTML = '';
   history = [];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 let lastUserMsg = null;
