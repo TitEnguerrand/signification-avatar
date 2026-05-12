@@ -126,6 +126,20 @@
     border-color: rgba(139, 115, 85, 0.45);
   }
 
+  /* Bouton Note méthodologique : style légèrement distinct (méta-information) */
+  .suggestions button.methodological {
+    background: rgba(139, 115, 85, 0.04);
+    border: 1px dashed rgba(139, 115, 85, 0.4);
+    font-style: italic;
+    color: #6b5840;
+  }
+
+  .suggestions button.methodological:hover {
+    background: rgba(139, 115, 85, 0.12);
+    border-style: solid;
+    border-color: rgba(139, 115, 85, 0.55);
+  }
+
   .input-row {
     display: flex;
     align-items: center;
@@ -480,7 +494,8 @@ const QUESTIONS_FR = [
   "Suis-je avec moi-même quand je suis seul ?",
   "La biologie est-elle le fondement de l'identité ?",
   "Qu'est-ce que l'éthique ?",
-  "L'éthique est-elle fondée sur la théorie de la connaissance ?"
+  "L'éthique est-elle fondée sur la théorie de la connaissance ?",
+  "Note méthodologique sur ce dispositif"
 ];
 
 const QUESTIONS_EN = [
@@ -500,7 +515,8 @@ const QUESTIONS_EN = [
   "Am I with myself when I am alone?",
   "Is biology the foundation of identity?",
   "What is ethics?",
-  "Is ethics founded on the theory of knowledge?"
+  "Is ethics founded on the theory of knowledge?",
+  "Methodological note on this device"
 ];
 
 const QUESTIONS_ES = [
@@ -520,7 +536,8 @@ const QUESTIONS_ES = [
   "¿Estoy conmigo mismo cuando estoy solo?",
   "¿Es la biología el fundamento de la identidad?",
   "¿Qué es la ética?",
-  "¿Está la ética fundada en la teoría del conocimiento?"
+  "¿Está la ética fundada en la teoría del conocimiento?",
+  "Nota metodológica sobre este dispositivo"
 ];
 
 const QUESTIONS_DE = [
@@ -540,7 +557,8 @@ const QUESTIONS_DE = [
   "Bin ich mit mir selbst, wenn ich allein bin?",
   "Ist die Biologie das Fundament der Identität?",
   "Was ist die Ethik?",
-  "Ist die Ethik in der Erkenntnistheorie begründet?"
+  "Ist die Ethik in der Erkenntnistheorie begründet?",
+  "Methodologische Anmerkung zu diesem Modul"
 ];
 
 const TEXTS = {
@@ -578,6 +596,41 @@ const TEXTS = {
   }
 };
 
+// Note méthodologique dans les 4 langues
+const METHODOLOGICAL_NOTES = {
+  fr: `### Note méthodologique
+
+Cet avatar a été conçu comme un compagnon de *Philosophie de la Signification*. Il n'est pas un substitut à l'œuvre mais une porte d'entrée. Le dispositif opère sur un corpus de 868 passages extraits des quatre livres — *Connaissance*, *Esthétique*, *Éthique*, *Identité* — indexés dans leur langue originale, le français. Lorsqu'une question est posée, une recherche par mots-clés (BM25) sélectionne les passages lexicalement les plus pertinents ; une étape de réordonnancement sémantique conduite par Claude Haiku affine la sélection aux dix plus pertinents ; Claude Sonnet rédige enfin la réponse dans la langue de l'utilisateur, diffusée en flux continu.
+
+L'architecture préserve délibérément l'asymétrie entre la matière et la signification que défend l'œuvre. La machine formalise mais ne signifie pas. Elle assemble des mots qui peuvent conserver une signification *pour nous* — pour ceux qui lisent et qui écrivent — sans produire de signification *pour elle-même*. Qu'un algorithme puisse imiter le discours philosophique sans y participer constitue, en un sens, une illustration vivante de la thèse centrale : le sens n'est réductible à aucun formalisme, fût-il raffiné.
+
+L'avatar est donc offert sous deux réserves. La première est critique : toute réponse doit être vérifiée contre le texte original, qui seul porte l'argumentation complète de l'auteur. La seconde est constructive : le modèle produit parfois des formulations qui, sans figurer dans les livres, restent cohérentes avec le cadre — elles peuvent servir d'amorces de dialogue, non d'autorités.`,
+
+  en: `### Methodological Note
+
+This avatar has been built as a companion to *Philosophy of Meaning*. It is not a substitute for the work but a doorway into it. The system operates on a corpus of 868 passages extracted from the four books — *Knowledge*, *Aesthetics*, *Ethics*, *Identity* — indexed in their original French. When a question is received, a keyword retrieval pass (BM25) selects the most lexically relevant passages; a semantic reranking step performed by Claude Haiku narrows the selection to the ten most pertinent; Claude Sonnet then composes the response in the user's language, streamed token by token.
+
+The architecture deliberately preserves the asymmetry between matter and meaning that the work defends. The machine formalises but does not signify. It assembles words that may carry meaning *for us* — for those who read and who write — but it does not produce meaning *for itself*. The very fact that an algorithm can imitate philosophical discourse without participating in it constitutes, in a sense, a living illustration of the central thesis: meaning is not reducible to any formalism, however refined.
+
+The avatar is therefore offered with two reservations. The first is critical: every response should be verified against the original text, which alone bears the author's full argument. The second is constructive: the model occasionally produces formulations that, while not in the books, remain consistent with the framework — these may serve as conversational openings, not as authoritative claims.`,
+
+  es: `### Nota metodológica
+
+Este avatar ha sido concebido como compañero de *Filosofía de la Significación*. No constituye un sustituto de la obra, sino una puerta de entrada. El dispositivo opera sobre un corpus de 868 pasajes extraídos de los cuatro libros — *Conocimiento*, *Estética*, *Ética*, *Identidad* — indexados en su lengua original, el francés. Cuando se recibe una pregunta, una búsqueda por palabras clave (BM25) selecciona los pasajes léxicamente más pertinentes; una etapa de reordenamiento semántico realizada por Claude Haiku afina la selección a los diez más relevantes; Claude Sonnet redacta entonces la respuesta en la lengua del usuario, difundida en flujo continuo.
+
+La arquitectura preserva deliberadamente la asimetría entre la materia y la significación que la obra defiende. La máquina formaliza pero no significa. Ensambla palabras que pueden conservar una significación *para nosotros* — para quienes leemos y escribimos — sin producir significación *para sí misma*. Que un algoritmo pueda imitar el discurso filosófico sin participar en él constituye, en cierto sentido, una ilustración viva de la tesis central: el sentido no es reducible a ningún formalismo, por refinado que sea.
+
+El avatar se ofrece, pues, bajo dos reservas. La primera es crítica: toda respuesta debe verificarse con el texto original, que es el único que lleva la argumentación completa del autor. La segunda es constructiva: el modelo produce a veces formulaciones que, sin figurar en los libros, permanecen coherentes con el marco — pueden servir como punto de partida para el diálogo, no como autoridades.`,
+
+  de: `### Methodologische Anmerkung
+
+Dieser Avatar wurde als Begleiter zu *Philosophie der Bedeutung* konzipiert. Er ist kein Ersatz für das Werk, sondern ein Eingangstor. Das System operiert auf einem Korpus von 868 Passagen aus den vier Büchern — *Erkenntnis*, *Ästhetik*, *Ethik*, *Identität* — indexiert in ihrer Originalsprache, dem Französischen. Bei einer Anfrage wählt eine Stichwortsuche (BM25) die lexikalisch relevantesten Passagen aus; ein durch Claude Haiku durchgeführter Schritt der semantischen Neuordnung verfeinert die Auswahl auf die zehn passendsten; Claude Sonnet verfasst schließlich die Antwort in der Sprache des Nutzers und überträgt sie kontinuierlich.
+
+Die Architektur bewahrt bewusst die Asymmetrie zwischen Materie und Bedeutung, die das Werk verteidigt. Die Maschine formalisiert, bedeutet aber nicht. Sie fügt Wörter zusammen, die für *uns* eine Bedeutung tragen können — für jene, die lesen und schreiben —, ohne Bedeutung für *sich selbst* zu erzeugen. Dass ein Algorithmus den philosophischen Diskurs nachahmen kann, ohne an ihm teilzuhaben, stellt in gewissem Sinne eine lebendige Veranschaulichung der zentralen These dar: Der Sinn ist auf keinen Formalismus reduzierbar, so verfeinert er auch sei.
+
+Der Avatar wird daher unter zwei Vorbehalten angeboten. Der erste ist kritisch: Jede Antwort sollte am Originaltext überprüft werden, der allein die vollständige Argumentation des Autors trägt. Der zweite ist konstruktiv: Das Modell formuliert gelegentlich Aussagen, die nicht in den Büchern stehen, aber dennoch mit dem Rahmen kohärent bleiben — diese können als Gesprächsanstöße dienen, nicht als Autoritäten.`
+};
+
 let currentLang = 'fr';
 let history = [];
 let busy = false;
@@ -610,15 +663,47 @@ function buildSuggestions() {
   const sugDiv = document.getElementById('suggestions');
   sugDiv.innerHTML = '';
   const questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
-  questions.forEach(q => {
+  const lastIndex = questions.length - 1;
+  questions.forEach((q, index) => {
     const btn = document.createElement('button');
     btn.innerHTML = q;
-    btn.onclick = () => {
-      const plainText = q.replace(/<\/?em>/g, '');
-      send(plainText);
-    };
+    if (index === lastIndex) {
+      // Dernier bouton : Note méthodologique
+      btn.classList.add('methodological');
+      btn.onclick = () => showMethodologicalNote();
+    } else {
+      btn.onclick = () => {
+        const plainText = q.replace(/<\/?em>/g, '');
+        send(plainText);
+      };
+    }
     sugDiv.appendChild(btn);
   });
+}
+
+function showMethodologicalNote() {
+  // Bascule vers la vue chat et affiche la note méthodologique
+  // dans la langue courante, sans appel API
+  if (!document.getElementById('chat').classList.contains('active')) {
+    switchToChat();
+  }
+  const noteLabel = {fr: "Note méthodologique", en: "Methodological note", es: "Nota metodológica", de: "Methodologische Anmerkung"}[currentLang];
+  addMessage('user', noteLabel);
+  const noteText = METHODOLOGICAL_NOTES[currentLang];
+
+  // Affiche la note directement (sans appel API, sans streaming)
+  const container = document.getElementById('messages');
+  const wrapper = document.createElement('div');
+  wrapper.className = 'msg assistant';
+  wrapper.style.animation = 'msgIn 0.3s ease-out';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.innerHTML = renderMarkdown(noteText);
+  wrapper.appendChild(bubble);
+  container.appendChild(wrapper);
+  if (lastUserMsg) {
+    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // Initial build
