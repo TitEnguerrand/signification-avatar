@@ -7,13 +7,13 @@
 
 <!-- Open Graph / Twitter Card -->
 <meta property="og:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
-<meta property="og:description" content="Ce dispositif a été conçu comme une porte d’entrée vers Philosophie de la Signification. La création d’un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l’esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.">
+<meta property="og:description" content="Ce dispositif a été conçu comme une porte d'entrée vers Philosophie de la Signification. La création d'un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.">
 <meta property="og:image" content="https://signification-avatar.vercel.app/api/og">
 <meta property="og:url" content="https://signification-avatar.vercel.app">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
-<meta name="twitter:description" content="Ce dispositif a été conçu comme une porte d’entrée vers Philosophie de la signification. La création d’un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l’esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.">
+<meta name="twitter:description" content="Ce dispositif a été conçu comme une porte d'entrée vers Philosophie de la Signification. La création d'un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.">
 <meta name="twitter:image" content="https://signification-avatar.vercel.app/api/og">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap" rel="stylesheet">
 <style>
@@ -26,7 +26,7 @@
     min-height: 100vh;
   }
 
-  /* ── Welcome Screen ── */
+  /* Welcome Screen */
   #welcome {
     min-height: 100vh;
     display: flex;
@@ -64,7 +64,6 @@
     margin: 1.5rem auto;
   }
 
-  /* ── CORRECTIF mobile : alignement gauche sur écran étroit, justification rétablie au-delà de 600px ── */
   #welcome .subtitle {
     font-size: 1rem;
     line-height: 1.7;
@@ -78,26 +77,30 @@
     font-weight: 300;
   }
 
+  #welcome .subtitle em {
+    font-style: italic;
+  }
+
   @media (min-width: 600px) {
     #welcome .subtitle { text-align: justify; }
   }
 
+  /* Grille de questions : 1 colonne par defaut (mobile) */
   .suggestions {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.4rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    gap: 0.5rem;
     max-width: 400px;
     width: 100%;
     margin: 0 auto 2rem;
   }
 
-  /* ── CORRECTIF : boutons multi-lignes (white-space normal au lieu de nowrap) ── */
   .suggestions button {
     background: rgba(139, 115, 85, 0.08);
     border: 1px solid rgba(139, 115, 85, 0.25);
     border-radius: 18px;
-    padding: 0.55rem 1rem;
+    padding: 0.7rem 1rem;
     font-family: 'Source Serif 4', serif;
     font-size: 0.78rem;
     line-height: 1.35;
@@ -108,6 +111,14 @@
     word-wrap: break-word;
     text-align: center;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+  }
+
+  .suggestions button em {
+    font-style: italic;
   }
 
   .suggestions button:hover {
@@ -157,7 +168,7 @@
 
   .send-btn:disabled { background: rgba(139, 115, 85, 0.2); cursor: default; }
 
-  /* ── Chat Screen ── */
+  /* Chat Screen */
   #chat {
     display: none;
     flex-direction: column;
@@ -167,7 +178,6 @@
   #chat.active { display: flex; }
   #welcome.hidden { display: none; }
 
-  /* ── Header sticky : reste visible en permanence pendant le scroll ── */
   .chat-header {
     padding: 0.8rem 1.5rem;
     border-bottom: 1px solid rgba(139, 115, 85, 0.15);
@@ -183,7 +193,6 @@
     z-index: 100;
   }
 
-  /* ── Chevron de retour : élégant, en cohérence avec le titre Cormorant ── */
   .back-chevron {
     background: none;
     border: none;
@@ -356,30 +365,40 @@
     color: #f7f3ee;
   }
 
-  /* ── Conteneur d'accueil (remplace l'ancien style inline) ── */
   .welcome-inner {
     text-align: center;
     max-width: 640px;
     width: 100%;
   }
 
-  /* ── Responsive : tablette et desktop modeste (>= 768 px) ── */
+  /* Tablette : 2 colonnes pour les questions */
   @media (min-width: 768px) {
     .welcome-inner { max-width: 900px; }
     #welcome .subtitle { max-width: 580px; font-size: 1.05rem; }
-    .suggestions { max-width: 600px; }
-    .suggestions button { font-size: 0.85rem; padding: 0.6rem 1.2rem; }
+    .suggestions {
+      max-width: 760px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(9, 1fr);
+      grid-auto-flow: column;
+    }
+    .suggestions button { font-size: 0.85rem; padding: 0.75rem 1.2rem; min-height: 70px; }
     .input-row { max-width: 700px; }
     .chat-input .input-row { max-width: 820px; }
   }
 
-  /* ── Responsive : grand écran (>= 1100 px) ── */
+  /* PC : 3 colonnes pour les questions */
   @media (min-width: 1100px) {
     .welcome-inner { max-width: 1200px; }
     #welcome h1 { font-size: clamp(2.6rem, 4.5vw, 4rem); }
     #welcome .subtitle { max-width: 600px; font-size: 1.1rem; line-height: 1.75; }
-    .suggestions { max-width: 700px; }
-    .suggestions button { font-size: 0.9rem; padding: 0.65rem 1.3rem; }
+    .suggestions {
+      max-width: 1100px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: repeat(6, 1fr);
+      grid-auto-flow: column;
+      gap: 0.6rem;
+    }
+    .suggestions button { font-size: 0.9rem; padding: 0.8rem 1.3rem; min-height: 80px; }
     .input-row { max-width: 800px; }
     .input-row input { font-size: 1rem; padding: 1rem 1.4rem; }
     .send-btn { width: 50px; height: 50px; }
@@ -387,7 +406,6 @@
     .chat-input .input-row { max-width: 900px; }
   }
 
-  /* ── Responsive : très grand écran (>= 1500 px) ── */
   @media (min-width: 1500px) {
     #welcome h1 { font-size: clamp(3rem, 4.5vw, 4.4rem); }
     #welcome .subtitle { font-size: 1.15rem; }
@@ -409,7 +427,7 @@
       <button id="langEs" onclick="setLang('es')">ES</button>
       <button id="langDe" onclick="setLang('de')">DE</button>
     </div>
-    <p class="subtitle" id="subtitle">Ce dispositif a été conçu comme une porte d’entrée vers Philosophie de la Signification. La création d’un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l’esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.</p>
+    <p class="subtitle" id="subtitle"></p>
     <div class="suggestions" id="suggestions"></div>
     <div class="input-row">
       <input type="text" id="welcomeInput" placeholder="Posez votre question, approfondissez…">
@@ -442,98 +460,121 @@
 </div>
 
 <script>
+// 17 QUESTIONS PAR LANGUE
+// Italique : balises <em> insérées dans le HTML du bouton
+
 const QUESTIONS_FR = [
   "Quelle est la thèse principale de la Philosophie de la Signification ?",
-  "Comment l'oeuvre se situe-t-elle face aux physicalismes réductionniste et non réductionniste ?",
-  "Le matérialisme se heurte-t-il à des apories logiques dès qu’il prétend totaliser le réel",
-  "Comment ne pas retomber dans une forme de dualisme de substance ?​​​​​​​​​​​​​​​​",
+  "Comment l'œuvre se situe-t-elle par rapport aux physicalistes réductionnistes ?",
+  "Comment l'œuvre se situe-t-elle par rapport aux physicalistes non-réductionnistes ?",
+  "Le matérialisme est-il une impossibilité logique ?",
+  "Quelle alternative proposée au dualisme de substance ?",
   "Comment l'auteur se démarque de Kant, de Cassirer et de l'idéalisme transcendantal ?",
-  "Comment est traité le problème de l'espace et du temps ?",
-  "Art et vérité",
-  "Le génie moral",
-  "Le visage de l'autre",
-  "Qui parle quand je dis je",
-  "L'identité, narration ou substance",
-  "Y a-t-il un ordre du sens",
+  "Comment traiter du problème de l'espace et du temps ?",
+  "Comment comprendre la mécanique quantique dans le cadre de l'œuvre ?",
+  "L'objectivité a-t-elle pour fondement la subjectivité ?",
+  "L'intelligence artificielle pourra-t-elle un jour penser ? À quelles conditions ?",
+  "Y a-t-il une vérité dans l'art et dans la musique en particulier ?",
+  "Comment définir la vérité artistique par rapport à la vérité scientifique ?",
+  "Qu'est-ce que l'identité ?",
+  "Suis-je avec moi-même quand je suis seul ?",
+  "La biologie est-elle le fondement de l'identité ?",
+  "Qu'est-ce que l'éthique ?",
+  "L'éthique est-elle fondée sur la théorie de la connaissance ?"
 ];
 
 const QUESTIONS_EN = [
-  "Materialism, a logical dead end?",
-  "How can matter think?",
-  "Can AI truly understand?",
-  "What does it mean to think?",
-  "Why did Hotel California inspire this book?",
-  "What is the truth of a work of art?",
-  "Music, a grammar without words?",
-  "What is the dismissal of the self?",
-  "Why does ethics begin with the face of the other?",
-  "Can morality be founded on a harmony?",
-  "Is identity a story we tell ourselves?",
-  "Why is nationalism a fiction?",
+  "What is the main thesis of the Philosophy of Meaning?",
+  "How does the work position itself in relation to reductive physicalists?",
+  "How does the work position itself in relation to non-reductive physicalists?",
+  "Is materialism a logical impossibility?",
+  "What alternative is proposed to substance dualism?",
+  "How does the author distinguish himself from Kant, Cassirer and transcendental idealism?",
+  "How is the problem of space and time to be addressed?",
+  "How is quantum mechanics to be understood within the framework of the work?",
+  "Does objectivity have subjectivity as its foundation?",
+  "Will artificial intelligence ever be able to think? Under what conditions?",
+  "Is there a truth in art, and in music in particular?",
+  "How is artistic truth to be defined in relation to scientific truth?",
+  "What is identity?",
+  "Am I with myself when I am alone?",
+  "Is biology the foundation of identity?",
+  "What is ethics?",
+  "Is ethics founded on the theory of knowledge?"
 ];
 
 const QUESTIONS_ES = [
-  "¿El materialismo, un callejón sin salida?",
-  "¿Cómo puede la materia pensar?",
-  "¿Puede la IA realmente comprender?",
-  "¿Qué significa pensar?",
-  "¿Por qué Hotel California inspiró este libro?",
-  "¿Qué es la verdad de una obra de arte?",
-  "¿La música, una gramática sin palabras?",
-  "¿Qué es el despido del yo?",
-  "¿Por qué la ética comienza por el rostro del otro?",
-  "¿Se puede fundar la moral sobre una armonía?",
-  "¿La identidad es un relato que nos contamos?",
-  "¿Por qué el nacionalismo es una ficción?",
+  "¿Cuál es la tesis principal de la Filosofía de la Significación?",
+  "¿Cómo se sitúa la obra respecto a los fisicalistas reduccionistas?",
+  "¿Cómo se sitúa la obra respecto a los fisicalistas no reduccionistas?",
+  "¿Es el materialismo una imposibilidad lógica?",
+  "¿Qué alternativa se propone al dualismo de sustancia?",
+  "¿Cómo se distingue el autor de Kant, Cassirer y el idealismo trascendental?",
+  "¿Cómo abordar el problema del espacio y el tiempo?",
+  "¿Cómo entender la mecánica cuántica en el marco de la obra?",
+  "¿Tiene la objetividad por fundamento la subjetividad?",
+  "¿Podrá pensar algún día la inteligencia artificial? ¿Bajo qué condiciones?",
+  "¿Hay una verdad en el arte y en la música en particular?",
+  "¿Cómo definir la verdad artística respecto a la verdad científica?",
+  "¿Qué es la identidad?",
+  "¿Estoy conmigo mismo cuando estoy solo?",
+  "¿Es la biología el fundamento de la identidad?",
+  "¿Qué es la ética?",
+  "¿Está la ética fundada en la teoría del conocimiento?"
 ];
 
 const QUESTIONS_DE = [
-  "Materialismus, eine logische Sackgasse?",
-  "Wie kann Materie denken?",
-  "Kann KI wirklich verstehen?",
-  "Was bedeutet es zu denken?",
-  "Warum inspirierte Hotel California dieses Buch?",
-  "Was ist die Wahrheit eines Kunstwerks?",
-  "Musik, eine Grammatik ohne Worte?",
-  "Was ist die Verabschiedung des Ichs?",
-  "Warum beginnt Ethik mit dem Antlitz des Anderen?",
-  "Kann Moral auf einer Harmonie gründen?",
-  "Ist Identität eine Geschichte, die wir uns erzählen?",
-  "Warum ist Nationalismus eine Fiktion?",
+  "Was ist die Hauptthese der Philosophie der Bedeutung?",
+  "Wie verortet sich das Werk gegenüber den reduktiven Physikalisten?",
+  "Wie verortet sich das Werk gegenüber den nicht-reduktiven Physikalisten?",
+  "Ist der Materialismus eine logische Unmöglichkeit?",
+  "Welche Alternative wird zum Substanzdualismus vorgeschlagen?",
+  "Wie grenzt sich der Autor von Kant, Cassirer und dem transzendentalen Idealismus ab?",
+  "Wie ist das Problem von Raum und Zeit zu behandeln?",
+  "Wie ist die Quantenmechanik im Rahmen des Werkes zu verstehen?",
+  "Hat die Objektivität die Subjektivität zum Fundament?",
+  "Wird die künstliche Intelligenz eines Tages denken können? Unter welchen Bedingungen?",
+  "Gibt es eine Wahrheit in der Kunst und in der Musik im Besonderen?",
+  "Wie ist die künstlerische Wahrheit gegenüber der wissenschaftlichen Wahrheit zu bestimmen?",
+  "Was ist die Identität?",
+  "Bin ich mit mir selbst, wenn ich allein bin?",
+  "Ist die Biologie das Fundament der Identität?",
+  "Was ist die Ethik?",
+  "Ist die Ethik in der Erkenntnistheorie begründet?"
 ];
 
 const TEXTS = {
   fr: {
     title1: "La Philosophie",
     title2: "de la Signification",
-    subtitle: `Ce dispositif a été conçu comme une porte d’entrée vers Philosophie de la Signification. La création d’un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l’esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.`,
+    subtitle: "Ce dispositif a été conçu comme une porte d'entrée vers <em>Philosophie de la Signification</em>. La création d'un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants « pour elle-même ». Ces énoncés peuvent toutefois conserver une signification « pour nous », qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.",
     placeholder: "Posez votre question, approfondissez…",
     note: "Les réponses peuvent contenir des erreurs · Vérifiez avec le texte original",
-    backTooltip: "Retour à l'accueil",
+    backTooltip: "Retour à l'accueil"
   },
   en: {
     title1: "Philosophy",
     title2: "of Meaning",
-    subtitle: "Avatar powered by semantic search across the full text of all four books — Knowledge, Aesthetics, Ethics and Identity. Ask your questions, go deeper.",
+    subtitle: "This device has been designed as a gateway to <em>Philosophy of Meaning</em>. The creation of such a tool may seem paradoxical, inasmuch as we maintain that meaning is irreducible to any formalism. It must therefore be kept in mind that the machine does not produce meaningful statements \"for itself.\" These statements may nonetheless retain a meaning \"for us,\" who read and who write. In any case, this module cannot substitute for the reading of the original text, to which it is always necessary to refer.",
     placeholder: "Ask your question, go deeper…",
     note: "Responses may contain errors · Verify with the original text",
-    backTooltip: "Back to home",
+    backTooltip: "Back to home"
   },
   es: {
     title1: "Filosofía",
     title2: "de la Significación",
-    subtitle: "Avatar basado en una búsqueda semántica en el texto íntegro de los cuatro libros — Conocimiento, Estética, Ética e Identidad. Haga sus preguntas, profundice.",
+    subtitle: "Este dispositivo ha sido concebido como una puerta de entrada a <em>Filosofía de la Significación</em>. La creación de tal herramienta puede parecer paradójica, en la medida en que sostenemos que el sentido no es reducible a ningún formalismo. Conviene, pues, tener presente que la máquina no produce enunciados significantes «para sí misma». Estos enunciados pueden, sin embargo, conservar una significación «para nosotros», que leemos y escribimos. En todo caso, este módulo no podría sustituir la lectura del texto original, al que siempre es necesario remitirse.",
     placeholder: "Haga su pregunta, profundice…",
     note: "Las respuestas pueden contener errores · Verifique con el texto original",
-    backTooltip: "Volver al inicio",
+    backTooltip: "Volver al inicio"
   },
   de: {
     title1: "Philosophie",
     title2: "der Bedeutung",
-    subtitle: "Avatar gestützt auf eine semantische Suche im Gesamttext der vier Bücher — Erkenntnis, Ästhetik, Ethik und Identität. Stellen Sie Ihre Fragen, vertiefen Sie.",
+    subtitle: "Diese Vorrichtung wurde als Eingangstor zu <em>Philosophie der Bedeutung</em> konzipiert. Die Schaffung eines solchen Werkzeugs mag paradox erscheinen, insofern wir die Auffassung vertreten, dass der Sinn auf keinen Formalismus reduzierbar ist. Es ist daher zu bedenken, dass die Maschine keine bedeutungstragenden Aussagen „für sich selbst\" hervorbringt. Diese Aussagen können gleichwohl eine Bedeutung „für uns\" bewahren, die wir lesen und schreiben. In jedem Fall kann dieses Modul die Lektüre des Originaltextes, auf den stets zurückzugreifen ist, nicht ersetzen.",
     placeholder: "Stellen Sie Ihre Frage, vertiefen Sie…",
     note: "Antworten können Fehler enthalten · Überprüfen Sie mit dem Originaltext",
-    backTooltip: "Zurück zur Startseite",
+    backTooltip: "Zurück zur Startseite"
   }
 };
 
@@ -549,11 +590,10 @@ function setLang(lang) {
   document.getElementById('langDe').className = lang === 'de' ? 'active' : '';
   document.getElementById('title1').textContent = TEXTS[lang].title1;
   document.getElementById('title2').textContent = TEXTS[lang].title2;
-  document.getElementById('subtitle').textContent = TEXTS[lang].subtitle;
+  document.getElementById('subtitle').innerHTML = TEXTS[lang].subtitle;
   document.getElementById('welcomeInput').placeholder = TEXTS[lang].placeholder;
   document.getElementById('chatInput').placeholder = TEXTS[lang].placeholder;
   document.getElementById('chatNote').textContent = TEXTS[lang].note;
-  // Mise à jour du tooltip multilingue du bouton retour
   var backBtn = document.getElementById('backBtn');
   if (backBtn) {
     backBtn.setAttribute('title', TEXTS[lang].backTooltip);
@@ -572,14 +612,17 @@ function buildSuggestions() {
   const questions = {fr: QUESTIONS_FR, en: QUESTIONS_EN, es: QUESTIONS_ES, de: QUESTIONS_DE}[currentLang];
   questions.forEach(q => {
     const btn = document.createElement('button');
-    btn.textContent = q;
-    btn.onclick = () => send(q);
+    btn.innerHTML = q;
+    btn.onclick = () => {
+      const plainText = q.replace(/<\/?em>/g, '');
+      send(plainText);
+    };
     sugDiv.appendChild(btn);
   });
 }
 
 // Initial build
-buildSuggestions();
+setLang('fr');
 
 // Detect language from URL parameter
 var urlParams = new URLSearchParams(window.location.search);
@@ -663,23 +706,16 @@ function renderMarkdown(text) {
   return text
     .split('\n')
     .map(line => {
-      // Headers
       if (line.startsWith('### ')) return '<h4>' + line.slice(4) + '</h4>';
       if (line.startsWith('## ')) return '<h3>' + line.slice(3) + '</h3>';
-      // List items
       if (line.match(/^[-*] /)) return '<li>' + line.slice(2) + '</li>';
-      // Numbered lists
       if (line.match(/^\d+\.\s/)) return '<li>' + line.replace(/^\d+\.\s/, '') + '</li>';
-      // Empty line
       if (!line.trim()) return '<br>';
-      // Paragraph
       return '<p>' + line + '</p>';
     })
     .join('')
-    // Bold and italic
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Wrap consecutive <li> in <ul>
     .replace(/(<li>.*?<\/li>)+/g, '<ul>$&</ul>');
 }
 
@@ -688,7 +724,6 @@ async function send(text) {
   if (!msg || busy) return;
   busy = true;
 
-  // Force close keyboard on iOS - create temporary readonly input
   var tempInput = document.createElement('input');
   tempInput.setAttribute('type', 'text');
   tempInput.setAttribute('readonly', 'readonly');
@@ -715,7 +750,6 @@ async function send(text) {
 
   history.push({ role: 'user', content: msg });
 
-  // Wait for keyboard to fully close before showing typing and scrolling
   setTimeout(function() {
     showTyping();
     if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -765,7 +799,6 @@ async function send(text) {
   xhr.onload = function() {
     hideTyping();
     if (fullText === '') {
-      // Non-streaming response or error
       try {
         var data = JSON.parse(xhr.responseText);
         if (data.error) {
@@ -778,7 +811,6 @@ async function send(text) {
           bubble.innerHTML = renderMarkdown(fullText);
         }
       } catch (e) {
-        // Try parsing remaining SSE data
         var lines = xhr.responseText.split('\n');
         for (var i = 0; i < lines.length; i++) {
           var line = lines[i].trim();
@@ -795,7 +827,11 @@ async function send(text) {
         }
       }
     }
-    if (fullText) { var linkLang = { fr: 'Acces aux articles et aux livres', en: 'Access articles and books', es: 'Acceso a articulos y libros', de: 'Zugang zu Artikeln und Buechern' }; var linkText = linkLang[currentLang] || linkLang.fr; bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#8b7355;">' + linkText + ' &rarr;</a></p>'; }
+    if (fullText) {
+      var linkLang = { fr: 'Acces aux articles et aux livres', en: 'Access articles and books', es: 'Acceso a articulos y libros', de: 'Zugang zu Artikeln und Buechern' };
+      var linkText = linkLang[currentLang] || linkLang.fr;
+      bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#8b7355;">' + linkText + ' &rarr;</a></p>';
+    }
     if (fullText) history.push({ role: 'assistant', content: fullText });
     if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
     busy = false;
