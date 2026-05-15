@@ -236,13 +236,13 @@ body { background-color: #E8E1CC !important; }
         <div class="volume-cover"><img id="cover-vol-i" src="" alt=""></div>
         <div class="volume-eyebrow" id="label-vol-i">Tome I</div>
         <div class="volume-title" id="title-vol-i">Qu'est-ce que la connaissance ?</div>
-        <div class="volume-links"><a id="order-vol-i" target="_blank" rel="noopener"></a></div>
+        <div class="volume-links"><a id="read-vol-i" target="_blank" rel="noopener"></a><a id="order-vol-i" target="_blank" rel="noopener"></a></div>
       </div>
       <div class="volume-card">
         <div class="volume-cover"><img id="cover-vol-ii" src="" alt=""></div>
         <div class="volume-eyebrow" id="label-vol-ii">Tome II</div>
         <div class="volume-title" id="title-vol-ii">La musique de l'être, face à l'autre, exploration de soi</div>
-        <div class="volume-links"><a id="order-vol-ii" target="_blank" rel="noopener"></a></div>
+        <div class="volume-links"><a id="read-vol-ii" target="_blank" rel="noopener"></a><a id="order-vol-ii" target="_blank" rel="noopener"></a></div>
       </div>
       <div class="volume-card">
         <div class="volume-cover companion-cover"><div class="companion-text" id="companion-excerpt"></div></div>
@@ -435,6 +435,7 @@ const TEXTS = {
     order: "Commander",
     readSummary: "Lire le résumé",
     viewPlan: "Voir le plan complet",
+    readBook: "lire",
     orderURL: "https://www.amazon.fr/s?k=philosophie+de+la+signification+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -466,6 +467,7 @@ const TEXTS = {
     order: "Order",
     readSummary: "Read the summary",
     viewPlan: "View the full plan",
+    readBook: "read",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -497,6 +499,7 @@ const TEXTS = {
     order: "Pedir",
     readSummary: "Leer el resumen",
     viewPlan: "Ver el plan completo",
+    readBook: "leer",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -528,6 +531,7 @@ const TEXTS = {
     order: "Bestellen",
     readSummary: "Die Zusammenfassung lesen",
     viewPlan: "Den vollstandigen Plan ansehen",
+    readBook: "lesen",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -607,6 +611,10 @@ function applyLang(lang) {
   document.getElementById('order-vol-i').href = t.orderURL;
   document.getElementById('order-vol-ii').textContent = t.order;
   document.getElementById('order-vol-ii').href = t.orderURL;
+  document.getElementById('read-vol-i').textContent = t.readBook;
+  document.getElementById('read-vol-i').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
+  document.getElementById('read-vol-ii').textContent = t.readBook;
+  document.getElementById('read-vol-ii').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
   document.getElementById('read-summary').textContent = t.readSummary;
   document.getElementById('read-summary').href = t.summaryURL;
   document.getElementById('read-summary').className = 'primary';
