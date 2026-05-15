@@ -424,6 +424,7 @@ const TEXTS = {
     subtitle: "Ce dispositif a été conçu comme une porte d'entrée vers <em>Philosophie de la Signification</em>. La création d'un tel outil peut sembler paradoxale, dans la mesure ou nous soutenons que le sens n'est réductible a aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants pour elle-même. Ces énoncés peuvent toutefois conserver une signification pour nous, qui lisons et qui ecrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.",
     placeholder: "Posez une question...",
     chatPlaceholder: "Approfondissez...",
+    newQuestionPlaceholder: "Posez une nouvelle question...",
     newQuestion: "... Ou posez une <strong>nouvelle question</strong>",
     note: "Les réponses peuvent contenir des erreurs - Verifiez avec le texte original",
     backTooltip: "Retour à l'accueil",
@@ -456,6 +457,7 @@ const TEXTS = {
     subtitle: "This device has been designed as a gateway to <em>Philosophy of Meaning</em>. The creation of such a tool may seem paradoxical, insofar as we maintain that meaning is not reducible to any formalism. It should therefore be kept in mind that the machine does not produce meaningful statements for itself. These statements may nevertheless retain a meaning for us, who read and write. In any case, this module cannot replace the reading of the original text, to which it is always necessary to refer.",
     placeholder: "Ask a question...",     
     chatPlaceholder: "Go deeper...",
+    newQuestionPlaceholder: "Ask a new question...",
     newQuestion: "... Or ask a <strong>new question</strong>",
     note: "Responses may contain errors - Verify with the original text",
     backTooltip: "Back to home",
@@ -488,6 +490,7 @@ const TEXTS = {
     subtitle: "Este dispositivo ha sido concebido como una puerta de entrada a <em>Filosofia de la Significacion</em>. La creacion de tal herramienta puede parecer paradojica, en la medida en que sostenemos que el sentido no es reducible a ningun formalismo. Conviene, pues, tener presente que la maquina no produce enunciados significantes para si misma. Estos enunciados pueden, sin embargo, conservar una significacion para nosotros, que leemos y escribimos. En todo caso, este modulo no podria sustituir la lectura del texto original, al que siempre es necesario remitirse.",
     placeholder: "Haga una pregunta...",
     chatPlaceholder: "Profundice...",
+    newQuestionPlaceholder: "Haga una nueva pregunta...",
     newQuestion: "... O haga una <strong>nueva pregunta</strong>",
     note: "Las respuestas pueden contener errores - Verifique con el texto original",
     backTooltip: "Volver al inicio",
@@ -520,6 +523,7 @@ const TEXTS = {
     subtitle: "Diese Vorrichtung wurde als Eingangstor zu <em>Philosophie der Bedeutung</em> konzipiert. Die Schaffung eines solchen Werkzeugs mag paradox erscheinen, insofern wir die Auffassung vertreten, dass der Sinn auf keinen Formalismus reduzierbar ist. Es ist daher zu bedenken, dass die Maschine keine bedeutungstragenden Aussagen fur sich selbst hervorbringt. Diese Aussagen konnen gleichwohl eine Bedeutung fur uns bewahren, die wir lesen und schreiben. In jedem Fall kann dieses Modul die Lekture des Originaltextes, auf den stets zuruckzugreifen ist, nicht ersetzen.",
     placeholder: "Stellen Sie eine Frage...",
     chatPlaceholder: "Vertiefen Sie...",
+    newQuestionPlaceholder: "Stellen Sie eine neue Frage...",
     newQuestion: "... Oder stellen Sie eine <strong>neue Frage</strong>",
     note: "Antworten konnen Fehler enthalten - Uberprufen Sie mit dem Originaltext",
     backTooltip: "Zuruck zur Startseite",
@@ -678,6 +682,8 @@ function backToHome() {
   document.getElementById('messages').innerHTML = '';
   history = [];
   lastUserMsg = null;
+  var t = TEXTS[currentLang] || TEXTS.fr;
+  document.getElementById('chatInput').placeholder = t.chatPlaceholder;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -685,9 +691,12 @@ function newQuestion() {
   document.getElementById('messages').innerHTML = '';
   history = [];
   lastUserMsg = null;
-  document.getElementById('chatInput').value = '';
+  var chatInput = document.getElementById('chatInput');
+  chatInput.value = '';
+  var t = TEXTS[currentLang] || TEXTS.fr;
+  chatInput.placeholder = t.newQuestionPlaceholder || 'Posez une nouvelle question...';
   document.getElementById('chatBtn').disabled = true;
-  document.getElementById('chatInput').focus();
+  chatInput.focus();
 }
 
 function renderMarkdown(text) {
