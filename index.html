@@ -730,6 +730,7 @@ function renderMarkdown(text) {
 
 function addMessage(role, text) {
   var container = document.getElementById('messages');
+  var isFirstUserMsg = (role === 'user') && (container.querySelectorAll('.msg.user').length === 0);
   var wrapper = document.createElement('div');
   wrapper.className = 'msg ' + role;
   var bubble = document.createElement('div');
@@ -742,10 +743,8 @@ function addMessage(role, text) {
   }
   wrapper.appendChild(bubble);
   container.appendChild(wrapper);
-  if (role === 'user') {
+  if (role === 'user' && isFirstUserMsg) {
     wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } else if (lastUserMsg) {
-    lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
@@ -756,7 +755,10 @@ function showTyping() {
   div.id = 'typing';
   div.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   container.appendChild(div);
-  if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Scroll uniquement si c'est le premier echange (une seule question utilisateur),
+  // sinon on respecte la position de lecture courante.
+  var isFirstExchange = container.querySelectorAll('.msg.user').length <= 1;
+  if (isFirstExchange && lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function hideTyping() {
