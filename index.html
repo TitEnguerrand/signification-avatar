@@ -301,7 +301,7 @@ body { background-color: #E8E1CC !important; }
   <div class="chat-header">
     <button id="backBtn" class="back-chevron" onclick="backToHome()" aria-label="Retour à l'accueil" title="Retour à l'accueil">‹</button>
     <div class="header-title-block" onclick="backToHome()" title="Retour à l'accueil">
-      <div class="title">Philosophie de la Signification</div>
+      <div class="title" id="chat-header-title">Philosophie de la Signification</div>
       <div class="sub">Geoffroy de Clisson</div>
     </div>
   </div>
@@ -406,7 +406,7 @@ const QUESTIONS_DE = [
 ];
 
 const METHODOLOGICAL_NOTES = {
-  fr: "Cet avatar a été conçu comme un compagnon de *Philosophie de la Signification*. Il n'est pas un substitut à l'œuvre mais une porte d'entrée. Le dispositif opère sur un corpus de 868 passages extraits des quatre livres - *Connaissance*, *Esthétique*, *Ethique*, *Identité*. Lorsqu'une question est posée, une recherche par mots-clés (BM25,modèle probabiliste de pondération des termes optimisant le classement des documents selon leur pertinence informationnelle) sélectionne les passages lexicalement les plus pertinents ; une étape de réordonnancement sémantique conduite par Claude Haiku affine la sélection aux dix plus pertinents . Claude Sonnet rédige enfin la réponse dans la langue de l'utilisateur, diffusée en flux continu.\n\nL'architecture préserve délibérément l'asymétrie entre la matière et la signification que défend l'œuvre. La machine formalise mais ne signifie pas. Elle assemble des mots qui peuvent conserver une signification *pour nous* - pour ceux qui lisent et qui écrivent - sans produire de signification *pour elle-même*. Qu'un algorithme puisse imiter le discours philosophique sans y participer constitue, en un sens, une illustration vivante de la thèse centrale : le sens n'est réductible a aucun formalisme, fut-il raffiné.\n\nL'avatar est donc offert sous deux réserves. La premiere est critique : toute réponse doit etre vérifiée contre le texte original, qui seul porte l'argumentation complète de l'auteur. La seconde est constructive : le modèle peut produire parfois des formulations qui, sans figurer dans les livres, restent cohérentes avec le cadre - elles peuvent servir d'amorces de dialogue, non d'autorités. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer. Chacque réponse générée par l'avatar renvoie aux chapitres des ouvrages de Geoffroy de Clisson mobilisés dans l'analyse. En conclusion, un lien permet d'accéder à l'ensemble de ses publications sur PhilPapers.",
+  fr: "Cet avatar a été conçu comme un compagnon de *Philosophie de la Signification*. Il n'est pas un substitut à l'œuvre mais une porte d'entrée. Le dispositif opère sur un corpus de 868 passages extraits des quatre livres - *Connaissance*, *Esthétique*, *Éthique*, *Identité*. Lorsqu'une question est posée, une recherche par mots-clés (BM25, modèle probabiliste de pondération des termes optimisant le classement des documents selon leur pertinence informationnelle) sélectionne les passages lexicalement les plus pertinents ; une étape de réordonnancement sémantique conduite par Claude Haiku affine la sélection aux dix plus pertinents. Claude Sonnet rédige enfin la réponse dans la langue de l'utilisateur, diffusée en flux continu.\n\nL'architecture préserve délibérément l'asymétrie entre la matière et la signification que défend l'œuvre. La machine formalise mais ne signifie pas. Elle assemble des mots qui peuvent conserver une signification *pour nous* - pour ceux qui lisent et qui écrivent - sans produire de signification *pour elle-même*. Qu'un algorithme puisse imiter le discours philosophique sans y participer constitue, en un sens, une illustration vivante de la thèse centrale : le sens n'est réductible à aucun formalisme, fût-il raffiné.\n\nL'avatar est donc offert sous deux réserves. La première est critique : toute réponse doit être vérifiée contre le texte original, qui seul porte l'argumentation complète de l'auteur. La seconde est constructive : le modèle peut produire parfois des formulations qui, sans figurer dans les livres, restent cohérentes avec le cadre - elles peuvent servir d'amorces de dialogue, non d'autorités. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer. Chaque réponse générée par l'avatar renvoie aux chapitres des ouvrages de Geoffroy de Clisson mobilisés dans l'analyse. En conclusion, un lien permet d'accéder à l'ensemble de ses publications sur PhilPapers.",
   en: "This avatar has been built as a companion to *Philosophy of Meaning*. It is not a substitute for the work but a doorway into it. The system operates on a corpus of 868 passages extracted from the four books - *Knowledge*, *Aesthetics*, *Ethics*, *Identity*. When a question is received, a keyword retrieval pass (BM25, a probabilistic term-weighting model that optimises document ranking according to their informational relevance) selects the most lexically relevant passages; a semantic reranking step performed by Claude Haiku narrows the selection to the ten most pertinent; Claude Sonnet then composes the response in the user's language, streamed continuously.\n\nThe architecture deliberately preserves the asymmetry between matter and meaning that the work defends. The machine formalises but does not signify. It assembles words that may carry meaning *for us* - for those who read and who write - but it does not produce meaning *for itself*. That an algorithm can imitate philosophical discourse without participating in it constitutes, in a sense, a living illustration of the central thesis: meaning is not reducible to any formalism, however refined.\n\nThe avatar is therefore offered with two reservations. The first is critical: every response should be verified against the original text, which alone bears the author's full argument. The second is constructive: the model occasionally produces formulations that, while not in the books, remain consistent with the framework - these may serve as conversational openings, not as authoritative claims. In any case, this module cannot replace reading the original text, to which one should always refer. Each response generated by the avatar references the chapters of Geoffroy de Clisson's books drawn upon in the analysis. In closing, a link provides access to all of his publications on PhilPapers.",
   es: "Este avatar ha sido concebido como compañero de *Filosofía de la Significación*. No constituye un sustituto de la obra, sino una puerta de entrada. El dispositivo opera sobre un corpus de 868 pasajes extraídos de los cuatro libros - *Conocimiento*, *Estética*, *Ética*, *Identidad*. Cuando se recibe una pregunta, una búsqueda por palabras clave (BM25, modelo probabilístico de ponderación de términos que optimiza la clasificación de los documentos según su pertinencia informacional) selecciona los pasajes léxicamente más pertinentes; una etapa de reordenamiento semántico realizada por Claude Haiku afina la selección a los diez más relevantes; Claude Sonnet redacta entonces la respuesta en la lengua del usuario, difundida en flujo continuo.\n\nLa arquitectura preserva deliberadamente la asimetría entre la materia y la significación que la obra defiende. La máquina formaliza pero no significa. Ensambla palabras que pueden conservar una significación *para nosotros* - para quienes leemos y escribimos - sin producir significación *para sí misma*. Que un algoritmo pueda imitar el discurso filosófico sin participar en él constituye, en cierto sentido, una ilustración viva de la tesis central: el sentido no es reducible a ningún formalismo, por refinado que sea.\n\nEl avatar se ofrece, pues, bajo dos reservas. La primera es crítica: toda respuesta debe verificarse con el texto original, que es el único que lleva la argumentación completa del autor. La segunda es constructiva: el modelo produce a veces formulaciones que, sin figurar en los libros, permanecen coherentes con el marco - pueden servir como punto de partida para el diálogo, no como autoridades. En cualquier caso, este módulo no puede sustituir la lectura del texto original, al que siempre es necesario referirse. Cada respuesta generada por el avatar remite a los capítulos de las obras de Geoffroy de Clisson movilizados en el análisis. Para concluir, un enlace permite acceder al conjunto de sus publicaciones en PhilPapers.",
   de: "Dieser Avatar wurde als Begleiter zu *Philosophie der Bedeutung* konzipiert. Er ist kein Ersatz für das Werk, sondern ein Eingangstor. Das System operiert auf einem Korpus von 868 Passagen aus den vier Büchern - *Erkenntnis*, *Ästhetik*, *Ethik*, *Identität*. Bei einer Anfrage wählt eine Stichwortsuche (BM25, ein probabilistisches Modell der Termgewichtung, das die Rangfolge der Dokumente nach ihrer informationellen Relevanz optimiert) die lexikalisch relevantesten Passagen aus; ein durch Claude Haiku durchgeführter Schritt der semantischen Neuordnung verfeinert die Auswahl auf die zehn passendsten; Claude Sonnet verfasst schließlich die Antwort in der Sprache des Nutzers und überträgt sie kontinuierlich.\n\nDie Architektur bewahrt bewusst die Asymmetrie zwischen Materie und Bedeutung, die das Werk verteidigt. Die Maschine formalisiert, bedeutet aber nicht. Sie fügt Wörter zusammen, die für *uns* eine Bedeutung tragen können - für jene, die lesen und schreiben -, ohne Bedeutung für *sich selbst* zu erzeugen. Dass ein Algorithmus den philosophischen Diskurs nachahmen kann, ohne an ihm teilzuhaben, stellt in gewissem Sinne eine lebendige Veranschaulichung der zentralen These dar: Der Sinn ist auf keinen Formalismus reduzierbar, so verfeinert er auch sei.\n\nDer Avatar wird daher unter zwei Vorbehalten angeboten. Der erste ist kritisch: Jede Antwort sollte am Originaltext überprüft werden, der allein die vollständige Argumentation des Autors trägt. Der zweite ist konstruktiv: Das Modell formuliert gelegentlich Aussagen, die nicht in den Büchern stehen, aber dennoch mit dem Rahmen kohärent bleiben - diese können als Gesprächsanstöße dienen, nicht als Autoritäten. In jedem Fall kann dieses Modul die Lektüre des Originaltextes nicht ersetzen, auf den stets Bezug zu nehmen ist. Jede vom Avatar erzeugte Antwort verweist auf die Kapitel der Werke Geoffroy de Clissons, die in der Analyse herangezogen werden. Abschließend ermöglicht ein Link den Zugang zu sämtlichen seiner Veröffentlichungen auf PhilPapers."
@@ -418,19 +418,19 @@ const TEXTS = {
     pageTitle: "La Philosophie de la Signification - Geoffroy de Clisson",
     title1: "La Philosophie",
     title2: "de la Signification",
-    nav: { gateway: "Porte d'entrée", work: "L'œuvre", volumes: "Tomes", video: "Video", author: "Auteur" },
-    eyebrows: { gateway: "Porte d'entree", work: "L'œuvre", volumes: "Les tomes publies", video: "A l'origine de L'œuvre", author: "L'auteur" },
-    titles: { gateway: "Interroger L'œuvre", work: "Quatre axes, un dualisme radical", volumes: "Lire L'œuvre", video: "Le probleme de la verite", author: "Geoffroy de Clisson" },
-    subtitle: "Ce dispositif a été conçu comme une porte d'entrée vers <em>Philosophie de la Signification</em>. La création d'un tel outil peut sembler paradoxale, dans la mesure ou nous soutenons que le sens n'est réductible a aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants pour elle-même. Ces énoncés peuvent toutefois conserver une signification pour nous, qui lisons et qui ecrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.",
+    nav: { gateway: "Porte d'entrée", work: "L'œuvre", volumes: "Tomes", video: "Vidéo", author: "Auteur" },
+    eyebrows: { gateway: "Porte d'entrée", work: "L'œuvre", volumes: "Les tomes publiés", video: "À l'origine de L'œuvre", author: "L'auteur" },
+    titles: { gateway: "Interroger L'œuvre", work: "Quatre axes, un dualisme radical", volumes: "Lire L'œuvre", video: "Le problème de la vérité", author: "Geoffroy de Clisson" },
+    subtitle: "Ce dispositif a été conçu comme une porte d'entrée vers <em>Philosophie de la Signification</em>. La création d'un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants pour elle-même. Ces énoncés peuvent toutefois conserver une signification pour nous, qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.",
     placeholder: "Posez une question...",
     chatPlaceholder: "Approfondissez...",
     newQuestionPlaceholder: "Posez une nouvelle question...",
     newQuestion: "... Ou posez une <strong>nouvelle question</strong>",
-    note: "Les réponses peuvent contenir des erreurs - Verifiez avec le texte original",
+    note: "Les réponses peuvent contenir des erreurs - Vérifiez avec le texte original",
     backTooltip: "Retour à l'accueil",
     workText: "<p>La philosophie de la signification s'articule autour de quatre grands axes : la connaissance, l'esthétique, l'éthique et l'identité. En se confrontant à la question de l'émergence de la conscience, elle examine les limites logiques du matérialisme et du réductionnisme et propose une critique du monisme physicaliste, au profit d'un dualisme repensé, qui traduit la discontinuité entre matière et signification, discontinuité qui seule permet l'émergence du discours objectif.</p><p>Au fondement de cette approche se trouve l'idée d'une ouverture originaire de l'être au monde — une exposition silencieuse à ce qui lui est extérieur, antérieure au langage, à la logique et à toute forme de représentation. Trois dimensions centrales de l'expérience peuvent ainsi être interrogées à partir de cette structure première : l'esthétique, à travers la musique, comme voie d'accès immédiate à l'articulation entre le sensible et le signifiant ; l'éthique, en tant que questionnement fondamental du rapport à l'altérité ; et l'identité, pensée comme une dialectique dynamique entre ouverture et rassemblement de l'être.</p><p>En filigrane, se dessine une tentative de réconcilier science et humanisme à travers une philosophie de la forme, de la liberté et de l'esprit.</p>",
     volumeI: "Tome I", volumeITitle: "Qu'est-ce que la connaissance ?",
-    volumeII: "Tome II", volumeIITitle: "La musique de l'être, face a l'autre, exploration de soi",
+    volumeII: "Tome II", volumeIITitle: "La musique de l'être, face à l'autre, exploration de soi",
     companion: "À part", companionTitle: "Plan général & résumé d'introduction",
     companionExcerpt: "La philosophie de la signification s'articule autour de quatre grands axes : la connaissance, l'esthétique, l'éthique et l'identité. Elle propose une critique du monisme physicaliste au profit d'un dualisme repensé.",
     order: "Commander",
@@ -440,11 +440,14 @@ const TEXTS = {
     orderURL: "https://www.amazon.fr/s?k=philosophie+de+la+signification+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
-    videoCaption: "Une brève introduction au problème de la verite, dans la vidéo qui a inspiré <em>Philosophie de la Signification</em>.",
+    videoCaption: "Une brève introduction au problème de la vérité, dans la vidéo qui a inspiré <em>Philosophie de la Signification</em>.",
     videoURL: "https://www.youtube.com/embed/v3M0SJ2sJqg",
-    authorBio: "Docteur en philosophie (La Sorbonne, Paris IV). Son travail a porté en particulier sur la question de la vérité a travers l'analyse du rapport entre esthétique et vérité.<br><br>Geoffroy de Clisson est également co-fondateur de l'<strong>Institut Walden</strong>, think tank dédié aux questions liées a la transition énergétique.",
-    footerCredits: "Image de couverture : Walker Evans (Americain, 1903-1975), <em>Roadside Store Between Tuscaloosa and Greensboro, Alabama</em>, 1936 - Getty Museum Collection, Open Content Program.",
-    linkLabel: "Accès aux articles et aux livres"
+    authorBio: "Docteur en philosophie (La Sorbonne, Paris IV). Son travail a porté en particulier sur la question de la vérité à travers l'analyse du rapport entre esthétique et vérité.<br><br>Geoffroy de Clisson est également co-fondateur de l'<strong>Institut Walden</strong>, think tank dédié aux questions liées à la transition énergétique.",
+    footerCredits: "Image de couverture : Walker Evans (Américain, 1903-1975), <em>Roadside Store Between Tuscaloosa and Greensboro, Alabama</em>, 1936 - Getty Museum Collection, Open Content Program.",
+    linkLabel: "Accès aux articles et aux livres",
+    chatHeaderTitle: "Philosophie de la Signification",
+    errorPrefix: "Erreur : ",
+    connectionError: "Erreur de connexion."
   },
   en: {
     htmlLang: "en",
@@ -477,7 +480,10 @@ const TEXTS = {
     videoURL: "https://www.youtube.com/embed/v3M0SJ2sJqg?cc_load_policy=1&cc_lang_pref=en&hl=en",
     authorBio: "Doctor of Philosophy (La Sorbonne, Paris IV). His work has focused in particular on the question of truth through the analysis of the relationship between aesthetics and truth.<br><br>Geoffroy de Clisson is also a co-founder of the <strong>Walden Institute</strong>, a think tank dedicated to issues related to the energy transition.",
     footerCredits: "Cover image: Walker Evans (American, 1903-1975), <em>Roadside Store Between Tuscaloosa and Greensboro, Alabama</em>, 1936 - Getty Museum Collection, Open Content Program.",
-    linkLabel: "Access articles and books"
+    linkLabel: "Access articles and books",
+    chatHeaderTitle: "Philosophy of Meaning",
+    errorPrefix: "Error: ",
+    connectionError: "Connection error."
   },
   es: {
     htmlLang: "es",
@@ -510,7 +516,10 @@ const TEXTS = {
     videoURL: "https://www.youtube.com/embed/v3M0SJ2sJqg?cc_load_policy=1&cc_lang_pref=en&hl=es",
     authorBio: "Doctor en filosofía (La Sorbona, París IV). Su trabajo se ha centrado en particular en la cuestión de la verdad a través del análisis de la relación entre estética y verdad.<br><br>Geoffroy de Clisson es además cofundador del <strong>Instituto Walden</strong>, think tank dedicado a las cuestiones relacionadas con la transición energética.",
     footerCredits: "Imagen de portada: Walker Evans (Americano, 1903-1975), <em>Roadside Store Between Tuscaloosa and Greensboro, Alabama</em>, 1936 - Getty Museum Collection, Open Content Program.",
-    linkLabel: "Acceso a artículos y libros"
+    linkLabel: "Acceso a artículos y libros",
+    chatHeaderTitle: "Filosofía de la Significación",
+    errorPrefix: "Error: ",
+    connectionError: "Error de conexión."
   },
   de: {
     htmlLang: "de",
@@ -543,7 +552,10 @@ const TEXTS = {
     videoURL: "https://www.youtube.com/embed/v3M0SJ2sJqg?cc_load_policy=1&cc_lang_pref=en&hl=de",
     authorBio: "Doktor der Philosophie (La Sorbonne, Paris IV). Seine Arbeit hat sich insbesondere auf die Frage der Wahrheit konzentriert, durch die Analyse des Verhältnisses zwischen Ästhetik und Wahrheit.<br><br>Geoffroy de Clisson ist außerdem Mitbegründer des <strong>Walden-Instituts</strong>, einer Denkfabrik, die sich Fragen der Energiewende widmet.",
     footerCredits: "Coverbild: Walker Evans (Amerikaner, 1903-1975), <em>Roadside Store Between Tuscaloosa and Greensboro, Alabama</em>, 1936 - Getty Museum Collection, Open Content Program.",
-    linkLabel: "Zugang zu Artikeln und Büchern"
+    linkLabel: "Zugang zu Artikeln und Büchern",
+    chatHeaderTitle: "Philosophie der Bedeutung",
+    errorPrefix: "Fehler: ",
+    connectionError: "Verbindungsfehler."
   }
 };
 
@@ -601,6 +613,9 @@ function applyLang(lang) {
     backBtn.setAttribute('title', t.backTooltip);
     backBtn.setAttribute('aria-label', t.backTooltip);
   }
+
+  var chatHeaderTitle = document.getElementById('chat-header-title');
+  if (chatHeaderTitle && t.chatHeaderTitle) chatHeaderTitle.textContent = t.chatHeaderTitle;
 
   document.getElementById('work-text').innerHTML = t.workText;
 
@@ -877,7 +892,7 @@ function send(text) {
         var data = JSON.parse(xhr.responseText);
         if (data.error) {
           wrapper.style.display = '';
-          bubble.textContent = 'Erreur: ' + data.error;
+          bubble.textContent = (TEXTS[currentLang].errorPrefix || 'Erreur : ') + data.error;
           fullText = data.error;
         } else if (data.text) {
           wrapper.style.display = '';
@@ -914,7 +929,7 @@ function send(text) {
   xhr.onerror = function() {
     hideTyping();
     wrapper.style.display = '';
-    bubble.textContent = 'Erreur de connexion.';
+    bubble.textContent = TEXTS[currentLang].connectionError || 'Erreur de connexion.';
     busy = false;
     document.getElementById('chatInput').focus();
   };
