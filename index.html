@@ -84,7 +84,7 @@ body { background-color: #E8E1CC !important; }
 .send-btn:disabled { opacity: 0.35; cursor: default; }
 .send-btn svg { width: 18px; height: 18px; color: var(--bg); transform: rotate(-45deg); }
 
-.new-question-wrapper { text-align: center; margin-top: 1rem; }
+.new-question-wrapper { text-align: center; margin-top: 1rem; display: none; }
 .new-question-btn { background: var(--bg); border: 1px solid var(--border-soft); border-radius: 24px; cursor: pointer; font-family: var(--font-body); font-size: 0.95rem; font-style: italic; color: var(--text-secondary); padding: 9px 22px; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .new-question-btn:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--text-muted); }
 .new-question-btn strong { font-weight: 600; font-style: italic; color: var(--text-primary); }
@@ -699,6 +699,11 @@ function backToHome() {
   lastUserMsg = null;
   var t = TEXTS[currentLang] || TEXTS.fr;
   document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+
+  // Recacher le bouton "Posez une nouvelle question"
+  var newQWrapperBack = document.querySelector('#chat-screen .new-question-wrapper');
+  if (newQWrapperBack) newQWrapperBack.style.display = 'none';
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -711,6 +716,11 @@ function newQuestion() {
   var t = TEXTS[currentLang] || TEXTS.fr;
   chatInput.placeholder = t.newQuestionPlaceholder || 'Posez une nouvelle question...';
   document.getElementById('chatBtn').disabled = true;
+
+  // Recacher le bouton "Posez une nouvelle question"
+  var newQWrapperHide = document.querySelector('#chat-screen .new-question-wrapper');
+  if (newQWrapperHide) newQWrapperHide.style.display = 'none';
+
   chatInput.focus();
 }
 
@@ -840,6 +850,10 @@ function send(text) {
   document.getElementById('welcomeBtn').disabled = true;
   document.getElementById('chatBtn').disabled = true;
 
+  // Masquer le bouton "Posez une nouvelle question" pendant le traitement
+  var newQWrapper = document.querySelector('#chat-screen .new-question-wrapper');
+  if (newQWrapper) newQWrapper.style.display = 'none';
+
   history.push({ role: 'user', content: msg });
 
   setTimeout(function() {
@@ -922,6 +936,13 @@ function send(text) {
     }
     if (fullText) history.push({ role: 'assistant', content: fullText });
     busy = false;
+
+    // Afficher le bouton "Posez une nouvelle question" une fois la réponse terminée
+    if (fullText) {
+      var newQWrapperShow = document.querySelector('#chat-screen .new-question-wrapper');
+      if (newQWrapperShow) newQWrapperShow.style.display = '';
+    }
+
     document.getElementById('chatInput').focus();
   };
 
