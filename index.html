@@ -842,7 +842,6 @@ function send(text) {
 
   setTimeout(function() {
     showTyping();
-    if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 350);
 
   var container = document.getElementById('messages');
@@ -875,7 +874,6 @@ function send(text) {
             if (fullText === '') {
               hideTyping();
               wrapper.style.display = '';
-              if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             fullText += event.text;
             bubble.innerHTML = renderMarkdown(fullText);
@@ -921,7 +919,6 @@ function send(text) {
       bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#7A6A52;">' + linkLabel + ' &rarr;</a></p>';
     }
     if (fullText) history.push({ role: 'assistant', content: fullText });
-    if (lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
     busy = false;
     document.getElementById('chatInput').focus();
   };
