@@ -750,15 +750,13 @@ function hideTyping() {
 }
 
 function showMethodologicalNote() {
-  console.log('[v5] showMethodologicalNote appele');
   var wasInactive = !document.getElementById('chat-screen').classList.contains('active');
   if (wasInactive) {
     switchToChat();
   }
   var container = document.getElementById('messages');
-  // 1) Creer le message "user" (label) SANS passer par addMessage,
-  //    pour eviter son scrollIntoView smooth qui interfere.
-  var noteLabel = { fr: "Note methodologique [v5]", en: "Methodological note [v5]", es: "Nota metodologica [v5]", de: "Methodologische Anmerkung [v5]" }[currentLang];
+  // Creer le message "user" (label) sans passer par addMessage, pour eviter son scrollIntoView smooth.
+  var noteLabel = { fr: "Note methodologique", en: "Methodological note", es: "Nota metodologica", de: "Methodologische Anmerkung" }[currentLang];
   var userWrapper = document.createElement('div');
   userWrapper.className = 'msg user';
   var userBubble = document.createElement('div');
@@ -767,7 +765,7 @@ function showMethodologicalNote() {
   userWrapper.appendChild(userBubble);
   container.appendChild(userWrapper);
   lastUserMsg = userWrapper;
-  // 2) Creer le message "assistant" avec la note complete
+  // Creer le message "assistant" avec la note complete
   var noteText = METHODOLOGICAL_NOTES[currentLang];
   var asstWrapper = document.createElement('div');
   asstWrapper.className = 'msg assistant';
@@ -777,22 +775,20 @@ function showMethodologicalNote() {
   asstBubble.innerHTML = renderMarkdown(noteText);
   asstWrapper.appendChild(asstBubble);
   container.appendChild(asstWrapper);
-  // 3) Scroller la FENETRE (pas le conteneur #messages) car c'est le body qui deborde.
-  //    On vise la position absolue du userWrapper dans la page via getBoundingClientRect.
-  var doScroll = function(when) {
+  // Scroller la fenetre (le body deborde) pour amener le label "Note methodologique"
+  // juste sous le chat-header sticky (sinon il serait cache derriere).
+  // Une seule tentative differee, apres le focus auto declenche par switchToChat (100ms),
+  // pour eviter tout conflit qui ferait sauter l'affichage.
+  setTimeout(function() {
     var input = document.getElementById('chatInput');
     if (input && document.activeElement === input) input.blur();
     var rect = userWrapper.getBoundingClientRect();
-    var pageScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    var targetY = rect.top + pageScrollY - 16;
+    var header = document.querySelector('.chat-header');
+    var headerH = header ? header.getBoundingClientRect().height : 0;
+    var targetY = rect.top + (window.pageYOffset || document.documentElement.scrollTop) - headerH - 8;
     if (targetY < 0) targetY = 0;
-    window.scrollTo(0, targetY);
-    console.log('[v5] @' + when + 'ms : pageYOffset apres=' + window.pageYOffset + ' cible=' + targetY + ' rect.top=' + rect.top + ' bodyScrollH=' + document.body.scrollHeight + ' winH=' + window.innerHeight + ' msgScrollH=' + container.scrollHeight + ' msgClientH=' + container.clientHeight);
-  };
-  setTimeout(function(){ doScroll(50); }, 50);
-  setTimeout(function(){ doScroll(250); }, 250);
-  setTimeout(function(){ doScroll(500); }, 500);
-  setTimeout(function(){ doScroll(900); }, 900);
+    window.scrollTo({ top: targetY, behavior: 'auto' });
+  }, wasInactive ? 250 : 50);
 }
 
 function send(text) {
