@@ -424,7 +424,7 @@ const TEXTS = {
     subtitle: "Ce dispositif a été conçu comme une porte d'entrée vers <em>Philosophie de la Signification</em>. La création d'un tel outil peut sembler paradoxale, dans la mesure où nous soutenons que le sens n'est réductible à aucun formalisme. Il convient donc de garder à l'esprit que la machine ne produit pas des énoncés signifiants pour elle-même. Ces énoncés peuvent toutefois conserver une signification pour nous, qui lisons et qui écrivons. En tout état de cause, ce module ne saurait se substituer à la lecture du texte original, auquel il est toujours nécessaire de se référer.",
     placeholder: "Posez une question...",
     chatPlaceholder: "Approfondissez...",
-    newQuestionPlaceholder: "Posez une nouvelle question...",
+    newQuestionPlaceholder: "Posez votre question...",
     newQuestion: "... Ou posez une <strong>nouvelle question</strong>",
     note: "Les réponses peuvent contenir des erreurs - Vérifiez avec le texte original",
     backTooltip: "Retour à l'accueil",
@@ -460,7 +460,7 @@ const TEXTS = {
     subtitle: "This device has been designed as a gateway to <em>Philosophy of Meaning</em>. The creation of such a tool may seem paradoxical, insofar as we maintain that meaning is not reducible to any formalism. It should therefore be kept in mind that the machine does not produce meaningful statements for itself. These statements may nevertheless retain a meaning for us, who read and write. In any case, this module cannot replace the reading of the original text, to which it is always necessary to refer.",
     placeholder: "Ask a question...",     
     chatPlaceholder: "Go deeper...",
-    newQuestionPlaceholder: "Ask a new question...",
+    newQuestionPlaceholder: "Ask your question...",
     newQuestion: "... Or ask a <strong>new question</strong>",
     note: "Responses may contain errors - Verify with the original text",
     backTooltip: "Back to home",
@@ -496,7 +496,7 @@ const TEXTS = {
     subtitle: "Este dispositivo ha sido concebido como una puerta de entrada a <em>Filosofía de la Significación</em>. La creación de tal herramienta puede parecer paradójica, en la medida en que sostenemos que el sentido no es reducible a ningún formalismo. Conviene, pues, tener presente que la máquina no produce enunciados significantes para sí misma. Estos enunciados pueden, sin embargo, conservar una significación para nosotros, que leemos y escribimos. En todo caso, este módulo no podría sustituir la lectura del texto original, al que siempre es necesario remitirse.",
     placeholder: "Haga una pregunta...",
     chatPlaceholder: "Profundice...",
-    newQuestionPlaceholder: "Haga una nueva pregunta...",
+    newQuestionPlaceholder: "Haga su pregunta...",
     newQuestion: "... O haga una <strong>nueva pregunta</strong>",
     note: "Las respuestas pueden contener errores - Verifique con el texto original",
     backTooltip: "Volver al inicio",
@@ -532,7 +532,7 @@ const TEXTS = {
     subtitle: "Diese Vorrichtung wurde als Eingangstor zu <em>Philosophie der Bedeutung</em> konzipiert. Die Schaffung eines solchen Werkzeugs mag paradox erscheinen, insofern wir die Auffassung vertreten, dass der Sinn auf keinen Formalismus reduzierbar ist. Es ist daher zu bedenken, dass die Maschine keine bedeutungstragenden Aussagen für sich selbst hervorbringt. Diese Aussagen können gleichwohl eine Bedeutung für uns bewahren, die wir lesen und schreiben. In jedem Fall kann dieses Modul die Lektüre des Originaltextes, auf den stets zurückzugreifen ist, nicht ersetzen.",
     placeholder: "Stellen Sie eine Frage...",
     chatPlaceholder: "Vertiefen Sie...",
-    newQuestionPlaceholder: "Stellen Sie eine neue Frage...",
+    newQuestionPlaceholder: "Stellen Sie Ihre Frage...",
     newQuestion: "... Oder stellen Sie eine <strong>neue Frage</strong>",
     note: "Antworten können Fehler enthalten - Überprüfen Sie mit dem Originaltext",
     backTooltip: "Zurück zur Startseite",
@@ -714,7 +714,7 @@ function newQuestion() {
   var chatInput = document.getElementById('chatInput');
   chatInput.value = '';
   var t = TEXTS[currentLang] || TEXTS.fr;
-  chatInput.placeholder = t.newQuestionPlaceholder || 'Posez une nouvelle question...';
+  chatInput.placeholder = t.newQuestionPlaceholder || 'Posez votre question...';
   document.getElementById('chatBtn').disabled = true;
 
   // Recacher le bouton "Posez une nouvelle question"
@@ -816,6 +816,18 @@ function showMethodologicalNote() {
     if (targetY < 0) targetY = 0;
     window.scrollTo({ top: targetY, behavior: 'auto' });
   }, wasInactive ? 250 : 50);
+
+  // Ajouter la note finale (lien PhilArchive) comme dans une reponse normale
+  var linkLabel = TEXTS[currentLang].linkLabel;
+  asstBubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#7A6A52;">' + linkLabel + ' &rarr;</a></p>';
+
+  // Mettre la note dans l'historique pour que l'avatar ait du contexte si l'utilisateur "approfondit"
+  history.push({ role: 'user', content: noteLabel });
+  history.push({ role: 'assistant', content: noteText });
+
+  // Afficher le bouton "Posez une nouvelle question" (comme apres toute reponse)
+  var newQWrapperNote = document.querySelector('#chat-screen .new-question-wrapper');
+  if (newQWrapperNote) newQWrapperNote.style.display = '';
 }
 
 function send(text) {
