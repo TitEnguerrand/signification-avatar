@@ -92,7 +92,7 @@ body { background-color: #E8E1CC !important; }
 .work-text { max-width: 720px; margin: 0 auto; font-size: 1.02rem; line-height: 1.75; color: var(--text-secondary); text-align: justify; hyphens: auto; }
 .work-text p { margin-bottom: 1.2rem; }
 
-.volumes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 720px; margin: 0 auto; }
+.volumes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 980px; margin: 0 auto; }
 .volume-card { background: var(--bg); border: 1px solid var(--border-soft); border-radius: 22px; padding: 1.75rem 1.5rem; text-align: center; transition: transform 0.2s, background 0.2s; }
 .volume-card:hover { transform: translateY(-3px); background: var(--bg-hover); }
 .volume-cover { aspect-ratio: 5/7; background: var(--bg-hover); border-radius: 10px; margin-bottom: 1.25rem; overflow: hidden; }
@@ -119,6 +119,13 @@ body { background-color: #E8E1CC !important; }
 .author-links { font-family: var(--font-display); font-size: 0.85rem; color: var(--text-muted); }
 .author-links a { color: var(--text-muted); text-decoration: none; margin-right: 1.25rem; transition: color 0.2s; cursor: pointer; }
 .author-links a:hover { color: var(--text-primary); }
+
+.companion-contact { font-family: var(--font-display); }
+.companion-contact a { font-family: var(--font-body); font-style: italic; color: var(--text-secondary); }
+.companion-contact a:hover { color: var(--text-primary); }
+.author-contact { margin-top: 3.2rem; margin-bottom: 3.2rem; font-family: var(--font-display); font-size: 0.95rem; color: var(--text-muted); letter-spacing: 0.02em; }
+.author-contact a { color: var(--text-secondary); text-decoration: none; font-family: var(--font-body); font-style: italic; transition: color 0.2s; }
+.author-contact a:hover { color: var(--text-primary); }
 
 .footer { background: var(--bg); padding: 2.5rem 1.25rem 3rem; text-align: center; border-top: 1px solid var(--border-soft); font-family: var(--font-display); font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.7; }
 .footer-credits { margin-bottom: 0.85rem; max-width: 620px; margin-left: auto; margin-right: auto; font-style: italic; }
@@ -245,6 +252,13 @@ body { background-color: #E8E1CC !important; }
         <div class="volume-title" id="title-vol-ii">La musique de l'être, face à l'autre, exploration de soi</div>
         <div class="volume-links"><a id="read-vol-ii" target="_blank" rel="noopener"></a><a id="order-vol-ii" target="_blank" rel="noopener"></a></div>
       </div>
+      <div class="volume-card">
+        <div class="volume-cover companion-cover"><div class="companion-text" id="companion-excerpt"></div></div>
+        <div class="volume-links companion-contact">
+          <div id="write-author-label-card"></div>
+          <a href="mailto:gdeclisson@gmail.com">gdeclisson@gmail.com</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -267,6 +281,9 @@ body { background-color: #E8E1CC !important; }
       <div class="author-info">
         <h3>Geoffroy de Clisson</h3>
         <p id="author-bio"></p>
+        <div class="author-contact">
+          <span id="write-author-label-page"></span> <a href="mailto:gdeclisson@gmail.com">gdeclisson@gmail.com</a>
+        </div>
         <div class="author-links">
           <a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" rel="noopener">PhilArchive ↗</a>
           <a href="https://institutwalden.org/" target="_blank" rel="noopener">Institut Walden ↗</a>
@@ -429,6 +446,7 @@ const TEXTS = {
     readSummary: "Lire le résumé",
     viewPlan: "Voir le plan complet",
     readBook: "lire",
+    writeAuthor: "Écrire à l'auteur",
     orderURL: "https://www.amazon.fr/s?k=philosophie+de+la+signification+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -465,6 +483,7 @@ const TEXTS = {
     readSummary: "Read the summary",
     viewPlan: "View the full plan",
     readBook: "read",
+    writeAuthor: "Write to the author",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -501,6 +520,7 @@ const TEXTS = {
     readSummary: "Leer el resumen",
     viewPlan: "Ver el plan completo",
     readBook: "leer",
+    writeAuthor: "Escribir al autor",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -537,6 +557,7 @@ const TEXTS = {
     readSummary: "Die Zusammenfassung lesen",
     viewPlan: "Den vollständigen Plan ansehen",
     readBook: "lesen",
+    writeAuthor: "An den Autor schreiben",
     orderURL: "https://www.amazon.com/s?k=philosophy+of+meaning+geoffroy+de+clisson",
     summaryURL: "https://philosophy-of-meaning.com/summary/",
     planURL: "https://philosophy-of-meaning.com/plan/",
@@ -615,6 +636,7 @@ function applyLang(lang) {
   document.getElementById('title-vol-i').textContent = t.volumeITitle;
   document.getElementById('label-vol-ii').textContent = t.volumeII;
   document.getElementById('title-vol-ii').textContent = t.volumeIITitle;
+  document.getElementById('companion-excerpt').textContent = t.companionExcerpt;
   document.getElementById('order-vol-i').textContent = t.order;
   document.getElementById('order-vol-i').href = t.orderURL;
   document.getElementById('order-vol-ii').textContent = t.order;
@@ -623,6 +645,8 @@ function applyLang(lang) {
   document.getElementById('read-vol-i').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
   document.getElementById('read-vol-ii').textContent = t.readBook;
   document.getElementById('read-vol-ii').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
+  document.getElementById('write-author-label-card').textContent = t.writeAuthor;
+  document.getElementById('write-author-label-page').textContent = t.writeAuthor + ' :';
 
   document.getElementById('cover-vol-i').src = COVERS[lang].i;
   document.getElementById('cover-vol-ii').src = COVERS[lang].ii;
