@@ -827,7 +827,7 @@ function showMethodologicalNote() {
 
   // Afficher le bouton "Posez une nouvelle question" (comme apres toute reponse)
   var newQWrapperNote = document.querySelector('#chat-screen .new-question-wrapper');
-  if (newQWrapperNote) newQWrapperNote.style.display = '';
+  if (newQWrapperNote) newQWrapperNote.style.display = 'block';
 }
 
 function send(text) {
@@ -952,7 +952,7 @@ function send(text) {
     // Afficher le bouton "Posez une nouvelle question" une fois la réponse terminée
     if (fullText) {
       var newQWrapperShow = document.querySelector('#chat-screen .new-question-wrapper');
-      if (newQWrapperShow) newQWrapperShow.style.display = '';
+      if (newQWrapperShow) newQWrapperShow.style.display = 'block';
     }
 
     document.getElementById('chatInput').focus();
