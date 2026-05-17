@@ -92,7 +92,7 @@ body { background-color: #E8E1CC !important; }
 .work-text { max-width: 720px; margin: 0 auto; font-size: 1.02rem; line-height: 1.75; color: var(--text-secondary); text-align: justify; hyphens: auto; }
 .work-text p { margin-bottom: 1.2rem; }
 
-.volumes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 980px; margin: 0 auto; }
+.volumes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 720px; margin: 0 auto; }
 .volume-card { background: var(--bg); border: 1px solid var(--border-soft); border-radius: 22px; padding: 1.75rem 1.5rem; text-align: center; transition: transform 0.2s, background 0.2s; }
 .volume-card:hover { transform: translateY(-3px); background: var(--bg-hover); }
 .volume-cover { aspect-ratio: 5/7; background: var(--bg-hover); border-radius: 10px; margin-bottom: 1.25rem; overflow: hidden; }
@@ -244,15 +244,6 @@ body { background-color: #E8E1CC !important; }
         <div class="volume-eyebrow" id="label-vol-ii">Tome II</div>
         <div class="volume-title" id="title-vol-ii">La musique de l'être, face à l'autre, exploration de soi</div>
         <div class="volume-links"><a id="read-vol-ii" target="_blank" rel="noopener"></a><a id="order-vol-ii" target="_blank" rel="noopener"></a></div>
-      </div>
-      <div class="volume-card">
-        <div class="volume-cover companion-cover"><div class="companion-text" id="companion-excerpt"></div></div>
-        <div class="volume-eyebrow" id="label-companion">À part</div>
-        <div class="volume-title" id="title-companion">Plan général &amp; résumé d'introduction</div>
-        <div class="volume-links">
-          <a id="read-summary" target="_blank" rel="noopener"></a>
-          <a id="view-plan" target="_blank" rel="noopener"></a>
-        </div>
       </div>
     </div>
   </section>
@@ -624,9 +615,6 @@ function applyLang(lang) {
   document.getElementById('title-vol-i').textContent = t.volumeITitle;
   document.getElementById('label-vol-ii').textContent = t.volumeII;
   document.getElementById('title-vol-ii').textContent = t.volumeIITitle;
-  document.getElementById('label-companion').textContent = t.companion;
-  document.getElementById('title-companion').textContent = t.companionTitle;
-  document.getElementById('companion-excerpt').textContent = t.companionExcerpt;
   document.getElementById('order-vol-i').textContent = t.order;
   document.getElementById('order-vol-i').href = t.orderURL;
   document.getElementById('order-vol-ii').textContent = t.order;
@@ -635,11 +623,6 @@ function applyLang(lang) {
   document.getElementById('read-vol-i').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
   document.getElementById('read-vol-ii').textContent = t.readBook;
   document.getElementById('read-vol-ii').href = "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson";
-  document.getElementById('read-summary').textContent = t.readSummary;
-  document.getElementById('read-summary').href = t.summaryURL;
-  document.getElementById('read-summary').className = 'primary';
-  document.getElementById('view-plan').textContent = t.viewPlan;
-  document.getElementById('view-plan').href = t.planURL;
 
   document.getElementById('cover-vol-i').src = COVERS[lang].i;
   document.getElementById('cover-vol-ii').src = COVERS[lang].ii;
