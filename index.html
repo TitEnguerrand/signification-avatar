@@ -8,13 +8,30 @@
 <meta name="theme-color" content="#E8E1CC">
 <title>La Philosophie de la Signification — Geoffroy de Clisson</title>
 
+<meta name="description" content="Avatar philosophique de La Philosophie de la Signification de Geoffroy de Clisson : dualisme de la signification, conscience, identité, esthétique, éthique.">
+<meta name="keywords" content="signification, sens, forme, normativité, vérité, objectivité, connaissance, rationalité, intentionnalité, représentation, dualisme, dualisme de la signification, anti-réductionnisme, anti-physicalisme, critique du physicalisme, matérialisme, émergence, irréductibilité, philosophie de l'esprit, métaphysique, ontologie, philosophie critique, épistémologie, rapport sujet-objet, espace des raisons, causalité, liberté, conscience, identité, esprit, langage, esthétique, éthique, musique, altérité, humanisme, sciences et philosophie, réalité, symbolisation, forme signifiante, Geoffroy de Clisson, avatar philosophique">
+<meta name="author" content="Geoffroy de Clisson">
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://signification-avatar.vercel.app/?lang=fr">
+<link rel="alternate" hreflang="fr" href="https://signification-avatar.vercel.app/?lang=fr">
+<link rel="alternate" hreflang="en" href="https://signification-avatar.vercel.app/?lang=en">
+<link rel="alternate" hreflang="es" href="https://signification-avatar.vercel.app/?lang=es">
+<link rel="alternate" hreflang="de" href="https://signification-avatar.vercel.app/?lang=de">
+<link rel="alternate" hreflang="x-default" href="https://signification-avatar.vercel.app/">
+
 <meta property="og:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
-<meta property="og:description" content="Une porte d'entrée vers la Philosophie de la Signification de Geoffroy de Clisson.">
+<meta property="og:description" content="Avatar philosophique de La Philosophie de la Signification de Geoffroy de Clisson : dualisme de la signification, conscience, identité, esthétique, éthique.">
 <meta property="og:image" content="https://signification-avatar.vercel.app/api/og">
 <meta property="og:url" content="https://signification-avatar.vercel.app">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="de_DE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="La Philosophie de la Signification — Geoffroy de Clisson">
+<meta name="twitter:description" content="Avatar philosophique : dualisme de la signification, conscience, identité, esthétique, éthique.">
 <meta name="twitter:image" content="https://signification-avatar.vercel.app/api/og">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -425,6 +442,7 @@ const TEXTS = {
   fr: {
     htmlLang: "fr",
     pageTitle: "La Philosophie de la Signification - Geoffroy de Clisson",
+    metaDescription: "Avatar philosophique de La Philosophie de la Signification de Geoffroy de Clisson : dualisme de la signification, conscience, identité, esthétique, éthique.",
     title1: "La Philosophie",
     title2: "de la Signification",
     nav: { gateway: "Porte d'entrée", work: "L'œuvre", volumes: "Tomes", video: "Vidéo", author: "Auteur" },
@@ -462,6 +480,7 @@ const TEXTS = {
   en: {
     htmlLang: "en",
     pageTitle: "Philosophy of Meaning - Geoffroy de Clisson",
+    metaDescription: "Philosophical avatar of The Philosophy of Meaning by Geoffroy de Clisson: meaning dualism, consciousness, identity, aesthetics, ethics.",
     title1: "Philosophy",
     title2: "of Meaning",
     nav: { gateway: "Gateway", work: "The work", volumes: "Volumes", video: "Video", author: "Author" },
@@ -499,6 +518,7 @@ const TEXTS = {
   es: {
     htmlLang: "es",
     pageTitle: "Filosofía de la Significación - Geoffroy de Clisson",
+    metaDescription: "Avatar filosófico de La Filosofía de la Significación de Geoffroy de Clisson: dualismo de la significación, conciencia, identidad, estética, ética.",
     title1: "Filosofía",
     title2: "de la Significación",
     nav: { gateway: "Puerta de entrada", work: "La obra", volumes: "Tomos", video: "Video", author: "Autor" },
@@ -536,6 +556,7 @@ const TEXTS = {
   de: {
     htmlLang: "de",
     pageTitle: "Philosophie der Bedeutung - Geoffroy de Clisson",
+    metaDescription: "Philosophischer Avatar zu Die Philosophie der Bedeutung von Geoffroy de Clisson: Dualismus der Bedeutung, Bewusstsein, Identität, Ästhetik, Ethik.",
     title1: "Philosophie",
     title2: "der Bedeutung",
     nav: { gateway: "Eingangstor", work: "Das Werk", volumes: "Bände", video: "Video", author: "Autor" },
@@ -591,6 +612,24 @@ function applyLang(lang) {
 
   document.documentElement.lang = t.htmlLang;
   document.title = t.pageTitle;
+
+  try {
+    var newUrl = window.location.pathname + '?lang=' + lang + window.location.hash;
+    window.history.replaceState({ lang: lang }, t.pageTitle, newUrl);
+  } catch (e) { console.warn('URL update failed:', e); }
+
+  var metaDesc = document.querySelector('meta[name="description"]');
+  var metaOgDesc = document.querySelector('meta[property="og:description"]');
+  var metaOgTitle = document.querySelector('meta[property="og:title"]');
+  var metaTwTitle = document.querySelector('meta[name="twitter:title"]');
+  var metaTwDesc = document.querySelector('meta[name="twitter:description"]');
+  var linkCanonical = document.querySelector('link[rel="canonical"]');
+  if (t.metaDescription && metaDesc) metaDesc.setAttribute('content', t.metaDescription);
+  if (t.metaDescription && metaOgDesc) metaOgDesc.setAttribute('content', t.metaDescription);
+  if (t.pageTitle && metaOgTitle) metaOgTitle.setAttribute('content', t.pageTitle);
+  if (t.pageTitle && metaTwTitle) metaTwTitle.setAttribute('content', t.pageTitle);
+  if (t.metaDescription && metaTwDesc) metaTwDesc.setAttribute('content', t.metaDescription);
+  if (linkCanonical) linkCanonical.setAttribute('href', 'https://signification-avatar.vercel.app/?lang=' + lang);
 
   var langBtns = document.querySelectorAll('.lang-btn');
   for (var i = 0; i < langBtns.length; i++) {
