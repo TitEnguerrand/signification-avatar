@@ -19,7 +19,7 @@
     { "source": "/book-ii-the-music-of-being-facing-the-other-exploring-the-self", "destination": "/en/volumes/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)", "destination": "/index.html" }
   ],
   "functions": {
     "api/chat.js": {
