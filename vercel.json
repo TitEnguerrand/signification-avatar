@@ -1,4 +1,23 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/plan/", "destination": "/fr/oeuvre/", "permanent": true },
+    { "source": "/plan", "destination": "/fr/oeuvre/", "permanent": true },
+    { "source": "/qa/", "destination": "/fr/", "permanent": true },
+    { "source": "/qa", "destination": "/fr/", "permanent": true },
+    { "source": "/commander/", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/commander", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/premiere-partie-quest-ce-que-la-connaissance/", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/premiere-partie-quest-ce-que-la-connaissance", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/tome-ii-la-musique-de-letre-la-question-de-lautre-qui-suis-je/", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/tome-ii-la-musique-de-letre-la-question-de-lautre-qui-suis-je", "destination": "/fr/tomes/", "permanent": true },
+    { "source": "/summary/", "destination": "/en/work/", "permanent": true },
+    { "source": "/summary", "destination": "/en/work/", "permanent": true },
+    { "source": "/book-i-what-do-we-mean-by-knowledge/", "destination": "/en/volumes/", "permanent": true },
+    { "source": "/book-i-what-do-we-mean-by-knowledge", "destination": "/en/volumes/", "permanent": true },
+    { "source": "/book-ii-the-music-of-being-facing-the-other-exploring-the-self/", "destination": "/en/volumes/", "permanent": true },
+    { "source": "/book-ii-the-music-of-being-facing-the-other-exploring-the-self", "destination": "/en/volumes/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
@@ -7,5 +26,29 @@
       "includeFiles": "api/chunks.json",
       "maxDuration": 60
     }
-  }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
 }
