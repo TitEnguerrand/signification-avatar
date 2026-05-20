@@ -34,6 +34,93 @@
 <meta name="twitter:description" content="Avatar philosophique : dualisme de la signification, conscience, identité, esthétique, éthique.">
 <meta name="twitter:image" content="https://signification-avatar.vercel.app/api/og">
 
+<meta name="google-site-verification" content="hK8EmFaJGlv-zrkeVqKpdJWeQ0DAePUDol3pG6pbZlA" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://signification-avatar.vercel.app/#author",
+      "name": "Geoffroy de Clisson",
+      "jobTitle": "Philosophe",
+      "description": "Philosophe français, auteur de La Philosophie de la Signification, une œuvre en quatre tomes défendant un dualisme ontologique entre matière et signification.",
+      "url": "https://signification-avatar.vercel.app/fr/auteur/",
+      "image": "https://signification-avatar.vercel.app/geoffroy-de-clisson.jpg",
+      "email": "gdeclisson@gmail.com",
+      "sameAs": [
+        "https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson",
+        "https://twitter.com/Philomeaning",
+        "https://institutwalden.org/"
+      ]
+    },
+    {
+      "@type": "Book",
+      "@id": "https://signification-avatar.vercel.app/#work",
+      "name": "La Philosophie de la Signification",
+      "alternateName": [
+        "The Philosophy of Meaning",
+        "La Filosofía de la Significación",
+        "Die Philosophie der Bedeutung"
+      ],
+      "author": { "@id": "https://signification-avatar.vercel.app/#author" },
+      "inLanguage": ["fr", "en"],
+      "numberOfPages": 0,
+      "bookFormat": "https://schema.org/EBook",
+      "description": "Œuvre philosophique en quatre tomes (Connaissance, Esthétique, Éthique, Identité) défendant un dualisme ontologique entre matière et signification, articulé autour du trilogisme radical : réceptivité sensible, imagination productive, raison formalisante.",
+      "url": "https://signification-avatar.vercel.app/",
+      "about": [
+        { "@type": "Thing", "name": "Dualisme de la signification" },
+        { "@type": "Thing", "name": "Philosophie de l'esprit" },
+        { "@type": "Thing", "name": "Métaphysique" },
+        { "@type": "Thing", "name": "Épistémologie" },
+        { "@type": "Thing", "name": "Esthétique" },
+        { "@type": "Thing", "name": "Éthique" },
+        { "@type": "Thing", "name": "Identité personnelle" },
+        { "@type": "Thing", "name": "Critique du physicalisme" }
+      ],
+      "hasPart": [
+        {
+          "@type": "Book",
+          "name": "Tome I — Qu'est-ce que la connaissance ?",
+          "position": 1,
+          "author": { "@id": "https://signification-avatar.vercel.app/#author" }
+        },
+        {
+          "@type": "Book",
+          "name": "Tome II — La musique de l'être : esthétique",
+          "position": 2,
+          "author": { "@id": "https://signification-avatar.vercel.app/#author" }
+        },
+        {
+          "@type": "Book",
+          "name": "Tome III — Face à l'autre : éthique",
+          "position": 3,
+          "author": { "@id": "https://signification-avatar.vercel.app/#author" }
+        },
+        {
+          "@type": "Book",
+          "name": "Tome IV — Qui suis-je ? : identité",
+          "position": 4,
+          "author": { "@id": "https://signification-avatar.vercel.app/#author" }
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://signification-avatar.vercel.app/#website",
+      "url": "https://signification-avatar.vercel.app/",
+      "name": "La Philosophie de la Signification — Geoffroy de Clisson",
+      "description": "Avatar philosophique de l'œuvre de Geoffroy de Clisson, accessible en français, anglais, espagnol et allemand.",
+      "inLanguage": ["fr", "en", "es", "de"],
+      "publisher": { "@id": "https://signification-avatar.vercel.app/#author" },
+      "about": { "@id": "https://signification-avatar.vercel.app/#work" }
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -129,7 +216,7 @@ body { background-color: #E8E1CC !important; }
 .video-caption { text-align: center; font-size: 0.92rem; color: var(--text-muted); font-style: italic; margin-top: 1rem; max-width: 620px; margin-left: auto; margin-right: auto; }
 
 .author-inner { max-width: 720px; margin: 0 auto; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 22px; padding: 2rem; display: flex; gap: 1.5rem; align-items: flex-start; }
-.author-avatar { width: 160px; height: 160px; border-radius: 50%; background: var(--bg-hover); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.05rem; color: var(--text-muted); flex-shrink: 0; overflow: hidden; }
+.author-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--bg-hover); border: 1px solid var(--border-soft); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.05rem; color: var(--text-muted); flex-shrink: 0; overflow: hidden; }
 .author-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .author-info h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
 .author-info p { font-size: 0.95rem; line-height: 1.65; color: var(--text-secondary); margin-bottom: 0.85rem; }
