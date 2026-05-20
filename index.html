@@ -890,7 +890,7 @@ function showPanel(name) {
 function switchToChat() {
   document.getElementById('home-view').style.display = 'none';
   document.getElementById('chat-screen').classList.add('active');
-  setTimeout(function(){ document.getElementById('chatInput').focus(); }, 100);
+  setTimeout(function(){ document.getElementById('chatInput').focus({ preventScroll: true }); }, 100);
 }
 
 function backToHome() {
@@ -956,7 +956,7 @@ function addMessage(role, text) {
   wrapper.appendChild(bubble);
   container.appendChild(wrapper);
   if (role === 'user' && isFirstUserMsg) {
-    // wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
@@ -970,7 +970,7 @@ function showTyping() {
   // Scroll uniquement si c'est le premier echange (une seule question utilisateur),
   // sinon on respecte la position de lecture courante.
   var isFirstExchange = container.querySelectorAll('.msg.user').length <= 1;
-  // if (isFirstExchange && lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (isFirstExchange && lastUserMsg) lastUserMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function hideTyping() {
@@ -1157,7 +1157,7 @@ function send(text) {
       if (newQWrapperShow) newQWrapperShow.style.display = 'block';
     }
 
-    document.getElementById('chatInput').focus();
+    document.getElementById('chatInput').focus({ preventScroll: true });
   };
 
   xhr.onerror = function() {
@@ -1165,7 +1165,7 @@ function send(text) {
     wrapper.style.display = '';
     bubble.textContent = TEXTS[currentLang].connectionError || 'Erreur de connexion.';
     busy = false;
-    document.getElementById('chatInput').focus();
+    document.getElementById('chatInput').focus({ preventScroll: true });
   };
 
   xhr.send(JSON.stringify({ messages: history }));
