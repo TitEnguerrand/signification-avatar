@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<meta name="theme-color" content="#E8E1CC">
+<meta name="theme-color" content="#f5f1e8">
 <title>La Philosophie de la Signification — Geoffroy de Clisson</title>
 
 <meta name="description" content="Avatar philosophique de La Philosophie de la Signification de Geoffroy de Clisson : dualisme de la signification, conscience, identité, esthétique, éthique.">
@@ -127,25 +127,27 @@
 
 <style>
 :root {
-  --bg: #E8E1CC;
-  --bg-hover: #DDD5BC;
-  --bg-pill-active: #3A2E22;
-  --text-primary: #3A2E22;
-  --text-secondary: #4A3D2E;
-  --text-muted: #7A6A52;
-  --text-faint: #998A6E;
-  --border-soft: rgba(110, 90, 60, 0.22);
-  --border-dashed: rgba(110, 90, 60, 0.38);
-  --border-divider: rgba(110, 90, 60, 0.4);
+  --page-bg: #f5f1e8;
+  --bg: #efe9da;
+  --bg-hover: #e6dfcc;
+  --bg-input: #faf7f0;
+  --bg-pill-active: #463827;
+  --text-primary: #463827;
+  --text-secondary: #564636;
+  --text-muted: #82735c;
+  --text-faint: #9e8f74;
+  --border-soft: rgba(110, 90, 60, 0.20);
+  --border-dashed: rgba(110, 90, 60, 0.34);
+  --border-divider: rgba(110, 90, 60, 0.36);
   --font-display: 'Cormorant Garamond', 'Georgia', serif;
   --font-body: 'Source Serif 4', 'Georgia', serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { color-scheme: light only; background: #E8E1CC !important; }
-html, body { background: #E8E1CC !important; color: var(--text-secondary); font-family: var(--font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
-body { background-color: #E8E1CC !important; }
+html { color-scheme: light only; background: #f5f1e8 !important; }
+html, body { background: #f5f1e8 !important; color: var(--text-secondary); font-family: var(--font-body); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; min-height: 100vh; }
+body { background-color: #f5f1e8 !important; }
 
-.topnav { background: var(--bg); padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-soft); }
+.topnav { background: var(--page-bg); padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-soft); }
 .topnav-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
 .topnav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
 .nav-tab { background: none; border: none; cursor: pointer; color: var(--text-muted); font-family: var(--font-display); font-size: 0.92rem; letter-spacing: 0.04em; padding: 4px 0; border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
@@ -180,10 +182,10 @@ body { background-color: #E8E1CC !important; }
 .q-card:hover { background: var(--bg-hover); transform: translateY(-1px); }
 .q-card.q-meta { border: 1px dashed var(--border-dashed); color: var(--text-muted); font-style: italic; }
 
-.free-input { width: 100%; max-width: 620px; margin: 0 auto 2.5rem; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 24px; padding: 4px 6px 4px 18px; display: flex; align-items: center; gap: 8px; }
+.free-input { width: 100%; max-width: 620px; margin: 0 auto 2.5rem; background: var(--bg-input); border: 1px solid var(--border-soft); border-radius: 24px; padding: 4px 6px 4px 18px; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(110, 90, 60, 0.05); }
 .chat-input .free-input { margin: 0 auto; }
 .free-input input { flex: 1; border: none; outline: none; font-family: var(--font-body); font-size: 1rem; line-height: 1.4; color: var(--text-primary); background: transparent; height: 38px; }
-.free-input input::placeholder { color: var(--text-muted); font-style: italic; }
+.free-input input::placeholder { color: var(--text-faint); font-style: italic; opacity: 1; }
 .send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-pill-active); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; flex-shrink: 0; }
 .send-btn:hover { opacity: 0.85; }
 .send-btn:disabled { opacity: 0.35; cursor: default; }
@@ -232,14 +234,14 @@ body { background-color: #E8E1CC !important; }
 .author-contact a { color: var(--text-secondary); text-decoration: none; font-family: var(--font-body); font-style: italic; transition: color 0.2s; }
 .author-contact a:hover { color: var(--text-primary); }
 
-.footer { background: var(--bg); padding: 2.5rem 1.25rem 3rem; text-align: center; border-top: 1px solid var(--border-soft); font-family: var(--font-display); font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.7; }
+.footer { background: var(--page-bg); padding: 2.5rem 1.25rem 3rem; text-align: center; border-top: 1px solid var(--border-soft); font-family: var(--font-display); font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.7; }
 .footer-credits { margin-bottom: 0.85rem; max-width: 620px; margin-left: auto; margin-right: auto; font-style: italic; }
 .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 0.75rem; transition: color 0.2s; cursor: pointer; }
 .footer-links a:hover { color: var(--text-primary); }
 
-#chat-screen { display: none; flex-direction: column; min-height: 100vh; background: var(--bg); }
+#chat-screen { display: none; flex-direction: column; min-height: 100vh; background: var(--page-bg); }
 #chat-screen.active { display: flex; }
-.chat-header { padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--border-soft); background: var(--bg); flex-shrink: 0; display: flex; align-items: center; gap: 0.8rem; position: sticky; top: 0; z-index: 100; }
+.chat-header { padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--border-soft); background: var(--page-bg); flex-shrink: 0; display: flex; align-items: center; gap: 0.8rem; position: sticky; top: 0; z-index: 100; }
 .back-chevron { background: none; border: none; cursor: pointer; color: var(--text-muted); font-family: var(--font-display); font-size: 2rem; font-weight: 300; padding: 0 0.3rem 0 0; line-height: 0.8; transition: color 0.2s ease, transform 0.2s ease; }
 .back-chevron:hover { color: var(--text-primary); transform: translateX(-2px); }
 .header-title-block { flex: 1; cursor: pointer; }
@@ -262,7 +264,7 @@ body { background-color: #E8E1CC !important; }
 .typing .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); animation: pulse 1.2s ease-in-out infinite; }
 .typing .dot:nth-child(2) { animation-delay: 0.2s; }
 .typing .dot:nth-child(3) { animation-delay: 0.4s; }
-.chat-input { padding: 0.8rem 1.5rem 1.2rem; border-top: 1px solid var(--border-soft); background: var(--bg); flex-shrink: 0; }
+.chat-input { padding: 0.8rem 1.5rem 1.2rem; border-top: 1px solid var(--border-soft); background: var(--page-bg); flex-shrink: 0; }
 .chat-input .free-input { max-width: 700px; }
 .chat-input .new-question-wrapper { max-width: 700px; margin-left: auto; margin-right: auto; }
 .chat-input .note { text-align: center; margin-top: 0.5rem; font-size: 0.65rem; color: var(--text-faint); letter-spacing: 0.1em; }
@@ -283,6 +285,8 @@ body { background-color: #E8E1CC !important; }
   .q-card { min-height: auto; padding: 1rem 1.25rem; }
   .volumes-grid { grid-template-columns: 1fr; max-width: 320px; }
   .author-inner { flex-direction: column; text-align: center; align-items: center; padding: 1.5rem; }
+  .free-input { max-width: 100%; }
+  .free-input input { font-size: 16px; }
 }
 </style>
 </head>
@@ -1022,7 +1026,7 @@ function showMethodologicalNote() {
 
   // Ajouter la note finale (lien PhilArchive) comme dans une reponse normale
   var linkLabel = TEXTS[currentLang].linkLabel;
-  asstBubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#7A6A52;">' + linkLabel + ' &rarr;</a></p>';
+  asstBubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#82735c;">' + linkLabel + ' &rarr;</a></p>';
 
   // Mettre la note dans l'historique pour que l'avatar ait du contexte si l'utilisateur "approfondit"
   history.push({ role: 'user', content: noteLabel });
@@ -1147,7 +1151,7 @@ function send(text) {
     }
     if (fullText) {
       var linkLabel = TEXTS[currentLang].linkLabel;
-      bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#7A6A52;">' + linkLabel + ' &rarr;</a></p>';
+      bubble.innerHTML += '<p style="margin-top:1.5em;font-size:0.85em;"><a href="https://philarchive.org/s?utf8=%E2%9C%93&searchStr=Geoffroy+de+Clisson" target="_blank" style="color:#82735c;">' + linkLabel + ' &rarr;</a></p>';
     }
     if (fullText) history.push({ role: 'assistant', content: fullText });
     busy = false;
