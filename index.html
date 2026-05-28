@@ -180,10 +180,11 @@ body { background-color: #E8E1CC !important; }
 .q-card:hover { background: var(--bg-hover); transform: translateY(-1px); }
 .q-card.q-meta { border: 1px dashed var(--border-dashed); color: var(--text-muted); font-style: italic; }
 
-.free-input { max-width: 620px; margin: 0 auto; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 32px; padding: 10px 10px 10px 22px; display: flex; align-items: center; gap: 12px; }
-.free-input input { flex: 1; border: none; outline: none; font-family: var(--font-body); font-size: 1rem; color: var(--text-primary); background: transparent; }
+.free-input { width: 100%; max-width: 620px; margin: 0 auto 2.5rem; background: var(--bg); border: 1px solid var(--border-soft); border-radius: 24px; padding: 4px 6px 4px 18px; display: flex; align-items: center; gap: 8px; }
+.chat-input .free-input { margin: 0 auto; }
+.free-input input { flex: 1; border: none; outline: none; font-family: var(--font-body); font-size: 1rem; line-height: 1.4; color: var(--text-primary); background: transparent; height: 38px; }
 .free-input input::placeholder { color: var(--text-muted); font-style: italic; }
-.send-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--bg-pill-active); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; flex-shrink: 0; }
+.send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-pill-active); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; flex-shrink: 0; }
 .send-btn:hover { opacity: 0.85; }
 .send-btn:disabled { opacity: 0.35; cursor: default; }
 .send-btn svg { width: 18px; height: 18px; color: var(--bg); transform: rotate(-45deg); }
@@ -323,14 +324,14 @@ body { background-color: #E8E1CC !important; }
     <div class="gateway-inner">
       <div class="section-eyebrow" id="eyebrow-gateway">Porte d'entrée</div>
       <h2 class="section-title" id="title-gateway">Interroger l'œuvre</h2>
-      <p class="intro" id="subtitle"></p>
-      <div class="questions-grid" id="questions-grid"></div>
       <div class="free-input">
         <input type="text" id="welcomeInput" placeholder="Posez une question…">
         <button class="send-btn" id="welcomeBtn" disabled aria-label="Envoyer">
           <svg fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon fill="currentColor" points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </button>
       </div>
+      <p class="intro" id="subtitle"></p>
+      <div class="questions-grid" id="questions-grid"></div>
     </div>
   </section>
 
