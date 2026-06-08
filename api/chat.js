@@ -130,13 +130,19 @@ module.exports = async function handler(req, res) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-6",
         max_tokens: 5000,
         stream: true,
         system: systemPrompt,
         messages: messages,
       }),
     });
+
+    if (!response.ok) {
+      var errText = await response.text();
+      console.error("Anthropic API error:", response.status, errText);
+      return res.status(response.status).json({ error: "Anthropic API " + response.status + ": " + errText });
+    }
 
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
