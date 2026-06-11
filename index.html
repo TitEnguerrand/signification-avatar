@@ -291,7 +291,10 @@ body { background-color: #f5f1e8 !important; }
 </style>
 
 <!-- Vercel Web Analytics -->
-<script defer src="https://va.vercel-analytics.com/v0/script.js"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
