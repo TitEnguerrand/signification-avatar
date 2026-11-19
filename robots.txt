@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://signification-avatar.vercel.app/sitemap.xml
+Sitemap: https://www.philosophy-of-meaning.com/sitemap.xml
